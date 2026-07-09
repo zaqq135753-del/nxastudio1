@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as NutriRouteImport } from './routes/nutri'
+import { Route as GeladeiraRouteImport } from './routes/geladeira'
+import { Route as FotoRouteImport } from './routes/foto'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PlannerRoute = PlannerRouteImport.update({
+  id: '/planner',
+  path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NutriRoute = NutriRouteImport.update({
+  id: '/nutri',
+  path: '/nutri',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GeladeiraRoute = GeladeiraRouteImport.update({
+  id: '/geladeira',
+  path: '/geladeira',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FotoRoute = FotoRouteImport.update({
+  id: '/foto',
+  path: '/foto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,72 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/foto': typeof FotoRoute
+  '/geladeira': typeof GeladeiraRoute
+  '/nutri': typeof NutriRoute
+  '/planner': typeof PlannerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/foto': typeof FotoRoute
+  '/geladeira': typeof GeladeiraRoute
+  '/nutri': typeof NutriRoute
+  '/planner': typeof PlannerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/foto': typeof FotoRoute
+  '/geladeira': typeof GeladeiraRoute
+  '/nutri': typeof NutriRoute
+  '/planner': typeof PlannerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
+  id: '__root__' | '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FotoRoute: typeof FotoRoute
+  GeladeiraRoute: typeof GeladeiraRoute
+  NutriRoute: typeof NutriRoute
+  PlannerRoute: typeof PlannerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/planner': {
+      id: '/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nutri': {
+      id: '/nutri'
+      path: '/nutri'
+      fullPath: '/nutri'
+      preLoaderRoute: typeof NutriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/geladeira': {
+      id: '/geladeira'
+      path: '/geladeira'
+      fullPath: '/geladeira'
+      preLoaderRoute: typeof GeladeiraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foto': {
+      id: '/foto'
+      path: '/foto'
+      fullPath: '/foto'
+      preLoaderRoute: typeof FotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +121,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FotoRoute: FotoRoute,
+  GeladeiraRoute: GeladeiraRoute,
+  NutriRoute: NutriRoute,
+  PlannerRoute: PlannerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
