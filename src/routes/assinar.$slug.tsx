@@ -168,7 +168,7 @@ function SubscribePage() {
               <button className="btn-ghost mt-4" onClick={() => setSent(false)}>Usar outro e-mail</button>
             </div>
           ) : (
-            <form onSubmit={sendMagicLink} className="space-y-3">
+            <form id="assinar-form" onSubmit={sendMagicLink} className="space-y-3">
               <input
                 type="email"
                 required
