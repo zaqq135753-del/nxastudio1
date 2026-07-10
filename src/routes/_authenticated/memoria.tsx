@@ -31,8 +31,6 @@ function MemoryPage() {
 
   return (
     <AppShell>
-      <>
-      <title>Sua Memória IA</title>
       <div className="mx-auto max-w-3xl px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
