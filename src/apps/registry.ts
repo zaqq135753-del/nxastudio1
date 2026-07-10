@@ -55,6 +55,24 @@ export const APPS: readonly AppEntry[] = [
     ],
   },
   {
+    slug: "petia",
+    name: "PetIA",
+    tagline: "Veterinário virtual com IA",
+    description:
+      "Chat veterinário 24h, saúde, alimentação e treino guiados por IA para cães e gatos.",
+    icon: PawPrint,
+    status: "live",
+    route: "/apps/petia",
+    tabs: [
+      { to: "/apps/petia",             label: "Início",      icon: Home },
+      { to: "/apps/petia/chat",        label: "Chat Vet",    icon: MessageCircleHeart },
+      { to: "/apps/petia/saude",       label: "Saúde",       icon: HeartPulse },
+      { to: "/apps/petia/alimentacao", label: "Alimentação", icon: Utensils },
+      { to: "/apps/petia/treino",      label: "Treino",      icon: GraduationCap },
+      { to: "/apps/petia/perfil",      label: "Perfil",      icon: User },
+    ],
+  },
+  {
     slug: "fitia",
     name: "FitIA",
     tagline: "Treinos com IA",
