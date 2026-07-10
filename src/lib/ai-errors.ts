@@ -65,18 +65,17 @@ export function isAiOutOfService(): boolean {
   }
 }
 
+import { useEffect, useState } from "react";
+
 /** Hook React que reage a mudanças de estado da IA. */
 export function useAiOutage() {
-  // lazy import to avoid SSR issues
-  const React = require("react") as typeof import("react");
-  const [outage, setOutage] = React.useState<boolean>(false);
-  React.useEffect(() => {
+  const [outage, setOutage] = useState<boolean>(false);
+  useEffect(() => {
     setOutage(isAiOutOfService());
     const check = () => setOutage(isAiOutOfService());
-    const handler = () => check();
-    window.addEventListener(EVT, handler);
+    window.addEventListener(EVT, check);
     const iv = window.setInterval(check, 30_000);
-    return () => { window.removeEventListener(EVT, handler); window.clearInterval(iv); };
+    return () => { window.removeEventListener(EVT, check); window.clearInterval(iv); };
   }, []);
   return outage;
 }
