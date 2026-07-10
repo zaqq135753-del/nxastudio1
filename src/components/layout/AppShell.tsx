@@ -32,15 +32,28 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
     navigate({ to: "/auth", replace: true });
   }
 
+  const atAppRoot = app ? pathname === app.route || pathname === `${app.route}/` : false;
+  const backTo = atAppRoot ? "/hub" : (app?.route ?? "/hub");
+  const backLabel = atAppRoot ? "Hub" : "Voltar";
+
+  function handleBack(e: React.MouseEvent) {
+    // If user has history within this app, prefer real back to preserve scroll/state
+    if (!atAppRoot && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  }
+
   return (
     <div className="min-h-screen pb-28">
       <header className="fixed top-0 left-0 right-0 z-40 border-b glass"
         style={{ borderRadius: 0, borderColor: "var(--line-1)" }}>
         <div className="mx-auto flex h-14 max-w-[820px] items-center justify-between px-5">
           <div className="flex items-center gap-2">
-            <Link to="/hub" className="flex items-center gap-1 text-xs font-medium"
-              style={{ color: "var(--n-500)" }} title="Voltar ao hub">
-              <ArrowLeft size={14} /> Hub
+            <Link to={backTo} onClick={handleBack}
+              className="press flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-[var(--n-100)]"
+              style={{ color: "var(--n-500)" }} title={backLabel}>
+              <ArrowLeft size={14} /> {backLabel}
             </Link>
             <span style={{ color: "var(--n-300)" }}>/</span>
             <Link to={app?.route ?? "/hub"} className="text-[15px] font-bold tracking-tight">
