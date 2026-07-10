@@ -1,21 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
-import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen } from "lucide-react";
+import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ThemePicker, useInitTheme } from "@/components/ThemePicker";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: Dashboard,
 });
 
 const quickAccess = [
-  { to: "/geladeira" as const, icon: Refrigerator, title: "Geladeira IA", desc: "Do que tem em casa", accent: "var(--saffron)" },
-  { to: "/foto" as const,      icon: Camera,       title: "Foto → Receita", desc: "Identifica qualquer prato", accent: "var(--tomato)" },
-  { to: "/planner" as const,   icon: CalendarDays, title: "Planner semanal", desc: "7 dias na hora", accent: "var(--matcha)" },
-  { to: "/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual", desc: "Chat 24h com IA", accent: "var(--plum)" },
+  { to: "/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",     desc: "Do que tem em casa",        color: "var(--c-purple)", grad: "linear-gradient(135deg,#8b5cf6,#6d28d9)" },
+  { to: "/foto" as const,      icon: Camera,       title: "Foto → Receita",   desc: "Identifica qualquer prato", color: "var(--c-pink)",   grad: "linear-gradient(135deg,#ff5a7a,#e11d74)" },
+  { to: "/planner" as const,   icon: CalendarDays, title: "Planner semanal",  desc: "7 dias na hora",            color: "var(--c-green)",  grad: "linear-gradient(135deg,#34c07a,#0f9d58)" },
+  { to: "/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",    desc: "Chat 24h com IA",           color: "var(--c-blue)",   grad: "linear-gradient(135deg,#2e90fa,#1d4ed8)" },
 ];
 
 function Dashboard() {
+  useInitTheme();
   const [name, setName] = useState("");
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
@@ -32,44 +34,55 @@ function Dashboard() {
 
   return (
     <AppShell>
-      <ScreenHeader
-        title={`${greeting}${name ? `, ${name.split(" ")[0]}` : ""}.`}
-        subtitle="Sua cozinha, seu ritmo. O que a gente prepara hoje?"
-      />
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <ScreenHeader
+          title={`${greeting}${name ? `, ${name.split(" ")[0]}` : ""}.`}
+          subtitle="Sua cozinha, seu ritmo. O que a gente prepara hoje?"
+        />
+        <div className="mt-2 shrink-0"><ThemePicker /></div>
+      </div>
 
       {needsOnboarding && (
-        <Link to="/onboarding" className="mesh-hero fade-up mb-6 block rounded-2xl p-1">
-          <div className="rounded-[14px] p-5" style={{ background: "linear-gradient(180deg, rgba(14,11,8,0.5), rgba(14,11,8,0.85))" }}>
-            <div className="flex items-center gap-2 text-xs" style={{ color: "var(--cream-200)" }}>
-              <Sparkles size={14} style={{ color: "var(--saffron)" }} /> ONBOARDING · 3 MIN
-            </div>
-            <div className="mt-2 text-xl" style={{ fontFamily: "var(--font-display)", color: "var(--cream-50)" }}>
-              Deixa a IA aprender o seu paladar
-            </div>
-            <div className="mt-1 text-sm" style={{ color: "var(--cream-300)" }}>
-              Depois disso toda receita, plano e sugestão passa a soar como sua.
-            </div>
-            <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium" style={{ color: "var(--saffron)" }}>
-              Começar agora <ArrowRight size={14} />
-            </div>
+        <Link to="/onboarding" className="hero-animated fade-up mb-6 block p-6">
+          <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/85">
+            <Sparkles size={14} className="spark" /> Onboarding · 3 min
+          </div>
+          <div className="mt-2 text-2xl font-semibold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
+            Deixa a IA aprender o seu paladar
+          </div>
+          <div className="mt-1 max-w-md text-sm text-white/85">
+            Depois disso, toda receita, plano e sugestão passa a soar como sua.
+          </div>
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium backdrop-blur">
+            Começar agora <ArrowRight size={14} />
           </div>
         </Link>
       )}
 
-      <section className="mb-8 grid grid-cols-2 gap-3">
+      <section className="stagger mb-8 grid grid-cols-2 gap-3">
         {quickAccess.map((q) => (
-          <Link key={q.to} to={q.to} className="card-editorial p-5">
-            <q.icon size={22} style={{ color: q.accent }} />
-            <div className="mt-4 text-lg" style={{ fontFamily: "var(--font-display)" }}>{q.title}</div>
-            <div className="mt-1 text-xs" style={{ color: "var(--cream-400)" }}>{q.desc}</div>
+          <Link
+            key={q.to}
+            to={q.to}
+            className="tile-hero group"
+            style={{ ["--tile-color" as any]: q.color, ["--tile-grad" as any]: q.grad }}
+          >
+            <div className="flex items-start justify-between">
+              <div className="tile-icon-wrap"><q.icon size={20} /></div>
+              <ChevronRight size={16} className="tile-arrow" />
+            </div>
+            <div className="mt-2">
+              <div className="tile-title">{q.title}</div>
+              <div className="tile-desc">{q.desc}</div>
+            </div>
           </Link>
         ))}
       </section>
 
-      <section className="mb-8">
+      <section className="mb-8 fade-up">
         <div className="edition-tag mb-3">Ideias pro fim do dia</div>
         <div className="surface p-6">
-          <div className="text-2xl" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="text-xl sm:text-2xl" style={{ fontFamily: "var(--font-display)" }}>
             Pergunte à Nutri, gere um plano ou descubra o que fazer com o que sobrou.
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
