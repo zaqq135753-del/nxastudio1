@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const TEXT_MODEL = "google/gemini-2.5-flash";
 const VISION_MODEL = "google/gemini-2.5-pro";
+const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 type ChatMessage = {
   role: "system" | "user" | "assistant";
@@ -278,3 +279,41 @@ Regras:
     });
     return { content };
   });
+
+/* ================= Recipe Image Generation (Nano Banana) ================= */
+
+export const generateRecipeImage = createServerFn({ method: "POST" })
+  .inputValidator((data: { name: string; description?: string }) => ({
+    name: String(data?.name || "").slice(0, 120),
+    description: String(data?.description || "").slice(0, 300),
+  }))
+  .handler(async ({ data }) => {
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("LOVABLE_API_KEY não configurada");
+    if (!data.name) throw new Error("Nome da receita obrigatório");
+
+    const prompt = `Fotografia gastronômica profissional editorial, vista aérea 45°, luz natural suave, prato brasileiro autêntico servido em louça artesanal sobre mesa de madeira rústica com pequenos props (ervas frescas, guardanapo de linho). Alta resolução, cores vibrantes e realistas, foco nítido no prato, fundo levemente desfocado, estilo revista de culinária premium. Prato: ${data.name}. ${data.description}`;
+
+    const res = await fetch(GATEWAY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
+      body: JSON.stringify({
+        model: IMAGE_MODEL,
+        messages: [{ role: "user", content: prompt }],
+        modalities: ["image", "text"],
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      if (res.status === 429) throw new Error("Muitas requisições. Aguarde um instante.");
+      if (res.status === 402) throw new Error("Créditos de IA esgotados.");
+      throw new Error(`Falha ao gerar imagem: ${res.status} ${text.slice(0, 200)}`);
+    }
+
+    const json = await res.json();
+    const url = json?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    if (!url) throw new Error("A IA não retornou imagem. Tente novamente.");
+    return { imageUrl: url as string };
+  });
+

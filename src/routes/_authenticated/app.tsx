@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
-import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight } from "lucide-react";
+import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/app")({
@@ -76,6 +76,7 @@ function Dashboard() {
             <Link to="/nutri" className="chip chip-neutral">💬 Falar com a Nutri</Link>
             <Link to="/geladeira" className="chip chip-neutral">🧊 O que fazer hoje</Link>
             <Link to="/planner" className="chip chip-neutral">📅 Plano da semana</Link>
+            <Link to="/receitas" className="chip chip-neutral"><BookOpen size={12} className="mr-1 inline" />Minhas receitas</Link>
           </div>
         </div>
       </section>
