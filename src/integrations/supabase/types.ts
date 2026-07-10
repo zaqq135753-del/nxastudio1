@@ -163,6 +163,256 @@ export type Database = {
         }
         Relationships: []
       }
+      pet_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          pet_id: string
+          role: string
+          urgency: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          pet_id: string
+          role: string
+          urgency?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          pet_id?: string
+          role?: string
+          urgency?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_chat_messages_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_health_records: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          pet_id: string
+          record_date: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pet_id: string
+          record_date?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pet_id?: string
+          record_date?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_health_records_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_meals: {
+        Row: {
+          amount: string | null
+          created_at: string
+          id: string
+          meal_date: string
+          meal_time: string | null
+          notes: string | null
+          pet_id: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          amount?: string | null
+          created_at?: string
+          id?: string
+          meal_date?: string
+          meal_time?: string | null
+          notes?: string | null
+          pet_id: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: string | null
+          created_at?: string
+          id?: string
+          meal_date?: string
+          meal_time?: string | null
+          notes?: string | null
+          pet_id?: string
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_meals_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_plans: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          payload: Json
+          pet_id: string
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          payload: Json
+          pet_id: string
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          pet_id?: string
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_plans_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_vaccinations: {
+        Row: {
+          applied_on: string
+          created_at: string
+          id: string
+          name: string
+          next_booster: string | null
+          notes: string | null
+          pet_id: string
+          user_id: string
+        }
+        Insert: {
+          applied_on: string
+          created_at?: string
+          id?: string
+          name: string
+          next_booster?: string | null
+          notes?: string | null
+          pet_id: string
+          user_id: string
+        }
+        Update: {
+          applied_on?: string
+          created_at?: string
+          id?: string
+          name?: string
+          next_booster?: string | null
+          notes?: string | null
+          pet_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_vaccinations_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pets: {
+        Row: {
+          birth_date: string | null
+          breed: string | null
+          created_at: string
+          gender: string | null
+          id: string
+          microchip: string | null
+          name: string
+          neutered: boolean | null
+          notes: string | null
+          photo_url: string | null
+          type: string
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          birth_date?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          microchip?: string | null
+          name: string
+          neutered?: boolean | null
+          notes?: string | null
+          photo_url?: string | null
+          type: string
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          birth_date?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          microchip?: string | null
+          name?: string
+          neutered?: boolean | null
+          notes?: string | null
+          photo_url?: string | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
