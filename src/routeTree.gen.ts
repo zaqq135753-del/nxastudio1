@@ -31,6 +31,7 @@ import { Route as AuthenticatedAppsGranaiaIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedAppsGlowiaIndexRouteImport } from './routes/_authenticated/apps/glowia/index'
 import { Route as AuthenticatedAppsFluencyiaIndexRouteImport } from './routes/_authenticated/apps/fluencyia/index'
 import { Route as AuthenticatedAppsFitiaIndexRouteImport } from './routes/_authenticated/apps/fitia/index'
+import { Route as AuthenticatedAppsCosmosiaIndexRouteImport } from './routes/_authenticated/apps/cosmosia/index'
 import { Route as AuthenticatedAppsStyleiaShopperRouteImport } from './routes/_authenticated/apps/styleia/shopper'
 import { Route as AuthenticatedAppsStyleiaPerfilRouteImport } from './routes/_authenticated/apps/styleia/perfil'
 import { Route as AuthenticatedAppsStyleiaLookRouteImport } from './routes/_authenticated/apps/styleia/look'
@@ -189,6 +190,12 @@ const AuthenticatedAppsFitiaIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
+const AuthenticatedAppsCosmosiaIndexRoute =
+  AuthenticatedAppsCosmosiaIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppsCosmosiaRouteRoute,
   } as any)
 const AuthenticatedAppsStyleiaShopperRoute =
   AuthenticatedAppsStyleiaShopperRouteImport.update({
@@ -381,7 +388,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
-  '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRoute
+  '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   '/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
@@ -422,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/apps/cosmosia/': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -435,7 +443,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
-  '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRoute
   '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
@@ -468,6 +475,7 @@ export interface FileRoutesByTo {
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/apps/fitia': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -483,7 +491,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
-  '/_authenticated/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRoute
+  '/_authenticated/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/_authenticated/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   '/_authenticated/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
@@ -524,6 +532,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/_authenticated/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/_authenticated/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/_authenticated/apps/cosmosia/': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/_authenticated/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/_authenticated/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/_authenticated/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -580,6 +589,7 @@ export interface FileRouteTypes {
     | '/apps/styleia/look'
     | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
+    | '/apps/cosmosia/'
     | '/apps/fitia/'
     | '/apps/fluencyia/'
     | '/apps/glowia/'
@@ -593,7 +603,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/hub'
-    | '/apps/cosmosia'
     | '/apps/roteiroia'
     | '/apps/fitia/chat'
     | '/apps/fitia/progresso'
@@ -626,6 +635,7 @@ export interface FileRouteTypes {
     | '/apps/styleia/look'
     | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
+    | '/apps/cosmosia'
     | '/apps/fitia'
     | '/apps/fluencyia'
     | '/apps/glowia'
@@ -681,6 +691,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/styleia/look'
     | '/_authenticated/apps/styleia/perfil'
     | '/_authenticated/apps/styleia/shopper'
+    | '/_authenticated/apps/cosmosia/'
     | '/_authenticated/apps/fitia/'
     | '/_authenticated/apps/fluencyia/'
     | '/_authenticated/apps/glowia/'
@@ -852,6 +863,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/fitia/'
       preLoaderRoute: typeof AuthenticatedAppsFitiaIndexRouteImport
       parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
+    '/_authenticated/apps/cosmosia/': {
+      id: '/_authenticated/apps/cosmosia/'
+      path: '/'
+      fullPath: '/apps/cosmosia/'
+      preLoaderRoute: typeof AuthenticatedAppsCosmosiaIndexRouteImport
+      parentRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
     }
     '/_authenticated/apps/styleia/shopper': {
       id: '/_authenticated/apps/styleia/shopper'
@@ -1073,6 +1091,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAppsCosmosiaRouteRouteChildren {
+  AuthenticatedAppsCosmosiaIndexRoute: typeof AuthenticatedAppsCosmosiaIndexRoute
+}
+
+const AuthenticatedAppsCosmosiaRouteRouteChildren: AuthenticatedAppsCosmosiaRouteRouteChildren =
+  {
+    AuthenticatedAppsCosmosiaIndexRoute: AuthenticatedAppsCosmosiaIndexRoute,
+  }
+
+const AuthenticatedAppsCosmosiaRouteRouteWithChildren =
+  AuthenticatedAppsCosmosiaRouteRoute._addFileChildren(
+    AuthenticatedAppsCosmosiaRouteRouteChildren,
+  )
+
 interface AuthenticatedAppsFitiaRouteRouteChildren {
   AuthenticatedAppsFitiaChatRoute: typeof AuthenticatedAppsFitiaChatRoute
   AuthenticatedAppsFitiaProgressoRoute: typeof AuthenticatedAppsFitiaProgressoRoute
@@ -1261,7 +1293,7 @@ const AuthenticatedAppsStyleiaRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
-  AuthenticatedAppsCosmosiaRouteRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
+  AuthenticatedAppsCosmosiaRouteRoute: typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   AuthenticatedAppsFitiaRouteRoute: typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   AuthenticatedAppsFluencyiaRouteRoute: typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   AuthenticatedAppsGlowiaRouteRoute: typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
@@ -1275,7 +1307,8 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHubRoute: AuthenticatedHubRoute,
-  AuthenticatedAppsCosmosiaRouteRoute: AuthenticatedAppsCosmosiaRouteRoute,
+  AuthenticatedAppsCosmosiaRouteRoute:
+    AuthenticatedAppsCosmosiaRouteRouteWithChildren,
   AuthenticatedAppsFitiaRouteRoute:
     AuthenticatedAppsFitiaRouteRouteWithChildren,
   AuthenticatedAppsFluencyiaRouteRoute:
