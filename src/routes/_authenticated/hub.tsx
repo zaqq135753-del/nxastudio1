@@ -79,7 +79,7 @@ function Hub() {
       <header className="fixed top-0 left-0 right-0 z-40 glass" style={{ borderBottom: "1px solid var(--line-1)" }}>
         <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-5">
           <Link to="/hub" className="flex items-center gap-2 text-[17px] font-bold tracking-tight">
-            <SUITE.icon size={18} /> {SUITE.name}
+            <NxaMark size={22} />
           </Link>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
