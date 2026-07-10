@@ -53,18 +53,44 @@ function parseJson<T>(raw: string): T {
   const start = cleaned.indexOf("{");
   const end = cleaned.lastIndexOf("}");
   const slice = start >= 0 && end > start ? cleaned.slice(start, end + 1) : cleaned;
-  try {
-    return JSON.parse(slice) as T;
-  } catch {
-    const repaired = slice
-      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
-      .replace(/,\s*([}\]])/g, "$1");
+  const sanitized = slice
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
+    .replace(/,\s*([}\]])/g, "$1");
+
+  for (const attempt of [slice, sanitized, balanceBrackets(sanitized)]) {
     try {
-      return JSON.parse(repaired) as T;
+      return JSON.parse(attempt) as T;
     } catch {
-      throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
+      /* try next */
     }
   }
+  console.error("[parseJson] Resposta IA inválida:", raw.slice(0, 800));
+  throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
+}
+
+// Repara JSON truncado: fecha string aberta e balanceia { [ pendentes.
+function balanceBrackets(input: string): string {
+  let s = input;
+  let inStr = false;
+  let escape = false;
+  const stack: string[] = [];
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (escape) { escape = false; continue; }
+    if (c === "\\") { escape = true; continue; }
+    if (c === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (c === "{" || c === "[") stack.push(c);
+    else if (c === "}" && stack[stack.length - 1] === "{") stack.pop();
+    else if (c === "]" && stack[stack.length - 1] === "[") stack.pop();
+  }
+  if (inStr) s += '"';
+  s = s.replace(/,\s*$/, "");
+  while (stack.length) {
+    const open = stack.pop();
+    s += open === "{" ? "}" : "]";
+  }
+  return s;
 }
 
 /* ================= Geladeira ================= */
