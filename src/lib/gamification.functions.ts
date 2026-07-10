@@ -10,10 +10,9 @@ export function xpForNextLevel(level: number) {
   return 50 * level * level;
 }
 
-async function readMeta(sb: Awaited<ReturnType<typeof getMyXp>> extends never ? never : any, userId: string) {
-  // pull name/avatar from profiles if available
-  const { data } = await sb.from("profiles").select("full_name,avatar_url").eq("id", userId).maybeSingle();
-  return { display_name: (data?.full_name as string) ?? null, avatar_url: (data?.avatar_url as string) ?? null };
+async function readMeta(sb: any, userId: string) {
+  const { data } = await sb.from("profiles").select("display_name,avatar_url").eq("id", userId).maybeSingle();
+  return { display_name: (data?.display_name as string) ?? null, avatar_url: (data?.avatar_url as string) ?? null };
 }
 
 /** Adiciona XP ao usuário (usado por pingActivity e ações significativas). */
