@@ -12,13 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedReceitasRouteImport } from './routes/_authenticated/receitas'
-import { Route as AuthenticatedPlannerRouteImport } from './routes/_authenticated/planner'
-import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
-import { Route as AuthenticatedNutriRouteImport } from './routes/_authenticated/nutri'
-import { Route as AuthenticatedGeladeiraRouteImport } from './routes/_authenticated/geladeira'
-import { Route as AuthenticatedFotoRouteImport } from './routes/_authenticated/foto'
-import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
+import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
+import { Route as AuthenticatedAppsSaboriaIndexRouteImport } from './routes/_authenticated/apps/saboria/index'
+import { Route as AuthenticatedAppsSaboriaReceitasRouteImport } from './routes/_authenticated/apps/saboria/receitas'
+import { Route as AuthenticatedAppsSaboriaPlannerRouteImport } from './routes/_authenticated/apps/saboria/planner'
+import { Route as AuthenticatedAppsSaboriaOnboardingRouteImport } from './routes/_authenticated/apps/saboria/onboarding'
+import { Route as AuthenticatedAppsSaboriaNutriRouteImport } from './routes/_authenticated/apps/saboria/nutri'
+import { Route as AuthenticatedAppsSaboriaGeladeiraRouteImport } from './routes/_authenticated/apps/saboria/geladeira'
+import { Route as AuthenticatedAppsSaboriaFotoRouteImport } from './routes/_authenticated/apps/saboria/foto'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -34,112 +36,140 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedReceitasRoute = AuthenticatedReceitasRouteImport.update({
-  id: '/receitas',
-  path: '/receitas',
+const AuthenticatedHubRoute = AuthenticatedHubRouteImport.update({
+  id: '/hub',
+  path: '/hub',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedPlannerRoute = AuthenticatedPlannerRouteImport.update({
-  id: '/planner',
-  path: '/planner',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedNutriRoute = AuthenticatedNutriRouteImport.update({
-  id: '/nutri',
-  path: '/nutri',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedGeladeiraRoute = AuthenticatedGeladeiraRouteImport.update({
-  id: '/geladeira',
-  path: '/geladeira',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedFotoRoute = AuthenticatedFotoRouteImport.update({
-  id: '/foto',
-  path: '/foto',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedAppsSaboriaRouteRoute =
+  AuthenticatedAppsSaboriaRouteRouteImport.update({
+    id: '/apps/saboria',
+    path: '/apps/saboria',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaIndexRoute =
+  AuthenticatedAppsSaboriaIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaReceitasRoute =
+  AuthenticatedAppsSaboriaReceitasRouteImport.update({
+    id: '/receitas',
+    path: '/receitas',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaPlannerRoute =
+  AuthenticatedAppsSaboriaPlannerRouteImport.update({
+    id: '/planner',
+    path: '/planner',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaOnboardingRoute =
+  AuthenticatedAppsSaboriaOnboardingRouteImport.update({
+    id: '/onboarding',
+    path: '/onboarding',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaNutriRoute =
+  AuthenticatedAppsSaboriaNutriRouteImport.update({
+    id: '/nutri',
+    path: '/nutri',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaGeladeiraRoute =
+  AuthenticatedAppsSaboriaGeladeiraRouteImport.update({
+    id: '/geladeira',
+    path: '/geladeira',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
+const AuthenticatedAppsSaboriaFotoRoute =
+  AuthenticatedAppsSaboriaFotoRouteImport.update({
+    id: '/foto',
+    path: '/foto',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRoute
-  '/foto': typeof AuthenticatedFotoRoute
-  '/geladeira': typeof AuthenticatedGeladeiraRoute
-  '/nutri': typeof AuthenticatedNutriRoute
-  '/onboarding': typeof AuthenticatedOnboardingRoute
-  '/planner': typeof AuthenticatedPlannerRoute
-  '/receitas': typeof AuthenticatedReceitasRoute
+  '/hub': typeof AuthenticatedHubRoute
+  '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
+  '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
+  '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
+  '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
+  '/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
+  '/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
+  '/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/apps/saboria/': typeof AuthenticatedAppsSaboriaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRoute
-  '/foto': typeof AuthenticatedFotoRoute
-  '/geladeira': typeof AuthenticatedGeladeiraRoute
-  '/nutri': typeof AuthenticatedNutriRoute
-  '/onboarding': typeof AuthenticatedOnboardingRoute
-  '/planner': typeof AuthenticatedPlannerRoute
-  '/receitas': typeof AuthenticatedReceitasRoute
+  '/hub': typeof AuthenticatedHubRoute
+  '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
+  '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
+  '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
+  '/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
+  '/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
+  '/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/apps/saboria': typeof AuthenticatedAppsSaboriaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/app': typeof AuthenticatedAppRoute
-  '/_authenticated/foto': typeof AuthenticatedFotoRoute
-  '/_authenticated/geladeira': typeof AuthenticatedGeladeiraRoute
-  '/_authenticated/nutri': typeof AuthenticatedNutriRoute
-  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
-  '/_authenticated/planner': typeof AuthenticatedPlannerRoute
-  '/_authenticated/receitas': typeof AuthenticatedReceitasRoute
+  '/_authenticated/hub': typeof AuthenticatedHubRoute
+  '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
+  '/_authenticated/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
+  '/_authenticated/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
+  '/_authenticated/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
+  '/_authenticated/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
+  '/_authenticated/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
+  '/_authenticated/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/_authenticated/apps/saboria/': typeof AuthenticatedAppsSaboriaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
-    | '/app'
-    | '/foto'
-    | '/geladeira'
-    | '/nutri'
-    | '/onboarding'
-    | '/planner'
-    | '/receitas'
+    | '/hub'
+    | '/apps/saboria'
+    | '/apps/saboria/foto'
+    | '/apps/saboria/geladeira'
+    | '/apps/saboria/nutri'
+    | '/apps/saboria/onboarding'
+    | '/apps/saboria/planner'
+    | '/apps/saboria/receitas'
+    | '/apps/saboria/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/app'
-    | '/foto'
-    | '/geladeira'
-    | '/nutri'
-    | '/onboarding'
-    | '/planner'
-    | '/receitas'
+    | '/hub'
+    | '/apps/saboria/foto'
+    | '/apps/saboria/geladeira'
+    | '/apps/saboria/nutri'
+    | '/apps/saboria/onboarding'
+    | '/apps/saboria/planner'
+    | '/apps/saboria/receitas'
+    | '/apps/saboria'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/_authenticated/app'
-    | '/_authenticated/foto'
-    | '/_authenticated/geladeira'
-    | '/_authenticated/nutri'
-    | '/_authenticated/onboarding'
-    | '/_authenticated/planner'
-    | '/_authenticated/receitas'
+    | '/_authenticated/hub'
+    | '/_authenticated/apps/saboria'
+    | '/_authenticated/apps/saboria/foto'
+    | '/_authenticated/apps/saboria/geladeira'
+    | '/_authenticated/apps/saboria/nutri'
+    | '/_authenticated/apps/saboria/onboarding'
+    | '/_authenticated/apps/saboria/planner'
+    | '/_authenticated/apps/saboria/receitas'
+    | '/_authenticated/apps/saboria/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,76 +201,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/receitas': {
-      id: '/_authenticated/receitas'
+    '/_authenticated/hub': {
+      id: '/_authenticated/hub'
+      path: '/hub'
+      fullPath: '/hub'
+      preLoaderRoute: typeof AuthenticatedHubRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apps/saboria': {
+      id: '/_authenticated/apps/saboria'
+      path: '/apps/saboria'
+      fullPath: '/apps/saboria'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apps/saboria/': {
+      id: '/_authenticated/apps/saboria/'
+      path: '/'
+      fullPath: '/apps/saboria/'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaIndexRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
+    }
+    '/_authenticated/apps/saboria/receitas': {
+      id: '/_authenticated/apps/saboria/receitas'
       path: '/receitas'
-      fullPath: '/receitas'
-      preLoaderRoute: typeof AuthenticatedReceitasRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/receitas'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaReceitasRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
-    '/_authenticated/planner': {
-      id: '/_authenticated/planner'
+    '/_authenticated/apps/saboria/planner': {
+      id: '/_authenticated/apps/saboria/planner'
       path: '/planner'
-      fullPath: '/planner'
-      preLoaderRoute: typeof AuthenticatedPlannerRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/planner'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaPlannerRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
-    '/_authenticated/onboarding': {
-      id: '/_authenticated/onboarding'
+    '/_authenticated/apps/saboria/onboarding': {
+      id: '/_authenticated/apps/saboria/onboarding'
       path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/onboarding'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaOnboardingRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
-    '/_authenticated/nutri': {
-      id: '/_authenticated/nutri'
+    '/_authenticated/apps/saboria/nutri': {
+      id: '/_authenticated/apps/saboria/nutri'
       path: '/nutri'
-      fullPath: '/nutri'
-      preLoaderRoute: typeof AuthenticatedNutriRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/nutri'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaNutriRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
-    '/_authenticated/geladeira': {
-      id: '/_authenticated/geladeira'
+    '/_authenticated/apps/saboria/geladeira': {
+      id: '/_authenticated/apps/saboria/geladeira'
       path: '/geladeira'
-      fullPath: '/geladeira'
-      preLoaderRoute: typeof AuthenticatedGeladeiraRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/geladeira'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaGeladeiraRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
-    '/_authenticated/foto': {
-      id: '/_authenticated/foto'
+    '/_authenticated/apps/saboria/foto': {
+      id: '/_authenticated/apps/saboria/foto'
       path: '/foto'
-      fullPath: '/foto'
-      preLoaderRoute: typeof AuthenticatedFotoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/app': {
-      id: '/_authenticated/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/apps/saboria/foto'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaFotoRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
   }
 }
 
+interface AuthenticatedAppsSaboriaRouteRouteChildren {
+  AuthenticatedAppsSaboriaFotoRoute: typeof AuthenticatedAppsSaboriaFotoRoute
+  AuthenticatedAppsSaboriaGeladeiraRoute: typeof AuthenticatedAppsSaboriaGeladeiraRoute
+  AuthenticatedAppsSaboriaNutriRoute: typeof AuthenticatedAppsSaboriaNutriRoute
+  AuthenticatedAppsSaboriaOnboardingRoute: typeof AuthenticatedAppsSaboriaOnboardingRoute
+  AuthenticatedAppsSaboriaPlannerRoute: typeof AuthenticatedAppsSaboriaPlannerRoute
+  AuthenticatedAppsSaboriaReceitasRoute: typeof AuthenticatedAppsSaboriaReceitasRoute
+  AuthenticatedAppsSaboriaIndexRoute: typeof AuthenticatedAppsSaboriaIndexRoute
+}
+
+const AuthenticatedAppsSaboriaRouteRouteChildren: AuthenticatedAppsSaboriaRouteRouteChildren =
+  {
+    AuthenticatedAppsSaboriaFotoRoute: AuthenticatedAppsSaboriaFotoRoute,
+    AuthenticatedAppsSaboriaGeladeiraRoute:
+      AuthenticatedAppsSaboriaGeladeiraRoute,
+    AuthenticatedAppsSaboriaNutriRoute: AuthenticatedAppsSaboriaNutriRoute,
+    AuthenticatedAppsSaboriaOnboardingRoute:
+      AuthenticatedAppsSaboriaOnboardingRoute,
+    AuthenticatedAppsSaboriaPlannerRoute: AuthenticatedAppsSaboriaPlannerRoute,
+    AuthenticatedAppsSaboriaReceitasRoute:
+      AuthenticatedAppsSaboriaReceitasRoute,
+    AuthenticatedAppsSaboriaIndexRoute: AuthenticatedAppsSaboriaIndexRoute,
+  }
+
+const AuthenticatedAppsSaboriaRouteRouteWithChildren =
+  AuthenticatedAppsSaboriaRouteRoute._addFileChildren(
+    AuthenticatedAppsSaboriaRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
-  AuthenticatedFotoRoute: typeof AuthenticatedFotoRoute
-  AuthenticatedGeladeiraRoute: typeof AuthenticatedGeladeiraRoute
-  AuthenticatedNutriRoute: typeof AuthenticatedNutriRoute
-  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
-  AuthenticatedPlannerRoute: typeof AuthenticatedPlannerRoute
-  AuthenticatedReceitasRoute: typeof AuthenticatedReceitasRoute
+  AuthenticatedHubRoute: typeof AuthenticatedHubRoute
+  AuthenticatedAppsSaboriaRouteRoute: typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRoute,
-  AuthenticatedFotoRoute: AuthenticatedFotoRoute,
-  AuthenticatedGeladeiraRoute: AuthenticatedGeladeiraRoute,
-  AuthenticatedNutriRoute: AuthenticatedNutriRoute,
-  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
-  AuthenticatedPlannerRoute: AuthenticatedPlannerRoute,
-  AuthenticatedReceitasRoute: AuthenticatedReceitasRoute,
+  AuthenticatedHubRoute: AuthenticatedHubRoute,
+  AuthenticatedAppsSaboriaRouteRoute:
+    AuthenticatedAppsSaboriaRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =

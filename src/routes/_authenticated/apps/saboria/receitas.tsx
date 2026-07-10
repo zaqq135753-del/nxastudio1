@@ -6,7 +6,7 @@ import { listSavedRecipes, deleteSavedRecipe, toggleFavoriteRecipe, type SavedRe
 import { toast } from "sonner";
 import { Heart, Trash2, Sparkles } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/receitas")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/receitas")({
   component: ReceitasPage,
 });
 

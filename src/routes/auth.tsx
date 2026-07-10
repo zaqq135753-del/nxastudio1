@@ -19,7 +19,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/app" });
+      if (data.user) navigate({ to: "/hub" });
     });
   }, [navigate]);
 
@@ -29,7 +29,7 @@ function AuthPage() {
     setSending(true);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/app` },
+      options: { emailRedirectTo: `${window.location.origin}/hub` },
     });
     setSending(false);
     if (error) return toast.error(error.message);
@@ -46,8 +46,7 @@ function AuthPage() {
       return toast.error("Não foi possível entrar com Google.");
     }
     if (result.redirected) return;
-    // Session set → go
-    navigate({ to: "/app" });
+    navigate({ to: "/hub" });
   }
 
   return (
