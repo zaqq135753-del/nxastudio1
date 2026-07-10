@@ -44,10 +44,11 @@ export const generateWorkout = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", `treino ${data.focus ?? ""}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Você é um personal trainer brasileiro. Crie UM treino completo baseado no perfil. Responda APENAS em JSON: {"title":"...","focus":"...","duration_min":45,"difficulty":"iniciante|intermediário|avançado","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":60,"tips":"..."}],"cooldown":["..."]}` },
+        { role: "system", content: `Você é um personal trainer brasileiro. Crie UM treino completo baseado no perfil. Responda APENAS em JSON: {"title":"...","focus":"...","duration_min":45,"difficulty":"iniciante|intermediário|avançado","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":60,"tips":"..."}],"cooldown":["..."]}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Perfil: ${JSON.stringify(profile ?? {})}\nFoco solicitado: ${data.focus ?? "treino geral"}` },
       ],
       temperature: 0.6, max_tokens: 2000,
@@ -59,6 +60,7 @@ export const generateWorkout = createServerFn({ method: "POST" })
       duration_min: parsed.duration_min, difficulty: parsed.difficulty,
       exercises: parsed as never,
     }).select().maybeSingle();
+    rememberFact(context.supabase, context.userId, "fitia", "treino", `Gerou treino "${parsed.title}" (foco: ${parsed.focus}, ${parsed.duration_min}min, ${parsed.difficulty}).`);
     return { workout: parsed, id: saved?.id };
   });
 
