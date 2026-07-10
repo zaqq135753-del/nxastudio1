@@ -16,17 +16,17 @@ export function applyTheme(id: ThemeId) {
 export function useInitTheme() {
   useEffect(() => {
     try {
-      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "coral";
+      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "light";
       applyTheme(saved);
-    } catch { applyTheme("coral"); }
+    } catch { applyTheme("light"); }
   }, []);
 }
 
 export function ThemePicker() {
-  const [active, setActive] = useState<ThemeId>("coral");
+  const [active, setActive] = useState<ThemeId>("light");
   useEffect(() => {
     try {
-      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "coral";
+      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "light";
       setActive(saved);
       applyTheme(saved);
     } catch {}
