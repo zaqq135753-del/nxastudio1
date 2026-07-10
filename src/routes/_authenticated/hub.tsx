@@ -8,6 +8,8 @@ import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
+import { TodayWidget } from "@/components/TodayWidget";
+import { NxaMark } from "@/components/NxaMark";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -77,7 +79,7 @@ function Hub() {
       <header className="fixed top-0 left-0 right-0 z-40 glass" style={{ borderBottom: "1px solid var(--line-1)" }}>
         <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-5">
           <Link to="/hub" className="flex items-center gap-2 text-[17px] font-bold tracking-tight">
-            <SUITE.icon size={18} /> {SUITE.name}
+            <NxaMark size={22} />
           </Link>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
@@ -145,6 +147,9 @@ function Hub() {
             </Link>
           )}
         </div>
+
+        {/* Widget "Hoje" — próximo passo por app ativo */}
+        <TodayWidget ents={ents} />
 
         {/* Proactive briefing */}
         <section className="mb-10"><BriefingCard /></section>
