@@ -1,87 +1,102 @@
-# SaborIA 2.0 — Plano de Reformulação Premium
+# Suíte de apps IA — refatoração
 
-Objetivo: transformar o app atual (funcional mas genérico) em um produto **vendável**, com identidade visual única, IA presente em cada interação, backend real e um fluxo de auth memorável.
+Transformar o projeto atual (SaborIA solo) em uma **plataforma de vários apps** onde:
+- `/` é uma **landing pública** vendendo a suíte (todos os apps, mesmo preço).
+- Após login, o usuário cai num **hub** com switcher entre os apps que contratou + oferta dos que faltam.
+- **SaborIA vira o primeiro app**, movido para `/apps/saboria/*`. A arquitetura já fica pronta pra plugar o próximo app no prompt seguinte (basta criar `/apps/<slug>/*` e registrar no catálogo).
 
----
+## 1. Catálogo de apps (fonte da verdade)
 
-## 1. Nova Identidade Visual (fim do "dark genérico laranja")
+Arquivo `src/apps/registry.ts` com metadata de cada app:
+```
+{ slug, name, tagline, icon, accent, route, status: 'live'|'soon' }
+```
+Hoje: `saboria` (live). Próximos: placeholders `soon` até a gente construir.
 
-**Direção proposta — "Culinary Editorial":**
-- Base off-black quente `#0E0B08` + camadas com textura sutil (grain/noise SVG).
-- Paleta comestível: saffron `#F5A524`, tomato `#E23E3E`, matcha `#7BA05B`, cream `#F4EBDD`.
-- Tipografia: **Fraunces** (display serif editorial, com opsz variável) + **Geist** (UI) + **JetBrains Mono** (dados nutricionais).
-- Micro-interações: transições spring (framer-motion), skeleton com shimmer, haptic-feel em botões, ícones custom (Lucide + Phosphor duotone).
-- Componentes assinatura: cards "receita" estilo revista com número da edição, chips com halo colorido por macronutriente, gradientes mesh em heros.
+Usado por: landing, hub, switcher, paywall — nada é hardcoded em vários lugares.
 
-Alternativa (a decidir): "Neo-Brutalist Kitchen" — cores saturadas, bordas grossas, sombras hard. Sigo com Editorial por padrão salvo objeção.
+## 2. Estrutura de rotas
 
----
+```text
+/                         Landing pública (vitrine da suíte)
+/auth                     Login/signup (já existe)
+/_authenticated/
+  hub                     Home logada: grid dos apps + switcher
+  apps/saboria/           SaborIA (tudo que hoje é /app, /geladeira, /foto, /planner, /nutri, /receitas, /onboarding)
+    index                 (antigo /app)
+    geladeira
+    foto
+    planner
+    nutri
+    receitas
+    onboarding
+```
 
-## 2. Login Inovador — "Passwordless + Palate Onboarding"
+Movimentação: renomear os arquivos existentes em `src/routes/_authenticated/*.tsx` para dentro de `src/routes/_authenticated/apps/saboria/`. Atualizar todos os `<Link to>` e `createFileRoute` strings (obrigatório pra bater com o filename — regra do TanStack).
 
-- **Magic link** por e-mail + **Google** (Lovable Cloud auth).
-- Após primeiro login, **onboarding conversacional com IA** (3 min): a Nutri pergunta objetivo, restrições, ingredientes que odeia, nível de cozinha, orçamento — vira um **Perfil de Paladar** (JSON persistido) que alimenta TODAS as gerações depois.
-- Tela de auth: split-screen com vídeo de fundo (cinemagraph de comida em loop, WebM leve) + card glass com magic link. Estado "verifique seu e-mail" com animação de envelope.
+Após login, redirect padrão vai pra `/hub` (não mais `/app`).
 
----
+## 3. Modelo de dados (entitlements)
 
-## 3. IA em Todas as Telas (não só nas 4 já existentes)
+**1 conta, várias assinaturas** → tabela `app_entitlements`:
 
-| Tela | IA nova |
-|---|---|
-| **Home** | Feed personalizado ("Boa noite, Léo — 3 receitas pro seu humor hoje"), gerado com base no Perfil + horário + clima (via API pública). Botão "Surpreenda-me" (1 clique → receita completa). |
-| **Geladeira** | OCR de nota fiscal / foto da geladeira (Gemini Vision) → auto-preenche ingredientes. Sugestão de "o que vence primeiro". |
-| **Foto** | Além de identificar prato: **modo "refazer mais saudável"** e **modo "versão fitness/vegana/kids"**. |
-| **Planner** | Geração streaming (usuário vê o plano aparecendo dia a dia). Exporta lista de compras agrupada por corredor de mercado. Integra com o Perfil. |
-| **Nutri chat** | **Voz** (Web Speech API + TTS via Lovable AI). Anexar foto da refeição pra análise instantânea de macros. Memória persistente entre sessões. |
-| **Novo: Cozinhar ao Vivo** | Modo hands-free: TTS lê passo a passo, usuário diz "próximo"/"repetir", timer automático detectado do texto ("cozinhe por 10 min" vira botão de timer). |
+```
+app_entitlements(
+  user_id uuid → auth.users,
+  app_slug text,          -- 'saboria', ...
+  status text,            -- 'active' | 'trial' | 'canceled'
+  granted_at timestamptz,
+  expires_at timestamptz null,
+  PK (user_id, app_slug)
+)
+```
 
----
+RLS: usuário lê os próprios; só `service_role` escreve (Stripe webhook depois). GRANTs no mesmo migration.
 
-## 4. Backend Real (Lovable Cloud)
+Helper server fn `getMyEntitlements()` (`requireSupabaseAuth`) usado pelo hub e pelo guard de cada app.
 
-- Tabelas: `profiles`, `palate_profile`, `saved_recipes`, `meal_plans`, `pantry_items`, `chat_threads`, `chat_messages`, `usage_counters`.
-- RLS em tudo (`auth.uid()`).
-- Roles: `user`, `pro`, `admin` em tabela `user_roles` separada + função `has_role`.
-- Persistência: cada receita gerada é salva com thumbnail (gerada por Lovable AI image gen se o usuário quiser), pode ser favoritada, remixada, compartilhada por link público (`/r/:slug`).
-- Contadores de uso pra futura monetização (free tier = 5 receitas/dia, pro = ilimitado).
+**Enquanto Stripe não está ligado**: um trigger no signup concede `saboria` como `trial` automaticamente, pra ninguém ficar travado. Fácil de remover quando o paywall entrar.
 
----
+## 4. Guard por app
 
-## 5. Monetização (estrutura pronta, cobrança opcional)
+Novo layout `src/routes/_authenticated/apps/saboria/route.tsx` que:
+1. Chama `getMyEntitlements()` no loader.
+2. Se não tem `saboria` ativo → redireciona pra `/hub?upsell=saboria`.
+3. Senão `<Outlet />`.
 
-- Paywall suave no 6º uso do dia → tela "SaborIA Pro" (R$ 19,90/mês).
-- Deixo os hooks e a UI prontos; ativação real do Stripe/Paddle fica pra quando você aprovar (pergunto qual usar).
+Padrão replicável pros próximos apps: cada app tem seu `route.tsx` com o mesmo check trocando o slug.
 
----
+## 5. UI
 
-## 6. Extras que fazem parecer produto de verdade
+**Landing (`/`)** — reescrita pra vender a suíte:
+- Hero: "Uma assinatura. Vários apps de IA."
+- Grid dos apps do registry (SaborIA + placeholders "em breve" com badge).
+- Preço único destacado, CTA → `/auth`.
+- Mantém o visual mono preto&branco atual.
 
-- **PWA instalável** com ícone, splash, offline shell.
-- **Compartilhamento**: OG image dinâmica por receita (gerada server-side).
-- **SEO**: rotas públicas `/r/:slug` com metadata rica + JSON-LD `Recipe`.
-- **i18n-ready** (pt-BR default, estrutura pra en).
-- **Acessibilidade**: contraste AA, foco visível, aria-labels, respect prefers-reduced-motion.
+**Hub (`/hub`)** — nova home logada:
+- Saudação + avatar.
+- Seção "Meus apps": cards dos apps ativos → clica e entra.
+- Seção "Descubra": apps não contratados com CTA "Assinar" (por enquanto desabilitado/coming soon até Stripe).
+- Switcher persistente: dropdown no topbar do `AppShell` mostrando os apps do usuário, permite trocar sem voltar ao hub.
 
----
+**AppShell** — genérico:
+- Recebe `appSlug` como prop.
+- Bottom nav vira scoped pro app atual (as tabs do SaborIA vêm do registry).
+- Botão "Trocar de app" no topo abre o switcher.
 
-## Ordem de execução
+## 6. Fora de escopo agora (próximos prompts)
 
-1. Ativar Lovable Cloud + schema + auth + onboarding conversacional.
-2. Novo design system (tokens, fontes, componentes base).
-3. Refazer Home + Auth com nova identidade.
-4. Migrar 4 telas existentes pro novo DS + persistência + streaming.
-5. Adicionar Cozinhar ao Vivo + OCR geladeira + voz no Nutri.
-6. Compartilhamento público + PWA + SEO.
-7. Estrutura de paywall (sem cobrança ativa até você escolher provedor).
+- Stripe / paywall real (o registry e a tabela já ficam prontos pra plugar).
+- Construir o 2º app — vem no próximo prompt do usuário. Basta:
+  1. Criar `src/routes/_authenticated/apps/<slug>/` com o `route.tsx` guard.
+  2. Adicionar no `registry.ts` como `live`.
+  3. Aparece automático na landing, hub e switcher.
 
----
+## Detalhes técnicos
 
-## Decisões que preciso de você antes de codar
-
-1. **Direção visual**: Culinary Editorial (recomendo) ou Neo-Brutalist Kitchen?
-2. **Auth**: magic link + Google (recomendo) ou adicionar Apple também?
-3. **Monetização agora ou depois?** Se agora: Stripe ou Paddle?
-4. **Nome/tom**: mantém "SaborIA" ou quer explorar outro?
-
-Aprova esse escopo? Assim que confirmar (e responder as 4 perguntas) eu executo tudo em sequência.
+- Migration única: cria `app_entitlements` + RLS + GRANTs + trigger de grant no signup.
+- `handle_new_user` existente ganha um `INSERT INTO app_entitlements` pra `saboria` como trial.
+- Todos os `<Link to="/app">`, `/geladeira` etc. viram `/apps/saboria/...`. Uso search-replace em massa.
+- `_authenticated/app.tsx` atual (dashboard do SaborIA) vira `_authenticated/apps/saboria/index.tsx` sem mudança de conteúdo — só path e imports relativos.
+- Registry tipado com `as const` pra ter `slug` union type e navegação type-safe.

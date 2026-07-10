@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_entitlements: {
+        Row: {
+          app_slug: string
+          expires_at: string | null
+          granted_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          app_slug: string
+          expires_at?: string | null
+          granted_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          app_slug?: string
+          expires_at?: string | null
+          granted_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
