@@ -388,3 +388,34 @@ export const quickIdeas = createServerFn({ method: "POST" })
     });
     return parseJson<QuickIdeasResult>(raw);
   });
+
+/* ================= Pantry Scanner (foto de compras → itens) ================= */
+export type PantryScanResult = {
+  items: Array<{ name: string; qty?: string; category?: string }>;
+  note: string;
+};
+
+export const scanPantryPhoto = createServerFn({ method: "POST" })
+  .inputValidator((data: { imageBase64: string }) => {
+    if (!data?.imageBase64?.startsWith("data:image/")) throw new Error("Imagem inválida");
+    return data;
+  })
+  .handler(async ({ data }): Promise<PantryScanResult> => {
+    const system = `Você identifica alimentos numa foto (compras, geladeira, despensa).
+Retorne APENAS JSON: {"items":[{"name":"tomate","qty":"3 un","category":"vegetais"}],"note":"resumo curto"}
+Categorias possíveis: proteínas, vegetais, frutas, grãos, laticínios, temperos, bebidas, outros.
+Se não houver comida: {"items":[],"note":"Não identifiquei alimentos."}`;
+
+    const raw = await callGateway({
+      model: VISION_MODEL, max_tokens: 2500,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: [
+          { type: "text", text: "Liste os alimentos que você vê." },
+          { type: "image_url", image_url: { url: data.imageBase64 } },
+        ] },
+      ],
+    });
+    return parseJson<PantryScanResult>(raw);
+  });
