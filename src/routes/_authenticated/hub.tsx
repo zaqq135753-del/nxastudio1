@@ -8,6 +8,8 @@ import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
+import { TodayWidget } from "@/components/TodayWidget";
+import { NxaMark } from "@/components/NxaMark";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
