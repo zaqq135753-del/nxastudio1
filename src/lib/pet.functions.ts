@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const TEXT_MODEL = "google/gemini-2.5-flash";
+const TEXT_MODEL = "openai/gpt-5-mini";
 
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 

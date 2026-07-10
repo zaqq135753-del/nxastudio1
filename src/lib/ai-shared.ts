@@ -1,7 +1,7 @@
 // Shared AI helpers used by all IA apps in the suite.
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-export const TEXT_MODEL = "google/gemini-2.5-flash";
+export const TEXT_MODEL = "openai/gpt-5-mini";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
