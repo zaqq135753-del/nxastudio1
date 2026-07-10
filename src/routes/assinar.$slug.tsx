@@ -8,6 +8,11 @@ import { lovable } from "@/integrations/lovable";
 import { claimTrial } from "@/lib/entitlements.functions";
 import { findApp } from "@/apps/registry";
 import { getLanding } from "@/apps/landings";
+import { getPricing } from "@/apps/pricing";
+import { PricingCard } from "@/components/commerce/PricingCard";
+import { FeatureComparison } from "@/components/commerce/FeatureComparison";
+import { UpsellModal } from "@/components/commerce/UpsellModal";
+import { TrialBanner } from "@/components/commerce/TrialBanner";
 
 const INTENT_KEY = "nxa_intent_app";
 
@@ -38,12 +43,26 @@ function SubscribePage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const [claimBusy, setClaimBusy] = useState(false);
   const claim = useServerFn(claimTrial);
   const landing = getLanding(app.slug, app);
+  const pricing = getPricing(app.slug);
 
   async function afterAuth() {
-    try { await claim({ data: { slug: app.slug as never } }); } catch { /* noop */ }
+    try { await claim({ data: { slug: app.slug as never, tier: "base" } }); } catch { /* noop */ }
     localStorage.removeItem(INTENT_KEY);
+    setUpsellOpen(true); // oferece Prime antes de redirecionar
+  }
+
+  async function addPrime() {
+    setClaimBusy(true);
+    try { await claim({ data: { slug: app.slug as never, tier: "prime" } }); } catch { /* noop */ }
+    setClaimBusy(false);
+    window.location.href = app.route;
+  }
+
+  function skipPrime() {
     window.location.href = app.route;
   }
 
@@ -85,6 +104,7 @@ function SubscribePage() {
   }
 
   return (
+    <>
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
       {/* Left: editorial hero per app */}
       <div className="relative hidden overflow-hidden md:block">
@@ -148,7 +168,7 @@ function SubscribePage() {
               <button className="btn-ghost mt-4" onClick={() => setSent(false)}>Usar outro e-mail</button>
             </div>
           ) : (
-            <form onSubmit={sendMagicLink} className="space-y-3">
+            <form id="assinar-form" onSubmit={sendMagicLink} className="space-y-3">
               <input
                 type="email"
                 required
@@ -178,6 +198,56 @@ function SubscribePage() {
         </div>
       </div>
     </div>
+
+    {/* Pricing Base + Prime */}
+    {pricing && (
+      <section className="border-t border-white/5 bg-neutral-950 px-6 py-16 text-white sm:px-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <div className="text-xs uppercase tracking-[0.16em] text-white/50">Como funciona</div>
+            <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
+              Escolha seu {pricing.base.name}. Adicione Prime quando quiser mais.
+            </h2>
+            <p className="mt-3 max-w-xl text-sm text-white/60">
+              Você começa com 7 dias grátis do plano principal. O Prime é opcional e pode ser adicionado a qualquer momento.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2">
+            <PricingCard
+              plan={pricing.base}
+              variant="base"
+              ctaLabel="Começar teste grátis"
+              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+            />
+            <PricingCard
+              plan={pricing.prime}
+              variant="prime"
+              ctaLabel="Assinar com Prime"
+              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+            />
+          </div>
+
+          <div className="mt-10">
+            <div className="mb-3 text-xs uppercase tracking-[0.16em] text-white/50">Comparativo</div>
+            <FeatureComparison pricing={pricing} />
+          </div>
+
+          <div className="mt-10">
+            <TrialBanner slug={app.slug} />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <UpsellModal
+      slug={app.slug}
+      open={upsellOpen}
+      onOpenChange={setUpsellOpen}
+      onConfirm={addPrime}
+      onSkip={skipPrime}
+      busy={claimBusy}
+    />
+    </>
   );
 }
 

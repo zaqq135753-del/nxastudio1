@@ -75,6 +75,7 @@ export type Database = {
           granted_at: string
           plan: string
           status: string
+          tier: string
           trial_ends_at: string | null
           user_id: string
         }
@@ -84,6 +85,7 @@ export type Database = {
           granted_at?: string
           plan?: string
           status?: string
+          tier?: string
           trial_ends_at?: string | null
           user_id: string
         }
@@ -93,6 +95,7 @@ export type Database = {
           granted_at?: string
           plan?: string
           status?: string
+          tier?: string
           trial_ends_at?: string | null
           user_id?: string
         }
@@ -1589,7 +1592,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      claim_trial: { Args: { _slug: string }; Returns: undefined }
+      claim_trial:
+        | { Args: { _slug: string }; Returns: undefined }
+        | { Args: { _slug: string; _tier?: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
