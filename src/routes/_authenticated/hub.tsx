@@ -12,6 +12,8 @@ import { TodayWidget } from "@/components/TodayWidget";
 import { NxaMark } from "@/components/NxaMark";
 import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
 import { hasOnboarded } from "@/lib/onboarding.functions";
+import { PaywallBanner } from "@/components/PaywallBanner";
+import { StreaksBadges } from "@/components/StreaksBadges";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -171,8 +173,14 @@ function Hub() {
           </Link>
         )}
 
+        {/* Paywall / trial */}
+        <div className="mb-6"><PaywallBanner /></div>
+
         {/* Widget "Hoje" — próximo passo por app ativo */}
         <TodayWidget ents={ents} />
+
+        {/* Streaks & badges */}
+        <div className="mb-6"><StreaksBadges /></div>
 
         {/* Proactive briefing */}
         <section className="mb-10"><BriefingCard /></section>
