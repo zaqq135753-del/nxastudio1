@@ -67,6 +67,17 @@ export const pingActivity = createServerFn({ method: "POST" })
       if (!error) newlyEarned.push(rule.slug);
     }
 
+    // XP: +10 por ping novo do dia, +30 por marco de streak
+    if (existing?.last_activity_date !== today) {
+      const bonus = [3, 7, 30].includes(current) ? 30 : 0;
+      const { data: cur } = await supabase.from("user_xp").select("total_xp").eq("user_id", userId).maybeSingle();
+      const total = (cur?.total_xp ?? 0) + 10 + bonus;
+      const lvl = Math.floor(Math.sqrt(total / 50)) + 1;
+      await supabase.from("user_xp").upsert({
+        user_id: userId, total_xp: total, level: lvl, updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id" });
+    }
+
     return { current, longest, newlyEarned };
   });
 
