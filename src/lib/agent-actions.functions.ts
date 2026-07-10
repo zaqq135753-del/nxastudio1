@@ -39,7 +39,7 @@ export const agentTurn = createServerFn({ method: "POST" })
     const [{ data: pets }, { data: tx }, { data: workouts }] = await Promise.all([
       context.supabase.from("pets").select("id,name,species").eq("user_id", context.userId).limit(6),
       context.supabase.from("fin_transactions").select("kind,category,amount,occurred_on").eq("user_id", context.userId).order("occurred_on", { ascending: false }).limit(10),
-      context.supabase.from("workouts").select("id,name,created_at").eq("user_id", context.userId).order("created_at", { ascending: false }).limit(5),
+      context.supabase.from("fit_workouts").select("id,name,created_at").eq("user_id", context.userId).order("created_at", { ascending: false }).limit(5),
     ]);
 
     const today = new Date().toISOString().slice(0, 10);
@@ -116,12 +116,11 @@ export const runAgentAction = createServerFn({ method: "POST" })
         return { ok: true, message: `${a.type === "add_expense" ? "Despesa" : "Receita"} de R$ ${a.amount.toFixed(2)} registrada.` };
       }
       case "log_workout": {
-        const { error } = await sb.from("workout_sessions").insert({
+        const { error } = await sb.from("fit_sessions").insert({
           user_id: context.userId,
           workout_id: a.workout_id ?? null,
-          duration_min: a.duration_min ?? null,
+          duration_min: a.duration_min ?? 30,
           notes: a.notes ?? null,
-          completed_at: new Date().toISOString(),
         });
         if (error) throw new Error(error.message);
         return { ok: true, message: "Treino registrado." };
