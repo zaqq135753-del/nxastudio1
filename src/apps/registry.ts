@@ -2,7 +2,9 @@ import { Refrigerator, Camera, CalendarDays, HeartPulse, Home, type LucideIcon,
          ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone,
          PawPrint, MessageCircleHeart, Utensils, GraduationCap, User,
          Languages, BookOpen, MessageCircle, Flower2, ClipboardList, ListChecks,
-         Receipt, Target, Activity } from "lucide-react";
+         Receipt, Target, Activity, Shirt, Palette, ShoppingBag,
+         Moon, Stars, Heart, Sparkle,
+         Plane, MapPin, Compass, Route as RouteIcon } from "lucide-react";
 
 export type AppTab = {
   to: string;
@@ -129,6 +131,54 @@ export const APPS: readonly AppEntry[] = [
       { to: "/apps/fitia/treino",    label: "Treino",    icon: Dumbbell },
       { to: "/apps/fitia/chat",      label: "Chat IA",   icon: MessageCircle },
       { to: "/apps/fitia/progresso", label: "Progresso", icon: Activity },
+    ],
+  },
+  {
+    slug: "styleia",
+    name: "StyleIA",
+    tagline: "Consultora de estilo com IA",
+    description: "Guarda-roupa digital, looks do dia e personal shopper com IA.",
+    icon: Shirt,
+    status: "live",
+    route: "/apps/styleia",
+    tabs: [
+      { to: "/apps/styleia",           label: "Início",   icon: Home },
+      { to: "/apps/styleia/armario",   label: "Armário",  icon: ShoppingBag },
+      { to: "/apps/styleia/look",      label: "Look",     icon: Palette },
+      { to: "/apps/styleia/shopper",   label: "Shopper",  icon: Sparkles },
+      { to: "/apps/styleia/perfil",    label: "Perfil",   icon: User },
+    ],
+  },
+  {
+    slug: "cosmosia",
+    name: "CosmosIA",
+    tagline: "Astrólogo virtual com IA",
+    description: "Mapa astral, horóscopo diário personalizado, tarot e compatibilidade.",
+    icon: Moon,
+    status: "live",
+    route: "/apps/cosmosia",
+    tabs: [
+      { to: "/apps/cosmosia",              label: "Início",    icon: Home },
+      { to: "/apps/cosmosia/mapa",         label: "Mapa",      icon: Stars },
+      { to: "/apps/cosmosia/tarot",        label: "Tarot",     icon: Sparkle },
+      { to: "/apps/cosmosia/compatibilidade", label: "Match",  icon: Heart },
+      { to: "/apps/cosmosia/perfil",       label: "Perfil",    icon: User },
+    ],
+  },
+  {
+    slug: "roteiroia",
+    name: "RoteiroIA",
+    tagline: "Agente de viagens com IA",
+    description: "Roteiros dia-a-dia personalizados, orçamento e chat de destinos.",
+    icon: Plane,
+    status: "live",
+    route: "/apps/roteiroia",
+    tabs: [
+      { to: "/apps/roteiroia",            label: "Início",   icon: Home },
+      { to: "/apps/roteiroia/criar",      label: "Criar",    icon: Compass },
+      { to: "/apps/roteiroia/meus",       label: "Meus",     icon: RouteIcon },
+      { to: "/apps/roteiroia/destinos",   label: "Destinos", icon: MapPin },
+      { to: "/apps/roteiroia/chat",       label: "Chat IA",  icon: MessageCircle },
     ],
   },
 ] as const;

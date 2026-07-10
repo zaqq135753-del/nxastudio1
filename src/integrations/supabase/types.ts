@@ -97,6 +97,102 @@ export type Database = {
         }
         Relationships: []
       }
+      cosmos_horoscopes: {
+        Row: {
+          content: Json
+          created_at: string
+          for_date: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          for_date: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          for_date?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cosmos_profile: {
+        Row: {
+          birth_date: string | null
+          birth_place: string | null
+          birth_time: string | null
+          chart: Json | null
+          created_at: string
+          id: string
+          moon_sign: string | null
+          rising_sign: string | null
+          sun_sign: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          birth_date?: string | null
+          birth_place?: string | null
+          birth_time?: string | null
+          chart?: Json | null
+          created_at?: string
+          id?: string
+          moon_sign?: string | null
+          rising_sign?: string | null
+          sun_sign?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          birth_date?: string | null
+          birth_place?: string | null
+          birth_time?: string | null
+          chart?: Json | null
+          created_at?: string
+          id?: string
+          moon_sign?: string | null
+          rising_sign?: string | null
+          sun_sign?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cosmos_tarot_readings: {
+        Row: {
+          cards: Json
+          created_at: string
+          id: string
+          interpretation: string
+          question: string | null
+          spread: string
+          user_id: string
+        }
+        Insert: {
+          cards: Json
+          created_at?: string
+          id?: string
+          interpretation: string
+          question?: string | null
+          spread?: string
+          user_id: string
+        }
+        Update: {
+          cards?: Json
+          created_at?: string
+          id?: string
+          interpretation?: string
+          question?: string | null
+          spread?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       fin_budgets: {
         Row: {
           category: string
@@ -981,6 +1077,186 @@ export type Database = {
           hashtags?: Json
           id?: string
           name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      style_items: {
+        Row: {
+          category: string
+          color: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          last_worn_at: string | null
+          name: string
+          season: string | null
+          tags: string[] | null
+          times_worn: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          color?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          last_worn_at?: string | null
+          name: string
+          season?: string | null
+          tags?: string[] | null
+          times_worn?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          last_worn_at?: string | null
+          name?: string
+          season?: string | null
+          tags?: string[] | null
+          times_worn?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      style_looks: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          item_ids: string[]
+          name: string
+          occasion: string | null
+          updated_at: string
+          user_id: string
+          worn_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_ids?: string[]
+          name: string
+          occasion?: string | null
+          updated_at?: string
+          user_id: string
+          worn_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          item_ids?: string[]
+          name?: string
+          occasion?: string | null
+          updated_at?: string
+          user_id?: string
+          worn_at?: string | null
+        }
+        Relationships: []
+      }
+      style_profile: {
+        Row: {
+          body_type: string | null
+          budget: string | null
+          colors_avoid: string[] | null
+          colors_favorite: string[] | null
+          created_at: string
+          id: string
+          notes: string | null
+          occasions: string[] | null
+          style_words: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body_type?: string | null
+          budget?: string | null
+          colors_avoid?: string[] | null
+          colors_favorite?: string[] | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          occasions?: string[] | null
+          style_words?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body_type?: string | null
+          budget?: string | null
+          colors_avoid?: string[] | null
+          colors_favorite?: string[] | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          occasions?: string[] | null
+          style_words?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      travel_itineraries: {
+        Row: {
+          budget_breakdown: Json | null
+          budget_brl: number | null
+          cover_url: string | null
+          created_at: string
+          days: Json
+          destination: string
+          end_date: string | null
+          id: string
+          interests: string[] | null
+          start_date: string | null
+          status: string
+          style: string | null
+          travelers: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_breakdown?: Json | null
+          budget_brl?: number | null
+          cover_url?: string | null
+          created_at?: string
+          days?: Json
+          destination: string
+          end_date?: string | null
+          id?: string
+          interests?: string[] | null
+          start_date?: string | null
+          status?: string
+          style?: string | null
+          travelers?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_breakdown?: Json | null
+          budget_brl?: number | null
+          cover_url?: string | null
+          created_at?: string
+          days?: Json
+          destination?: string
+          end_date?: string | null
+          id?: string
+          interests?: string[] | null
+          start_date?: string | null
+          status?: string
+          style?: string | null
+          travelers?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
