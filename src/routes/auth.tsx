@@ -18,6 +18,8 @@ function AuthPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   useEffect(() => {
+    const ref = new URL(window.location.href).searchParams.get("ref");
+    if (ref) localStorage.setItem("nxa_ref", ref.toUpperCase());
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) navigate({ to: "/hub" });
     });
