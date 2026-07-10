@@ -127,14 +127,14 @@ export const runAgentAction = createServerFn({ method: "POST" })
       }
       case "add_pet_health": {
         const { error } = await sb.from("pet_health_records").insert({
-          user_id: context.userId, pet_id: a.pet_id, kind: a.kind, description: a.description, recorded_on: today,
+          user_id: context.userId, pet_id: a.pet_id, notes: `${a.kind}: ${a.description}`, record_date: today,
         });
         if (error) throw new Error(error.message);
         return { ok: true, message: "Registro de saúde adicionado." };
       }
       case "add_pet_meal": {
         const { error } = await sb.from("pet_meals").insert({
-          user_id: context.userId, pet_id: a.pet_id, food: a.food, amount_g: a.amount_g ?? null, fed_at: new Date().toISOString(),
+          user_id: context.userId, pet_id: a.pet_id, type: a.food, amount: a.amount_g ? `${a.amount_g}g` : null, meal_date: today,
         });
         if (error) throw new Error(error.message);
         return { ok: true, message: "Refeição registrada." };
