@@ -18,6 +18,7 @@ import { Route as AuthenticatedMemoriaRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
 import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated/agente'
+import { Route as AuthenticatedAfiliadosRouteImport } from './routes/_authenticated/afiliados'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
 import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
@@ -128,6 +129,11 @@ const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
 const AuthenticatedAgenteRoute = AuthenticatedAgenteRouteImport.update({
   id: '/agente',
   path: '/agente',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAfiliadosRoute = AuthenticatedAfiliadosRouteImport.update({
+  id: '/afiliados',
+  path: '/afiliados',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAppsStyleiaRouteRoute =
@@ -536,6 +542,7 @@ const AuthenticatedAppsSlugMidiaRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/afiliados': typeof AuthenticatedAfiliadosRoute
   '/agente': typeof AuthenticatedAgenteRoute
   '/feed': typeof AuthenticatedFeedRoute
   '/hub': typeof AuthenticatedHubRoute
@@ -613,6 +620,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/afiliados': typeof AuthenticatedAfiliadosRoute
   '/agente': typeof AuthenticatedAgenteRoute
   '/feed': typeof AuthenticatedFeedRoute
   '/hub': typeof AuthenticatedHubRoute
@@ -682,6 +690,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/afiliados': typeof AuthenticatedAfiliadosRoute
   '/_authenticated/agente': typeof AuthenticatedAgenteRoute
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
@@ -761,6 +770,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/afiliados'
     | '/agente'
     | '/feed'
     | '/hub'
@@ -838,6 +848,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/afiliados'
     | '/agente'
     | '/feed'
     | '/hub'
@@ -906,6 +917,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/afiliados'
     | '/_authenticated/agente'
     | '/_authenticated/feed'
     | '/_authenticated/hub'
@@ -1051,6 +1063,13 @@ declare module '@tanstack/react-router' {
       path: '/agente'
       fullPath: '/agente'
       preLoaderRoute: typeof AuthenticatedAgenteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/afiliados': {
+      id: '/_authenticated/afiliados'
+      path: '/afiliados'
+      fullPath: '/afiliados'
+      preLoaderRoute: typeof AuthenticatedAfiliadosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/apps/styleia': {
@@ -1769,6 +1788,7 @@ const AuthenticatedAppsStyleiaRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAfiliadosRoute: typeof AuthenticatedAfiliadosRoute
   AuthenticatedAgenteRoute: typeof AuthenticatedAgenteRoute
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
@@ -1789,6 +1809,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAfiliadosRoute: AuthenticatedAfiliadosRoute,
   AuthenticatedAgenteRoute: AuthenticatedAgenteRoute,
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
   AuthenticatedHubRoute: AuthenticatedHubRoute,
