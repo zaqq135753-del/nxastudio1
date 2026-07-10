@@ -122,14 +122,17 @@ export const todayWorkout = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<Workout> => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", `treino hoje energia ${data.energy} ${data.pain ?? ""}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Personal trainer brasileiro. Monte UM treino adaptado ao contexto de HOJE (energia, tempo, local, dor). Se houver dor, substitua exercícios que agravem. Responda APENAS JSON: {"title":"...","focus":"...","duration_min":30,"difficulty":"...","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":45,"tips":"..."}],"cooldown":["..."]}` },
+        { role: "system", content: `Personal trainer brasileiro. Monte UM treino adaptado ao contexto de HOJE (energia, tempo, local, dor). Se houver dor, substitua exercícios que agravem. Responda APENAS JSON: {"title":"...","focus":"...","duration_min":30,"difficulty":"...","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":45,"tips":"..."}],"cooldown":["..."]}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Perfil: ${JSON.stringify(profile) || "iniciante"}. Hoje: energia ${data.energy}/5, ${data.time_min} min, local: ${data.location}${data.pain ? `, dor/limitação: ${data.pain}` : ""}.` },
       ],
       temperature: 0.6,
       max_tokens: 2500,
     });
-    return parseJson<Workout>(raw);
+    const parsed = parseJson<Workout>(raw);
+    rememberFact(context.supabase, context.userId, "fitia", "hoje", `Treino de hoje: energia ${data.energy}/5, ${data.time_min}min, ${data.location}${data.pain ? `, dor: ${data.pain}` : ""}.`);
+    return parsed;
   });
