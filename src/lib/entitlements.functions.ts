@@ -1,5 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+const VALID_SLUGS = ["saboria","socialia","petia","fluencyia","glowia","granaia","fitia","styleia","cosmosia","roteiroia"] as const;
+
+export const claimTrial = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ slug: z.enum(VALID_SLUGS) }).parse(i))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.rpc("claim_trial", { _slug: data.slug });
+    if (error) throw error;
+    return { ok: true };
+  });
 
 export type Entitlement = {
   app_slug: string;
