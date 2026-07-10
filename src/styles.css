@@ -423,13 +423,15 @@
    Uso: <Link class="tile-hero tile-cover" style={{ "--tile-img": `url(${img})` }}>
    Overlay escuro garante legibilidade; hover intensifica. */
 .tile-cover {
+  /* Opacidades reduzidas ~50%: a imagem aparece mais.
+     Cada card pode customizar via style={{ "--aurora-1": ..., "--aurora-2": ..., "--aurora-3": ... }} */
   color: white;
   border: 1px solid color-mix(in oklab, white 10%, transparent);
   background:
     linear-gradient(180deg,
-      color-mix(in oklab, var(--aurora-1) 55%, rgba(8,8,14,0.82)) 0%,
-      color-mix(in oklab, var(--aurora-2) 45%, rgba(8,8,14,0.9)) 65%,
-      rgba(8,8,14,0.96) 100%),
+      color-mix(in oklab, var(--aurora-1) 28%, rgba(8,8,14,0.41)) 0%,
+      color-mix(in oklab, var(--aurora-2) 22%, rgba(8,8,14,0.45)) 65%,
+      rgba(8,8,14,0.48) 100%),
     var(--tile-img, none) center/cover no-repeat;
   background-blend-mode: multiply, normal;
   box-shadow: 0 10px 40px -20px rgba(0,0,0,0.55);
@@ -438,16 +440,16 @@
 }
 .tile-cover::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(600px 260px at 100% 0%, color-mix(in oklab, var(--aurora-3) 35%, transparent), transparent 60%);
+  background: radial-gradient(600px 260px at 100% 0%, color-mix(in oklab, var(--aurora-3) 18%, transparent), transparent 60%);
   opacity: 0; transition: opacity .5s ease;
 }
 .tile-cover:hover {
   transform: translateY(-4px);
   background:
     linear-gradient(180deg,
-      color-mix(in oklab, var(--aurora-1) 45%, rgba(8,8,14,0.68)) 0%,
-      color-mix(in oklab, var(--aurora-2) 35%, rgba(8,8,14,0.82)) 65%,
-      rgba(8,8,14,0.92) 100%),
+      color-mix(in oklab, var(--aurora-1) 22%, rgba(8,8,14,0.34)) 0%,
+      color-mix(in oklab, var(--aurora-2) 18%, rgba(8,8,14,0.41)) 65%,
+      rgba(8,8,14,0.46) 100%),
     var(--tile-img, none) center/cover no-repeat;
   background-blend-mode: multiply, normal;
   border-color: color-mix(in oklab, var(--aurora-3) 40%, transparent);
