@@ -2,8 +2,13 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Mail, Sparkles, ArrowRight, Check } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { claimTrial } from "@/lib/entitlements.functions";
+import { findApp } from "@/apps/registry";
+
+const INTENT_KEY = "nxa_intent_app";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -16,14 +21,36 @@ function AuthPage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const claim = useServerFn(claimTrial);
+  const [intentApp, setIntentApp] = useState<string | null>(null);
+
+  async function afterAuth() {
+    const slug = localStorage.getItem(INTENT_KEY);
+    if (slug && findApp(slug)) {
+      try { await claim({ data: { slug: slug as never } }); } catch { /* noop */ }
+      localStorage.removeItem(INTENT_KEY);
+      navigate({ to: "/apps/$slug" as never, params: { slug } as never, replace: true });
+      return;
+    }
+    navigate({ to: "/hub", replace: true });
+  }
 
   useEffect(() => {
-    const ref = new URL(window.location.href).searchParams.get("ref");
+    const url = new URL(window.location.href);
+    const ref = url.searchParams.get("ref");
     if (ref) localStorage.setItem("nxa_ref", ref.toUpperCase());
+    const app = url.searchParams.get("app");
+    if (app && findApp(app)) {
+      localStorage.setItem(INTENT_KEY, app);
+      setIntentApp(app);
+    } else {
+      setIntentApp(localStorage.getItem(INTENT_KEY));
+    }
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/hub" });
+      if (data.user) afterAuth();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function sendMagicLink(e: React.FormEvent) {
     e.preventDefault();
@@ -31,7 +58,7 @@ function AuthPage() {
     setSending(true);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/hub` },
+      options: { emailRedirectTo: `${window.location.origin}/auth` },
     });
     setSending(false);
     if (error) return toast.error(error.message);
@@ -41,15 +68,18 @@ function AuthPage() {
   async function signInGoogle() {
     setGoogleLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}/auth`,
     });
     if (result.error) {
       setGoogleLoading(false);
       return toast.error("Não foi possível entrar com Google.");
     }
     if (result.redirected) return;
-    navigate({ to: "/hub" });
+    await afterAuth();
   }
+
+  const intent = intentApp ? findApp(intentApp) : null;
+
 
   return (
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
