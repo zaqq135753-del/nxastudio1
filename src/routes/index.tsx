@@ -1,98 +1,108 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Sparkles, Refrigerator, Camera, CalendarDays, HeartPulse, Mic } from "lucide-react";
+import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
+import { APPS, SUITE } from "@/apps/registry";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: `${SUITE.name} — ${SUITE.tagline}` },
+      { name: "description", content: "Uma assinatura para vários apps de IA: SaborIA, FitIA e mais. Preço único por app, uma conta só." },
+      { property: "og:title", content: `${SUITE.name} — ${SUITE.tagline}` },
+      { property: "og:description", content: "Vários apps de IA. Uma conta. Preço único por app." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Landing,
 });
-
-const features = [
-  { icon: Refrigerator, title: "Geladeira IA", desc: "Fotografa a geladeira, extrai ingredientes e gera receita em segundos." },
-  { icon: Camera, title: "Foto → Receita", desc: "Envia foto de qualquer prato e recebe a receita completa com contexto cultural." },
-  { icon: CalendarDays, title: "Planner semanal", desc: "Plano de 7 dias personalizado — respeita restrições, orçamento e paladar." },
-  { icon: HeartPulse, title: "Nutri virtual", desc: "Análise de macros, substituições saudáveis e memória do que você comeu." },
-  { icon: Mic, title: "Modo hands-free", desc: "Cozinhe seguindo instruções por voz. A IA lê os passos e cronometra pra você." },
-  { icon: Sparkles, title: "Perfil de paladar", desc: "3 minutos de onboarding e cada receita passa a soar como sua." },
-];
 
 function Landing() {
   return (
     <div className="min-h-screen">
-      {/* Nav */}
-      <header className="sticky top-0 z-40" style={{ background: "rgba(14,11,8,0.7)", backdropFilter: "blur(14px)", borderBottom: "1px solid var(--line-1)" }}>
+      <header className="sticky top-0 z-40 glass" style={{ borderBottom: "1px solid var(--line-1)" }}>
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <Link to="/" className="text-xl" style={{ fontFamily: "var(--font-display)" }}>
-            Sabor<em style={{ color: "var(--saffron)" }}>IA</em>
+          <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
+            <SUITE.icon size={20} /> {SUITE.name}
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/auth" className="btn-ghost text-sm">Entrar</Link>
-            <Link to="/auth" className="btn-primary text-sm">Começar grátis <ArrowRight size={14} /></Link>
+            <Link to="/auth" className="btn-primary text-sm">Começar <ArrowRight size={14} /></Link>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pt-16 pb-24 sm:pt-24">
-        <div className="fade-up">
-          <div className="chip"><Sparkles size={12} /> IA que aprende seu paladar</div>
-          <h1 className="mt-6 max-w-3xl text-6xl leading-[0.95] sm:text-7xl md:text-8xl">
-            O chef pessoal<br />
-            que cabe <em style={{ color: "var(--saffron)" }}>no seu bolso</em>.
+      <section className="mx-auto max-w-6xl px-6 pt-20 pb-16 sm:pt-28">
+        <div className="fade-up max-w-3xl">
+          <div className="chip"><Sparkles size={12} /> {APPS.filter(a => a.status === "live").length} app{APPS.filter(a=>a.status==="live").length>1?"s":""} disponível{APPS.filter(a=>a.status==="live").length>1?"eis":""} · mais chegando</div>
+          <h1 className="mt-6 text-[44px] leading-[1.02] font-bold tracking-tight sm:text-7xl">
+            Uma conta.<br />Vários apps de IA.
           </h1>
-          <p className="mt-6 max-w-xl text-lg" style={{ color: "var(--cream-300)" }}>
-            SaborIA transforma o que já está na sua geladeira em receitas incríveis,
-            monta seu plano semanal e responde qualquer dúvida de nutrição — em português,
-            no seu ritmo, do seu jeito.
+          <p className="mt-6 max-w-xl text-lg" style={{ color: "var(--n-500)" }}>
+            {SUITE.name} é uma suíte de aplicativos feitos com IA — cada um resolve
+            uma parte da sua rotina. Assine só o que usar, tudo com o mesmo login.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/auth" className="btn-primary">Começar grátis <ArrowRight size={16} /></Link>
-            <a href="#features" className="btn-ghost">Ver como funciona</a>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/auth" className="btn-primary">Criar conta grátis <ArrowRight size={16} /></Link>
+            <a href="#apps" className="btn-ghost">Ver os apps</a>
           </div>
-          <div className="mt-6 edition-tag">Sem cartão de crédito · Setup em 3 minutos</div>
-        </div>
-
-        {/* Hero visual */}
-        <div className="relative mt-16 overflow-hidden rounded-3xl mesh-hero p-1">
-          <div className="rounded-[22px] p-10" style={{ background: "linear-gradient(180deg, rgba(14,11,8,0.4), rgba(14,11,8,0.85))" }}>
-            <div className="edition-tag" style={{ color: "var(--cream-200)" }}>Receita do dia · Edição 27</div>
-            <h2 className="mt-2 text-5xl" style={{ color: "var(--cream-50)" }}>Risoto de abóbora com sálvia crocante</h2>
-            <div className="mt-4 flex gap-4 text-sm" style={{ color: "var(--cream-300)" }}>
-              <span>⏱ 35 min</span><span>·</span><span>🍽 4 porções</span><span>·</span><span>🔥 420 kcal</span>
-            </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {["Aromatizado com laranja siciliana", "Baseado no que você tinha ontem", "Zero desperdício"].map((t) => (
-                <div key={t} className="surface p-4 text-sm" style={{ color: "var(--cream-200)" }}>{t}</div>
-              ))}
-            </div>
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ color: "var(--n-500)" }}>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> {SUITE.pricePerApp} por app</span>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Um login pra tudo</span>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Cancele quando quiser</span>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="edition-tag">O que tem dentro</div>
-        <h2 className="mt-2 max-w-2xl text-5xl">Seis superpoderes na cozinha.</h2>
+      <section id="apps" className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="edition-tag mb-3">Os apps</div>
+        <h2 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
+          Escolha um. Ou todos.
+        </h2>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <div key={f.title} className="card-editorial p-6">
-              <f.icon size={22} style={{ color: "var(--saffron)" }} />
-              <div className="mt-4 text-xl" style={{ fontFamily: "var(--font-display)" }}>{f.title}</div>
-              <p className="mt-2 text-sm" style={{ color: "var(--cream-400)" }}>{f.desc}</p>
-            </div>
-          ))}
+          {APPS.map((a) => {
+            const soon = a.status === "soon";
+            return (
+              <div key={a.slug} className="tile-hero relative flex flex-col">
+                <div className="flex items-start justify-between">
+                  <div className="tile-icon-wrap"><a.icon size={22} /></div>
+                  {soon ? (
+                    <span className="chip chip-neutral text-[10px]"><Lock size={10} className="mr-1 inline" />Em breve</span>
+                  ) : (
+                    <span className="chip chip-neutral text-[10px]">Disponível</span>
+                  )}
+                </div>
+                <div className="mt-3">
+                  <div className="tile-title text-lg">{a.name}</div>
+                  <div className="tile-desc mt-1">{a.tagline}</div>
+                  <p className="mt-3 text-sm" style={{ color: "var(--n-500)" }}>{a.description}</p>
+                </div>
+                <div className="mt-5 flex items-center justify-between text-sm">
+                  <span style={{ color: "var(--n-500)" }}>{SUITE.pricePerApp}</span>
+                  {soon ? (
+                    <span className="text-xs" style={{ color: "var(--n-500)" }}>Avisamos você</span>
+                  ) : (
+                    <Link to="/auth" className="font-medium underline underline-offset-4">
+                      Testar grátis
+                    </Link>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* CTA */}
       <section className="mx-auto max-w-4xl px-6 pb-24 text-center">
-        <h2 className="text-5xl">Sua próxima refeição começa aqui.</h2>
-        <p className="mx-auto mt-3 max-w-lg" style={{ color: "var(--cream-300)" }}>
-          Grátis pra sempre pros primeiros 5 pratos por dia. Sem senha, sem cartão.
+        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">Sua próxima ferramenta começa aqui.</h2>
+        <p className="mx-auto mt-3 max-w-lg" style={{ color: "var(--n-500)" }}>
+          Uma conta. Vários apps. Preço único por app, sem pegadinha.
         </p>
         <Link to="/auth" className="btn-primary mt-6">Criar minha conta <ArrowRight size={16} /></Link>
       </section>
 
-      <footer className="border-t py-8 text-center text-xs" style={{ borderColor: "var(--line-1)", color: "var(--cream-500)" }}>
-        © 2026 SaborIA · Cozinhando com inteligência
+      <footer className="border-t py-8 text-center text-xs"
+        style={{ borderColor: "var(--line-1)", color: "var(--n-500)" }}>
+        © 2026 {SUITE.name} · Uma suíte de apps de IA
       </footer>
     </div>
   );

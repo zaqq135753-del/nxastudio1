@@ -10,10 +10,10 @@ export const Route = createFileRoute("/_authenticated/apps/saboria/")({
 });
 
 const quickAccess = [
-  { to: "/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",    desc: "Do que tem em casa" },
-  { to: "/foto" as const,      icon: Camera,       title: "Foto → Receita",  desc: "Identifica qualquer prato" },
-  { to: "/planner" as const,   icon: CalendarDays, title: "Planner semanal", desc: "7 dias na hora" },
-  { to: "/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",   desc: "Chat 24h com IA" },
+  { to: "/apps/saboria/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",    desc: "Do que tem em casa" },
+  { to: "/apps/saboria/foto" as const,      icon: Camera,       title: "Foto → Receita",  desc: "Identifica qualquer prato" },
+  { to: "/apps/saboria/planner" as const,   icon: CalendarDays, title: "Planner semanal", desc: "7 dias na hora" },
+  { to: "/apps/saboria/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",   desc: "Chat 24h com IA" },
 ];
 
 function Dashboard() {
@@ -43,7 +43,7 @@ function Dashboard() {
       </div>
 
       {needsOnboarding && (
-        <Link to="/onboarding" className="hero-animated fade-up mb-6 block p-6">
+        <Link to="/apps/saboria/onboarding" className="hero-animated fade-up mb-6 block p-6">
           <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/85">
             <Sparkles size={14} className="spark" /> Onboarding · 3 min
           </div>
@@ -85,10 +85,10 @@ function Dashboard() {
             Pergunte à Nutri, gere um plano ou descubra o que fazer com o que sobrou.
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link to="/nutri" className="chip chip-neutral">💬 Falar com a Nutri</Link>
-            <Link to="/geladeira" className="chip chip-neutral">🧊 O que fazer hoje</Link>
-            <Link to="/planner" className="chip chip-neutral">📅 Plano da semana</Link>
-            <Link to="/receitas" className="chip chip-neutral"><BookOpen size={12} className="mr-1 inline" />Minhas receitas</Link>
+            <Link to="/apps/saboria/nutri" className="chip chip-neutral">💬 Falar com a Nutri</Link>
+            <Link to="/apps/saboria/geladeira" className="chip chip-neutral">🧊 O que fazer hoje</Link>
+            <Link to="/apps/saboria/planner" className="chip chip-neutral">📅 Plano da semana</Link>
+            <Link to="/apps/saboria/receitas" className="chip chip-neutral"><BookOpen size={12} className="mr-1 inline" />Minhas receitas</Link>
           </div>
         </div>
       </section>

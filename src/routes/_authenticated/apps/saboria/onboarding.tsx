@@ -57,7 +57,7 @@ function Onboarding() {
     setSaving(false);
     if (e1 || e2) return toast.error("Não deu pra salvar. Tenta de novo.");
     toast.success("Perfil de paladar criado!");
-    navigate({ to: "/app" });
+    navigate({ to: "/apps/saboria" });
   }
 
   const steps = [
