@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedMemoriaRouteImport } from './routes/_authenticated/memoria'
 import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
@@ -91,6 +92,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMemoriaRoute = AuthenticatedMemoriaRouteImport.update({
   id: '/memoria',
@@ -486,6 +492,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
   '/memoria': typeof AuthenticatedMemoriaRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
@@ -555,6 +562,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
   '/memoria': typeof AuthenticatedMemoriaRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
@@ -616,6 +624,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
   '/_authenticated/memoria': typeof AuthenticatedMemoriaRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/_authenticated/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
@@ -687,6 +696,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/hub'
     | '/memoria'
+    | '/onboarding'
     | '/apps/cosmosia'
     | '/apps/fitia'
     | '/apps/fluencyia'
@@ -756,6 +766,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/hub'
     | '/memoria'
+    | '/onboarding'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
     | '/apps/cosmosia/perfil'
@@ -816,6 +827,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/hub'
     | '/_authenticated/memoria'
+    | '/_authenticated/onboarding'
     | '/_authenticated/apps/cosmosia'
     | '/_authenticated/apps/fitia'
     | '/_authenticated/apps/fluencyia'
@@ -910,6 +922,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/memoria': {
       id: '/_authenticated/memoria'
@@ -1609,6 +1628,7 @@ const AuthenticatedAppsStyleiaRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
   AuthenticatedMemoriaRoute: typeof AuthenticatedMemoriaRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedAppsCosmosiaRouteRoute: typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   AuthenticatedAppsFitiaRouteRoute: typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   AuthenticatedAppsFluencyiaRouteRoute: typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
@@ -1624,6 +1644,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHubRoute: AuthenticatedHubRoute,
   AuthenticatedMemoriaRoute: AuthenticatedMemoriaRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedAppsCosmosiaRouteRoute:
     AuthenticatedAppsCosmosiaRouteRouteWithChildren,
   AuthenticatedAppsFitiaRouteRoute:
