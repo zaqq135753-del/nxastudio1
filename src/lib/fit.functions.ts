@@ -57,7 +57,7 @@ export const generateWorkout = createServerFn({ method: "POST" })
       user_id: context.userId,
       title: parsed.title, focus: parsed.focus,
       duration_min: parsed.duration_min, difficulty: parsed.difficulty,
-      exercises: parsed as unknown as object,
+      exercises: parsed as never,
     }).select().maybeSingle();
     return { workout: parsed, id: saved?.id };
   });
