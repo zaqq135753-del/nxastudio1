@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
 import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
+import { Route as AuthenticatedAppsPetiaRouteRouteImport } from './routes/_authenticated/apps/petia/route'
 import { Route as AuthenticatedAppsSocialiaIndexRouteImport } from './routes/_authenticated/apps/socialia/index'
 import { Route as AuthenticatedAppsSaboriaIndexRouteImport } from './routes/_authenticated/apps/saboria/index'
 import { Route as AuthenticatedAppsSocialiaHashtagsRouteImport } from './routes/_authenticated/apps/socialia/hashtags'
@@ -57,6 +58,12 @@ const AuthenticatedAppsSaboriaRouteRoute =
   AuthenticatedAppsSaboriaRouteRouteImport.update({
     id: '/apps/saboria',
     path: '/apps/saboria',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppsPetiaRouteRoute =
+  AuthenticatedAppsPetiaRouteRouteImport.update({
+    id: '/apps/petia',
+    path: '/apps/petia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppsSocialiaIndexRoute =
@@ -136,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
+  '/apps/petia': typeof AuthenticatedAppsPetiaRouteRoute
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
@@ -155,6 +163,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
+  '/apps/petia': typeof AuthenticatedAppsPetiaRouteRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -174,6 +183,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
+  '/_authenticated/apps/petia': typeof AuthenticatedAppsPetiaRouteRoute
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/hub'
+    | '/apps/petia'
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/saboria/foto'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/hub'
+    | '/apps/petia'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -232,6 +244,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/hub'
+    | '/_authenticated/apps/petia'
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/saboria/foto'
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/apps/saboria'
       fullPath: '/apps/saboria'
       preLoaderRoute: typeof AuthenticatedAppsSaboriaRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apps/petia': {
+      id: '/_authenticated/apps/petia'
+      path: '/apps/petia'
+      fullPath: '/apps/petia'
+      preLoaderRoute: typeof AuthenticatedAppsPetiaRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/apps/socialia/': {
@@ -442,12 +462,14 @@ const AuthenticatedAppsSocialiaRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
+  AuthenticatedAppsPetiaRouteRoute: typeof AuthenticatedAppsPetiaRouteRoute
   AuthenticatedAppsSaboriaRouteRoute: typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   AuthenticatedAppsSocialiaRouteRoute: typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHubRoute: AuthenticatedHubRoute,
+  AuthenticatedAppsPetiaRouteRoute: AuthenticatedAppsPetiaRouteRoute,
   AuthenticatedAppsSaboriaRouteRoute:
     AuthenticatedAppsSaboriaRouteRouteWithChildren,
   AuthenticatedAppsSocialiaRouteRoute:
