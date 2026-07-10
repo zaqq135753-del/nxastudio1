@@ -23,6 +23,7 @@ import { Route as AuthenticatedAppsGlowiaRouteRouteImport } from './routes/_auth
 import { Route as AuthenticatedAppsFluencyiaRouteRouteImport } from './routes/_authenticated/apps/fluencyia/route'
 import { Route as AuthenticatedAppsFitiaRouteRouteImport } from './routes/_authenticated/apps/fitia/route'
 import { Route as AuthenticatedAppsCosmosiaRouteRouteImport } from './routes/_authenticated/apps/cosmosia/route'
+import { Route as AuthenticatedAppsStyleiaIndexRouteImport } from './routes/_authenticated/apps/styleia/index'
 import { Route as AuthenticatedAppsSocialiaIndexRouteImport } from './routes/_authenticated/apps/socialia/index'
 import { Route as AuthenticatedAppsSaboriaIndexRouteImport } from './routes/_authenticated/apps/saboria/index'
 import { Route as AuthenticatedAppsPetiaIndexRouteImport } from './routes/_authenticated/apps/petia/index'
@@ -136,6 +137,12 @@ const AuthenticatedAppsCosmosiaRouteRoute =
     id: '/apps/cosmosia',
     path: '/apps/cosmosia',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppsStyleiaIndexRoute =
+  AuthenticatedAppsStyleiaIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppsStyleiaRouteRoute,
   } as any)
 const AuthenticatedAppsSocialiaIndexRoute =
   AuthenticatedAppsSocialiaIndexRouteImport.update({
@@ -355,7 +362,7 @@ export interface FileRoutesByFullPath {
   '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
-  '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
+  '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -390,6 +397,7 @@ export interface FileRoutesByFullPath {
   '/apps/petia/': typeof AuthenticatedAppsPetiaIndexRoute
   '/apps/saboria/': typeof AuthenticatedAppsSaboriaIndexRoute
   '/apps/socialia/': typeof AuthenticatedAppsSocialiaIndexRoute
+  '/apps/styleia/': typeof AuthenticatedAppsStyleiaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -397,7 +405,6 @@ export interface FileRoutesByTo {
   '/hub': typeof AuthenticatedHubRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRoute
   '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
-  '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -432,6 +439,7 @@ export interface FileRoutesByTo {
   '/apps/petia': typeof AuthenticatedAppsPetiaIndexRoute
   '/apps/saboria': typeof AuthenticatedAppsSaboriaIndexRoute
   '/apps/socialia': typeof AuthenticatedAppsSocialiaIndexRoute
+  '/apps/styleia': typeof AuthenticatedAppsStyleiaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -448,7 +456,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
-  '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
+  '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
   '/_authenticated/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/_authenticated/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/_authenticated/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -483,6 +491,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/petia/': typeof AuthenticatedAppsPetiaIndexRoute
   '/_authenticated/apps/saboria/': typeof AuthenticatedAppsSaboriaIndexRoute
   '/_authenticated/apps/socialia/': typeof AuthenticatedAppsSocialiaIndexRoute
+  '/_authenticated/apps/styleia/': typeof AuthenticatedAppsStyleiaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -534,6 +543,7 @@ export interface FileRouteTypes {
     | '/apps/petia/'
     | '/apps/saboria/'
     | '/apps/socialia/'
+    | '/apps/styleia/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -541,7 +551,6 @@ export interface FileRouteTypes {
     | '/hub'
     | '/apps/cosmosia'
     | '/apps/roteiroia'
-    | '/apps/styleia'
     | '/apps/fitia/chat'
     | '/apps/fitia/progresso'
     | '/apps/fitia/treino'
@@ -576,6 +585,7 @@ export interface FileRouteTypes {
     | '/apps/petia'
     | '/apps/saboria'
     | '/apps/socialia'
+    | '/apps/styleia'
   id:
     | '__root__'
     | '/'
@@ -626,6 +636,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/petia/'
     | '/_authenticated/apps/saboria/'
     | '/_authenticated/apps/socialia/'
+    | '/_authenticated/apps/styleia/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -733,6 +744,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/cosmosia'
       preLoaderRoute: typeof AuthenticatedAppsCosmosiaRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apps/styleia/': {
+      id: '/_authenticated/apps/styleia/'
+      path: '/'
+      fullPath: '/apps/styleia/'
+      preLoaderRoute: typeof AuthenticatedAppsStyleiaIndexRouteImport
+      parentRoute: typeof AuthenticatedAppsStyleiaRouteRoute
     }
     '/_authenticated/apps/socialia/': {
       id: '/_authenticated/apps/socialia/'
@@ -1139,6 +1157,20 @@ const AuthenticatedAppsSocialiaRouteRouteWithChildren =
     AuthenticatedAppsSocialiaRouteRouteChildren,
   )
 
+interface AuthenticatedAppsStyleiaRouteRouteChildren {
+  AuthenticatedAppsStyleiaIndexRoute: typeof AuthenticatedAppsStyleiaIndexRoute
+}
+
+const AuthenticatedAppsStyleiaRouteRouteChildren: AuthenticatedAppsStyleiaRouteRouteChildren =
+  {
+    AuthenticatedAppsStyleiaIndexRoute: AuthenticatedAppsStyleiaIndexRoute,
+  }
+
+const AuthenticatedAppsStyleiaRouteRouteWithChildren =
+  AuthenticatedAppsStyleiaRouteRoute._addFileChildren(
+    AuthenticatedAppsStyleiaRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
   AuthenticatedAppsCosmosiaRouteRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
@@ -1150,7 +1182,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppsRoteiroiaRouteRoute: typeof AuthenticatedAppsRoteiroiaRouteRoute
   AuthenticatedAppsSaboriaRouteRoute: typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   AuthenticatedAppsSocialiaRouteRoute: typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
-  AuthenticatedAppsStyleiaRouteRoute: typeof AuthenticatedAppsStyleiaRouteRoute
+  AuthenticatedAppsStyleiaRouteRoute: typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1171,7 +1203,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAppsSaboriaRouteRouteWithChildren,
   AuthenticatedAppsSocialiaRouteRoute:
     AuthenticatedAppsSocialiaRouteRouteWithChildren,
-  AuthenticatedAppsStyleiaRouteRoute: AuthenticatedAppsStyleiaRouteRoute,
+  AuthenticatedAppsStyleiaRouteRoute:
+    AuthenticatedAppsStyleiaRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
