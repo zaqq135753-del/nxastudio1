@@ -426,26 +426,32 @@
   color: white;
   border: 1px solid color-mix(in oklab, white 10%, transparent);
   background:
-    linear-gradient(180deg, rgba(10,10,15,0.35) 0%, rgba(10,10,15,0.78) 75%, rgba(10,10,15,0.92) 100%),
-    var(--tile-img, none) center/cover no-repeat,
-    #0a0a0f;
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--aurora-1) 55%, rgba(8,8,14,0.82)) 0%,
+      color-mix(in oklab, var(--aurora-2) 45%, rgba(8,8,14,0.9)) 65%,
+      rgba(8,8,14,0.96) 100%),
+    var(--tile-img, none) center/cover no-repeat;
+  background-blend-mode: multiply, normal;
   box-shadow: 0 10px 40px -20px rgba(0,0,0,0.55);
   overflow: hidden;
-  transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, background-size .5s ease, border-color .3s ease;
+  transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, border-color .3s ease;
 }
 .tile-cover::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(600px 260px at 100% 0%, color-mix(in oklab, var(--aurora-2) 32%, transparent), transparent 60%);
+  background: radial-gradient(600px 260px at 100% 0%, color-mix(in oklab, var(--aurora-3) 35%, transparent), transparent 60%);
   opacity: 0; transition: opacity .5s ease;
 }
 .tile-cover:hover {
   transform: translateY(-4px);
   background:
-    linear-gradient(180deg, rgba(10,10,15,0.18) 0%, rgba(10,10,15,0.68) 75%, rgba(10,10,15,0.90) 100%),
-    var(--tile-img, none) center/cover no-repeat,
-    #0a0a0f;
-  border-color: color-mix(in oklab, white 22%, transparent);
-  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--aurora-1) 45%, rgba(8,8,14,0.68)) 0%,
+      color-mix(in oklab, var(--aurora-2) 35%, rgba(8,8,14,0.82)) 65%,
+      rgba(8,8,14,0.92) 100%),
+    var(--tile-img, none) center/cover no-repeat;
+  background-blend-mode: multiply, normal;
+  border-color: color-mix(in oklab, var(--aurora-3) 40%, transparent);
+  box-shadow: 0 20px 60px -20px color-mix(in oklab, var(--aurora-1) 45%, rgba(0,0,0,0.6));
 }
 .tile-cover:hover::after { opacity: 1; }
 .tile-cover .tile-title { color: white; letter-spacing: -0.01em; }
