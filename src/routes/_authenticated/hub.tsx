@@ -7,6 +7,7 @@ import { getMyEntitlements, isEntitled, type Entitlement } from "@/lib/entitleme
 import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
+import { NotificationBell } from "@/components/NotificationBell";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -88,6 +89,7 @@ function Hub() {
               style={{ color: "var(--muted-foreground)" }}>
               <Command size={13} /> Memória
             </Link>
+            <NotificationBell />
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
               style={{ background: "var(--n-100)" }}>

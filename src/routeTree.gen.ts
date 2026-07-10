@@ -34,6 +34,7 @@ import { Route as AuthenticatedAppsGlowiaIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAppsFluencyiaIndexRouteImport } from './routes/_authenticated/apps/fluencyia/index'
 import { Route as AuthenticatedAppsFitiaIndexRouteImport } from './routes/_authenticated/apps/fitia/index'
 import { Route as AuthenticatedAppsCosmosiaIndexRouteImport } from './routes/_authenticated/apps/cosmosia/index'
+import { Route as ApiPublicHooksDailyBriefingRouteImport } from './routes/api/public/hooks/daily-briefing'
 import { Route as AuthenticatedAppsStyleiaShopperRouteImport } from './routes/_authenticated/apps/styleia/shopper'
 import { Route as AuthenticatedAppsStyleiaPerfilRouteImport } from './routes/_authenticated/apps/styleia/perfil'
 import { Route as AuthenticatedAppsStyleiaLookRouteImport } from './routes/_authenticated/apps/styleia/look'
@@ -220,6 +221,12 @@ const AuthenticatedAppsCosmosiaIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAppsCosmosiaRouteRoute,
+  } as any)
+const ApiPublicHooksDailyBriefingRoute =
+  ApiPublicHooksDailyBriefingRouteImport.update({
+    id: '/api/public/hooks/daily-briefing',
+    path: '/api/public/hooks/daily-briefing',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const AuthenticatedAppsStyleiaShopperRoute =
   AuthenticatedAppsStyleiaShopperRouteImport.update({
@@ -531,6 +538,7 @@ export interface FileRoutesByFullPath {
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/api/public/hooks/daily-briefing': typeof ApiPublicHooksDailyBriefingRoute
   '/apps/cosmosia/': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -589,6 +597,7 @@ export interface FileRoutesByTo {
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/api/public/hooks/daily-briefing': typeof ApiPublicHooksDailyBriefingRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/apps/fitia': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -659,6 +668,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
   '/_authenticated/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/_authenticated/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
+  '/api/public/hooks/daily-briefing': typeof ApiPublicHooksDailyBriefingRoute
   '/_authenticated/apps/cosmosia/': typeof AuthenticatedAppsCosmosiaIndexRoute
   '/_authenticated/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/_authenticated/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -729,6 +739,7 @@ export interface FileRouteTypes {
     | '/apps/styleia/look'
     | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
+    | '/api/public/hooks/daily-briefing'
     | '/apps/cosmosia/'
     | '/apps/fitia/'
     | '/apps/fluencyia/'
@@ -787,6 +798,7 @@ export interface FileRouteTypes {
     | '/apps/styleia/look'
     | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
+    | '/api/public/hooks/daily-briefing'
     | '/apps/cosmosia'
     | '/apps/fitia'
     | '/apps/fluencyia'
@@ -856,6 +868,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/styleia/look'
     | '/_authenticated/apps/styleia/perfil'
     | '/_authenticated/apps/styleia/shopper'
+    | '/api/public/hooks/daily-briefing'
     | '/_authenticated/apps/cosmosia/'
     | '/_authenticated/apps/fitia/'
     | '/_authenticated/apps/fluencyia/'
@@ -872,6 +885,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1050,6 +1064,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/cosmosia/'
       preLoaderRoute: typeof AuthenticatedAppsCosmosiaIndexRouteImport
       parentRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
+    }
+    '/api/public/hooks/daily-briefing': {
+      id: '/api/public/hooks/daily-briefing'
+      path: '/api/public/hooks/daily-briefing'
+      fullPath: '/api/public/hooks/daily-briefing'
+      preLoaderRoute: typeof ApiPublicHooksDailyBriefingRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/apps/styleia/shopper': {
       id: '/_authenticated/apps/styleia/shopper'
@@ -1632,6 +1653,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
