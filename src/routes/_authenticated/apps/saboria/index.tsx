@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type CSSProperties } from "react";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemePicker, useInitTheme } from "@/components/ThemePicker";
@@ -41,6 +42,7 @@ function Dashboard() {
           title={`${greeting}${name ? `, ${name.split(" ")[0]}` : ""}.`}
           subtitle="Sua cozinha, seu ritmo. O que a gente prepara hoje?"
         />
+      <div className="mb-4 flex justify-center"><RealtimeCallButton slug="saboria" /></div>
         <div className="mt-2 shrink-0"><ThemePicker /></div>
       </div>
 

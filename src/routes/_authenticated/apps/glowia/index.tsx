@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { getSkinProfile, listAnalyses } from "@/lib/glow.functions";
 import { Camera, ListChecks, ClipboardList, ArrowRight, Sun } from "lucide-react";
 import coverImg from "@/assets/cover-glowia.jpg";
@@ -34,6 +35,7 @@ function GlowHome() {
   return (
     <AppShell appSlug="glowia">
       <ScreenHeader title="✨ NXA Glow" subtitle="Sua consultora de skincare com IA." />
+      <div className="mb-4 flex justify-center"><RealtimeCallButton slug="glowia" /></div>
 
       {hasProfile === false && (
         <div className="surface p-5 mb-6 fade-up">

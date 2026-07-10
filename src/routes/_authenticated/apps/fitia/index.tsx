@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { getFitProfile, listSessions } from "@/lib/fit.functions";
 import { Dumbbell, MessageCircle, Activity, ArrowRight, Zap } from "lucide-react";
 import coverImg from "@/assets/cover-fitia.jpg";
@@ -47,6 +48,7 @@ function FitHome() {
   return (
     <AppShell appSlug="fitia">
       <ScreenHeader title="💪 NXA Fit" subtitle={profile?.goal ? `Objetivo: ${profile.goal}` : "Seu personal trainer pessoal com IA."} />
+      <div className="mb-4 flex justify-center"><RealtimeCallButton slug="fitia" /></div>
 
       <section className="mb-6 grid grid-cols-3 gap-3">
         <Stat label="Sessões" value={sessions} />
