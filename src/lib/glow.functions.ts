@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { callGateway, parseJson, TEXT_MODEL } from "./ai-shared";
+import { callGateway, parseJson, TEXT_MODEL, recallContext, rememberFact } from "./ai-shared";
 
 export type SkinDiagnosis = {
   summary: string;
@@ -114,15 +114,18 @@ export const todayRoutine = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<TodayRoutine> => {
     const { data: profile } = await context.supabase.from("skin_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "glowia", `rotina ${data.period} ${data.feeling ?? ""}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Dermato-consultora brasileira. Monte a rotina de HOJE (${data.period}) adaptada ao clima, UV e como a pele está agora. Cite ativos, não marcas. Se houver conflito de ativos, use warning. Responda APENAS JSON: {"period":"AM|PM","context_tip":"tip curta e prática","steps":[{"order":1,"step":"...","product":"tipo de produto","why":"...","time_sec":30}],"warning":"opcional"}` },
+        { role: "system", content: `Dermato-consultora brasileira. Monte a rotina de HOJE (${data.period}) adaptada ao clima, UV e como a pele está agora. Cite ativos, não marcas. Se houver conflito de ativos, use warning. Responda APENAS JSON: {"period":"AM|PM","context_tip":"tip curta e prática","steps":[{"order":1,"step":"...","product":"tipo de produto","why":"...","time_sec":30}],"warning":"opcional"}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Perfil: ${JSON.stringify(profile) || "não preenchido"}.\nHoje: clima ${data.weather ?? "n/a"}, UV ${data.uv_index ?? "n/a"}, pele: ${data.feeling ?? "normal"}.` },
       ],
       temperature: 0.5,
       max_tokens: 1500,
       response_format: { type: "json_object" },
     });
-    return parseJson<TodayRoutine>(raw);
+    const parsed = parseJson<TodayRoutine>(raw);
+    rememberFact(context.supabase, context.userId, "glowia", "rotina", `Rotina ${data.period} adaptada: ${data.feeling ?? "sem sintomas"}, UV ${data.uv_index ?? "?"}.`);
+    return parsed;
   });

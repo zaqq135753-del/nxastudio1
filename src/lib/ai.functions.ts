@@ -1,4 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { recallContext, rememberFact } from "./ai-shared";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
@@ -121,13 +123,15 @@ export type FridgeRecipe = {
 };
 
 export const generateRecipe = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data: { ingredients: string[] }) => {
     if (!data || !Array.isArray(data.ingredients) || data.ingredients.length === 0) {
       throw new Error("Adicione pelo menos um ingrediente");
     }
     return { ingredients: data.ingredients.slice(0, 30).map((s) => String(s).slice(0, 60)) };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    const mem = await recallContext(context.supabase, context.userId, "saboria", `receita com ${data.ingredients.slice(0,5).join(", ")}`);
     const system = `Você é um chef de cozinha profissional brasileiro. Com base nos ingredientes que o usuário tem disponível, crie UMA receita completa e prática.
 
 Responda APENAS em JSON válido com esta estrutura:
@@ -147,7 +151,8 @@ Regras:
 - Use PRINCIPALMENTE os ingredientes informados (pode incluir básicos: sal, pimenta, azeite, água)
 - Receita realista e executável
 - Inclua quantidades específicas
-- Varie o tipo de receita a cada geração`;
+- Varie o tipo de receita a cada geração
+- Respeite as preferências e restrições do usuário se aparecerem na memória${mem ? "\n\n" + mem : ""}`;
 
     const raw = await callGateway({
       model: TEXT_MODEL,
@@ -158,7 +163,9 @@ Regras:
         { role: "user", content: `Ingredientes disponíveis: ${data.ingredients.join(", ")}` },
       ],
     });
-    return parseJson<FridgeRecipe>(raw);
+    const parsed = parseJson<FridgeRecipe>(raw);
+    rememberFact(context.supabase, context.userId, "saboria", "receita", `Recebeu receita "${parsed.name}" a partir de: ${data.ingredients.slice(0,6).join(", ")}.`);
+    return parsed;
   });
 
 /* ================= Foto ================= */
@@ -280,6 +287,7 @@ Orçamento semanal: ${data.budget}`;
 /* ================= Nutri chat ================= */
 
 export const nutriChat = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data: { messages: Array<{ role: "user" | "assistant"; content: string }> }) => {
     if (!Array.isArray(data?.messages) || data.messages.length === 0) {
       throw new Error("Mensagens inválidas");
@@ -291,7 +299,10 @@ export const nutriChat = createServerFn({ method: "POST" })
       })) as ChatMessage[],
     };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    const lastUserRaw = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const lastUser = typeof lastUserRaw === "string" ? lastUserRaw : "";
+    const mem = await recallContext(context.supabase, context.userId, "saboria", lastUser);
     const system = `Você é um nutricionista virtual brasileiro, amigável e didático.
 
 Especialidades:
@@ -308,7 +319,7 @@ Regras:
 - NUNCA prescreva dietas restritivas sem recomendar acompanhamento profissional
 - Inclua um disclaimer sutil de que orientações não substituem nutricionista
 - Alimentos acessíveis no Brasil
-- Máximo 200 palavras`;
+- Máximo 200 palavras${mem ? "\n\n" + mem : ""}`;
 
     const content = await callGateway({
       model: TEXT_MODEL,
@@ -316,6 +327,7 @@ Regras:
       max_tokens: 800,
       messages: [{ role: "system", content: system }, ...data.messages],
     });
+    if (lastUser) rememberFact(context.supabase, context.userId, "saboria", "nutri", `Pergunta ao nutri: ${lastUser.slice(0, 200)}`);
     return { content };
   });
 

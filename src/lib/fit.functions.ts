@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { callGateway, parseJson, TEXT_MODEL, type ChatMessage } from "./ai-shared";
+import { callGateway, parseJson, TEXT_MODEL, recallContext, rememberFact, type ChatMessage } from "./ai-shared";
 
 export type Exercise = {
   name: string;
@@ -44,10 +44,11 @@ export const generateWorkout = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", `treino ${data.focus ?? ""}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Você é um personal trainer brasileiro. Crie UM treino completo baseado no perfil. Responda APENAS em JSON: {"title":"...","focus":"...","duration_min":45,"difficulty":"iniciante|intermediário|avançado","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":60,"tips":"..."}],"cooldown":["..."]}` },
+        { role: "system", content: `Você é um personal trainer brasileiro. Crie UM treino completo baseado no perfil. Responda APENAS em JSON: {"title":"...","focus":"...","duration_min":45,"difficulty":"iniciante|intermediário|avançado","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":60,"tips":"..."}],"cooldown":["..."]}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Perfil: ${JSON.stringify(profile ?? {})}\nFoco solicitado: ${data.focus ?? "treino geral"}` },
       ],
       temperature: 0.6, max_tokens: 2000,
@@ -59,6 +60,7 @@ export const generateWorkout = createServerFn({ method: "POST" })
       duration_min: parsed.duration_min, difficulty: parsed.difficulty,
       exercises: parsed as never,
     }).select().maybeSingle();
+    rememberFact(context.supabase, context.userId, "fitia", "treino", `Gerou treino "${parsed.title}" (foco: ${parsed.focus}, ${parsed.duration_min}min, ${parsed.difficulty}).`);
     return { workout: parsed, id: saved?.id };
   });
 
@@ -97,8 +99,9 @@ export const coachChat = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", data.message);
     const system = `Você é um personal trainer brasileiro motivador. Perfil do aluno: ${JSON.stringify(profile ?? {})}.
-Regras: seja prático, cite exercícios reais, avise sobre segurança, no máximo 200 palavras.`;
+Regras: seja prático, cite exercícios reais, avise sobre segurança, no máximo 200 palavras.${mem ? "\n\n" + mem : ""}`;
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
@@ -108,6 +111,7 @@ Regras: seja prático, cite exercícios reais, avise sobre segurança, no máxim
       ],
       temperature: 0.7, max_tokens: 800,
     });
+    rememberFact(context.supabase, context.userId, "fitia", "coach", `Pergunta: ${data.message.slice(0, 200)}`);
     return { reply: raw };
   });
 
@@ -118,14 +122,17 @@ export const todayWorkout = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<Workout> => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", `treino hoje energia ${data.energy} ${data.pain ?? ""}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Personal trainer brasileiro. Monte UM treino adaptado ao contexto de HOJE (energia, tempo, local, dor). Se houver dor, substitua exercícios que agravem. Responda APENAS JSON: {"title":"...","focus":"...","duration_min":30,"difficulty":"...","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":45,"tips":"..."}],"cooldown":["..."]}` },
+        { role: "system", content: `Personal trainer brasileiro. Monte UM treino adaptado ao contexto de HOJE (energia, tempo, local, dor). Se houver dor, substitua exercícios que agravem. Responda APENAS JSON: {"title":"...","focus":"...","duration_min":30,"difficulty":"...","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":45,"tips":"..."}],"cooldown":["..."]}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Perfil: ${JSON.stringify(profile) || "iniciante"}. Hoje: energia ${data.energy}/5, ${data.time_min} min, local: ${data.location}${data.pain ? `, dor/limitação: ${data.pain}` : ""}.` },
       ],
       temperature: 0.6,
       max_tokens: 2500,
     });
-    return parseJson<Workout>(raw);
+    const parsed = parseJson<Workout>(raw);
+    rememberFact(context.supabase, context.userId, "fitia", "hoje", `Treino de hoje: energia ${data.energy}/5, ${data.time_min}min, ${data.location}${data.pain ? `, dor: ${data.pain}` : ""}.`);
+    return parsed;
   });

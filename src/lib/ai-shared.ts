@@ -77,3 +77,66 @@ export function parseJson<T>(raw: string): T {
   console.error("[parseJson] inválido:", raw.slice(0, 600));
   throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
 }
+
+/* ============ Semantic memory helpers (best-effort) ============
+ * Uso: em qualquer .functions.ts com requireSupabaseAuth, chame
+ *   const mem = await recallContext(context.supabase, context.userId, "saboria", userQuery);
+ *   // prepend `mem` no system prompt se não vazio
+ *   // depois:
+ *   rememberFact(context.supabase, context.userId, "saboria", "receita", `Gostou de ${parsed.name}`);
+ */
+type SB = { rpc: (...a: unknown[]) => Promise<{ data: unknown; error: unknown }>; from: (t: string) => { insert: (v: unknown) => Promise<unknown> } };
+
+export async function recallContext(
+  supabase: unknown,
+  userId: string,
+  appSlug: string,
+  query: string,
+  limit = 5,
+): Promise<string> {
+  try {
+    const { embed } = await import("./memory.server");
+    const vec = await embed(query);
+    if (!vec) return "";
+    const sb = supabase as SB;
+    const { data } = await sb.rpc("match_user_memories", {
+      _user_id: userId,
+      _query_embedding: vec as unknown,
+      _app_slugs: [appSlug, "cross"],
+      _match_count: limit,
+    });
+    const rows = (data as Array<{ content: string; similarity: number }> | null) ?? [];
+    if (!rows.length) return "";
+    return "Contexto do usuário (memória de longo prazo):\n" + rows.map((r) => `- ${r.content}`).join("\n");
+  } catch {
+    return "";
+  }
+}
+
+export function rememberFact(
+  supabase: unknown,
+  userId: string,
+  appSlug: string,
+  kind: string,
+  content: string,
+  metadata: Record<string, unknown> = {},
+): void {
+  // best-effort, não bloqueia o retorno do handler
+  (async () => {
+    try {
+      const { embed } = await import("./memory.server");
+      const vec = await embed(`${kind}: ${content}`);
+      const sb = supabase as SB;
+      await sb.from("user_memories").insert({
+        user_id: userId,
+        app_slug: appSlug,
+        kind,
+        content: content.slice(0, 4000),
+        embedding: vec as unknown,
+        metadata,
+      });
+    } catch {
+      /* silencioso */
+    }
+  })();
+}
