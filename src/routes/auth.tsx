@@ -116,10 +116,10 @@ function AuthPage() {
       {/* Right: auth card */}
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-sm fade-up">
-          <div className="chip mb-6"><Sparkles size={12} /> IA ativa · sem senhas</div>
-          <h1 className="text-4xl">Entrar no NXA Chef</h1>
+          <div className="chip mb-6"><Sparkles size={12} /> {intent ? `Assinando ${intent.name}` : "IA ativa · sem senhas"}</div>
+          <h1 className="text-4xl">{intent ? `Entrar no ${intent.name}` : "Entrar na NXA"}</h1>
           <p className="mt-2 text-sm" style={{ color: "var(--cream-400)" }}>
-            Enviamos um link mágico pro seu e-mail. Sem senha pra decorar.
+            {intent ? `${intent.tagline}. Enviamos um link mágico pro seu e-mail — depois você cai direto no app.` : "Enviamos um link mágico pro seu e-mail. Sem senha pra decorar."}
           </p>
 
           <button onClick={signInGoogle} disabled={googleLoading} className="btn-ghost mt-8 w-full">
