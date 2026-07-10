@@ -16,6 +16,7 @@ import { Route as AuthenticatedPlanosRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedMemoriaRouteImport } from './routes/_authenticated/memoria'
 import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
+import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
 import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated/agente'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
@@ -117,6 +118,11 @@ const AuthenticatedMemoriaRoute = AuthenticatedMemoriaRouteImport.update({
 const AuthenticatedHubRoute = AuthenticatedHubRouteImport.update({
   id: '/hub',
   path: '/hub',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAgenteRoute = AuthenticatedAgenteRouteImport.update({
@@ -531,6 +537,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agente': typeof AuthenticatedAgenteRoute
+  '/feed': typeof AuthenticatedFeedRoute
   '/hub': typeof AuthenticatedHubRoute
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
@@ -607,6 +614,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agente': typeof AuthenticatedAgenteRoute
+  '/feed': typeof AuthenticatedFeedRoute
   '/hub': typeof AuthenticatedHubRoute
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
@@ -675,6 +683,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agente': typeof AuthenticatedAgenteRoute
+  '/_authenticated/feed': typeof AuthenticatedFeedRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
   '/_authenticated/memoria': typeof AuthenticatedMemoriaRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
@@ -753,6 +762,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agente'
+    | '/feed'
     | '/hub'
     | '/memoria'
     | '/onboarding'
@@ -829,6 +839,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agente'
+    | '/feed'
     | '/hub'
     | '/memoria'
     | '/onboarding'
@@ -896,6 +907,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agente'
+    | '/_authenticated/feed'
     | '/_authenticated/hub'
     | '/_authenticated/memoria'
     | '/_authenticated/onboarding'
@@ -1025,6 +1037,13 @@ declare module '@tanstack/react-router' {
       path: '/hub'
       fullPath: '/hub'
       preLoaderRoute: typeof AuthenticatedHubRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/feed': {
+      id: '/_authenticated/feed'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof AuthenticatedFeedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/agente': {
@@ -1751,6 +1770,7 @@ const AuthenticatedAppsStyleiaRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgenteRoute: typeof AuthenticatedAgenteRoute
+  AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
   AuthenticatedMemoriaRoute: typeof AuthenticatedMemoriaRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
@@ -1770,6 +1790,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgenteRoute: AuthenticatedAgenteRoute,
+  AuthenticatedFeedRoute: AuthenticatedFeedRoute,
   AuthenticatedHubRoute: AuthenticatedHubRoute,
   AuthenticatedMemoriaRoute: AuthenticatedMemoriaRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
