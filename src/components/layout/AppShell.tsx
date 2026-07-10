@@ -97,6 +97,7 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
           </div>
         </nav>
       )}
+      <VoiceAssistant />
     </div>
   );
 }
