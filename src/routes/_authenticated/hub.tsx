@@ -10,6 +10,8 @@ import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
 import { TodayWidget } from "@/components/TodayWidget";
 import { NxaMark } from "@/components/NxaMark";
+import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
+import { hasOnboarded } from "@/lib/onboarding.functions";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
