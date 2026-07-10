@@ -82,6 +82,7 @@ import { Route as AuthenticatedAppsCosmosiaTarotRouteImport } from './routes/_au
 import { Route as AuthenticatedAppsCosmosiaPerfilRouteImport } from './routes/_authenticated/apps/cosmosia/perfil'
 import { Route as AuthenticatedAppsCosmosiaMapaRouteImport } from './routes/_authenticated/apps/cosmosia/mapa'
 import { Route as AuthenticatedAppsCosmosiaCompatibilidadeRouteImport } from './routes/_authenticated/apps/cosmosia/compatibilidade'
+import { Route as AuthenticatedAppsSlugMidiaRouteImport } from './routes/_authenticated/apps/$slug/midia'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -513,6 +514,12 @@ const AuthenticatedAppsCosmosiaCompatibilidadeRoute =
     path: '/compatibilidade',
     getParentRoute: () => AuthenticatedAppsCosmosiaRouteRoute,
   } as any)
+const AuthenticatedAppsSlugMidiaRoute =
+  AuthenticatedAppsSlugMidiaRouteImport.update({
+    id: '/apps/$slug/midia',
+    path: '/apps/$slug/midia',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -531,6 +538,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
@@ -595,6 +603,7 @@ export interface FileRoutesByTo {
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/planos': typeof AuthenticatedPlanosRoute
+  '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
@@ -671,6 +680,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/_authenticated/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/_authenticated/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/_authenticated/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/_authenticated/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
@@ -747,6 +757,7 @@ export interface FileRouteTypes {
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/styleia'
+    | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
     | '/apps/cosmosia/perfil'
@@ -811,6 +822,7 @@ export interface FileRouteTypes {
     | '/memoria'
     | '/onboarding'
     | '/planos'
+    | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
     | '/apps/cosmosia/perfil'
@@ -886,6 +898,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/styleia'
+    | '/_authenticated/apps/$slug/midia'
     | '/_authenticated/apps/cosmosia/compatibilidade'
     | '/_authenticated/apps/cosmosia/mapa'
     | '/_authenticated/apps/cosmosia/perfil'
@@ -1464,6 +1477,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsCosmosiaCompatibilidadeRouteImport
       parentRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
     }
+    '/_authenticated/apps/$slug/midia': {
+      id: '/_authenticated/apps/$slug/midia'
+      path: '/apps/$slug/midia'
+      fullPath: '/apps/$slug/midia'
+      preLoaderRoute: typeof AuthenticatedAppsSlugMidiaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -1725,6 +1745,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppsSaboriaRouteRoute: typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   AuthenticatedAppsSocialiaRouteRoute: typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   AuthenticatedAppsStyleiaRouteRoute: typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  AuthenticatedAppsSlugMidiaRoute: typeof AuthenticatedAppsSlugMidiaRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1752,6 +1773,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAppsSocialiaRouteRouteWithChildren,
   AuthenticatedAppsStyleiaRouteRoute:
     AuthenticatedAppsStyleiaRouteRouteWithChildren,
+  AuthenticatedAppsSlugMidiaRoute: AuthenticatedAppsSlugMidiaRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -1766,13 +1788,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

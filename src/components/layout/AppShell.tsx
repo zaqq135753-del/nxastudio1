@@ -75,6 +75,17 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
             </Link>
           </div>
           <div className="flex items-center gap-2">
+            {app && (
+              <Link
+                to="/apps/$slug/midia"
+                params={{ slug: app.slug }}
+                className="press hidden sm:inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium"
+                style={{ background: "var(--n-100)", color: "var(--n-500)" }}
+                title="Hub de Mídia"
+              >
+                🎙️ Mídia
+              </Link>
+            )}
             <span className="chip">✨ IA</span>
             <button onClick={signOut} title="Sair"
               className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"

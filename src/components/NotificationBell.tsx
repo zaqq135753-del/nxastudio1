@@ -32,7 +32,7 @@ export function NotificationBell() {
       uid = data.user?.id ?? null;
       if (!uid) return;
       ch = supabase
-        .channel(`notif:${uid}`)
+        .channel(`notif:${uid}:${crypto.randomUUID()}`)
         .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${uid}` },
           (payload) => setItems((prev) => [payload.new as N, ...prev].slice(0, 30)))
         .subscribe();
