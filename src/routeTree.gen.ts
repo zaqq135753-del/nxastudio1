@@ -47,6 +47,7 @@ import { Route as AuthenticatedAppsSaboriaOnboardingRouteImport } from './routes
 import { Route as AuthenticatedAppsSaboriaNutriRouteImport } from './routes/_authenticated/apps/saboria/nutri'
 import { Route as AuthenticatedAppsSaboriaGeladeiraRouteImport } from './routes/_authenticated/apps/saboria/geladeira'
 import { Route as AuthenticatedAppsSaboriaFotoRouteImport } from './routes/_authenticated/apps/saboria/foto'
+import { Route as AuthenticatedAppsRoteiroiaMeusRouteImport } from './routes/_authenticated/apps/roteiroia/meus'
 import { Route as AuthenticatedAppsRoteiroiaCriarRouteImport } from './routes/_authenticated/apps/roteiroia/criar'
 import { Route as AuthenticatedAppsPetiaTreinoRouteImport } from './routes/_authenticated/apps/petia/treino'
 import { Route as AuthenticatedAppsPetiaSaudeRouteImport } from './routes/_authenticated/apps/petia/saude'
@@ -293,6 +294,12 @@ const AuthenticatedAppsSaboriaFotoRoute =
     path: '/foto',
     getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
   } as any)
+const AuthenticatedAppsRoteiroiaMeusRoute =
+  AuthenticatedAppsRoteiroiaMeusRouteImport.update({
+    id: '/meus',
+    path: '/meus',
+    getParentRoute: () => AuthenticatedAppsRoteiroiaRouteRoute,
+  } as any)
 const AuthenticatedAppsRoteiroiaCriarRoute =
   AuthenticatedAppsRoteiroiaCriarRouteImport.update({
     id: '/criar',
@@ -462,6 +469,7 @@ export interface FileRoutesByFullPath {
   '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
+  '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -513,6 +521,7 @@ export interface FileRoutesByTo {
   '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
+  '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -576,6 +585,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/_authenticated/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
   '/_authenticated/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
+  '/_authenticated/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
   '/_authenticated/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/_authenticated/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/_authenticated/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -639,6 +649,7 @@ export interface FileRouteTypes {
     | '/apps/petia/saude'
     | '/apps/petia/treino'
     | '/apps/roteiroia/criar'
+    | '/apps/roteiroia/meus'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -690,6 +701,7 @@ export interface FileRouteTypes {
     | '/apps/petia/saude'
     | '/apps/petia/treino'
     | '/apps/roteiroia/criar'
+    | '/apps/roteiroia/meus'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -752,6 +764,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/petia/saude'
     | '/_authenticated/apps/petia/treino'
     | '/_authenticated/apps/roteiroia/criar'
+    | '/_authenticated/apps/roteiroia/meus'
     | '/_authenticated/apps/saboria/foto'
     | '/_authenticated/apps/saboria/geladeira'
     | '/_authenticated/apps/saboria/nutri'
@@ -1052,6 +1065,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsSaboriaFotoRouteImport
       parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
+    '/_authenticated/apps/roteiroia/meus': {
+      id: '/_authenticated/apps/roteiroia/meus'
+      path: '/meus'
+      fullPath: '/apps/roteiroia/meus'
+      preLoaderRoute: typeof AuthenticatedAppsRoteiroiaMeusRouteImport
+      parentRoute: typeof AuthenticatedAppsRoteiroiaRouteRoute
+    }
     '/_authenticated/apps/roteiroia/criar': {
       id: '/_authenticated/apps/roteiroia/criar'
       path: '/criar'
@@ -1343,12 +1363,14 @@ const AuthenticatedAppsPetiaRouteRouteWithChildren =
 
 interface AuthenticatedAppsRoteiroiaRouteRouteChildren {
   AuthenticatedAppsRoteiroiaCriarRoute: typeof AuthenticatedAppsRoteiroiaCriarRoute
+  AuthenticatedAppsRoteiroiaMeusRoute: typeof AuthenticatedAppsRoteiroiaMeusRoute
   AuthenticatedAppsRoteiroiaIndexRoute: typeof AuthenticatedAppsRoteiroiaIndexRoute
 }
 
 const AuthenticatedAppsRoteiroiaRouteRouteChildren: AuthenticatedAppsRoteiroiaRouteRouteChildren =
   {
     AuthenticatedAppsRoteiroiaCriarRoute: AuthenticatedAppsRoteiroiaCriarRoute,
+    AuthenticatedAppsRoteiroiaMeusRoute: AuthenticatedAppsRoteiroiaMeusRoute,
     AuthenticatedAppsRoteiroiaIndexRoute: AuthenticatedAppsRoteiroiaIndexRoute,
   }
 

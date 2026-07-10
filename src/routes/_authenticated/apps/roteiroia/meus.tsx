@@ -23,18 +23,18 @@ function MeusPage() {
   const get = useServerFn(getItinerary);
   const del = useServerFn(deleteItinerary);
 
-  useEffect(() => { list().then((r) => setRows(r as Row[])); }, [list]);
+  useEffect(() => { list().then((r) => setRows(r as unknown as Row[])); }, [list]);
 
   async function open(id: string) {
     const r = await get({ data: { id } });
-    setActive(r as Row);
+    setActive(r as unknown as Row);
   }
 
   async function remove(id: string) {
     if (!confirm("Excluir este roteiro?")) return;
     await del({ data: { id } });
     setActive(null);
-    list().then((r) => setRows(r as Row[]));
+    list().then((r) => setRows(r as unknown as Row[]));
     toast.success("Removido");
   }
 
