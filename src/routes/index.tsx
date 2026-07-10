@@ -81,7 +81,7 @@ function Landing() {
                   {soon ? (
                     <span className="text-xs" style={{ color: "var(--n-500)" }}>Avisamos você</span>
                   ) : (
-                    <Link to="/auth" search={{ app: a.slug }} className="font-medium underline underline-offset-4">
+                    <Link to="/auth" search={{ app: a.slug } as never} className="font-medium underline underline-offset-4">
                       Assinar este app
                     </Link>
                   )}
