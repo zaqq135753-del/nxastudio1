@@ -151,12 +151,12 @@
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in oklab, var(--card) 72%, transparent);
     backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--line-1);
     border-radius: var(--radius);
   }
+
 
   .card-editorial {
     background: var(--card);
@@ -376,6 +376,229 @@
   --ring:var(--n-600);
 }
 
+/* ==============================================================
+   PREMIUM VISUAL LAYER — aurora, glass, motion, AI result cards
+   Aplicado por cima do sistema mono. Cores em oklch/color-mix para
+   tons realistas (não sólidos), leves e translúcidos.
+   ============================================================== */
+
+:root {
+  /* Paleta viva — usada só em accents, glow e resultados AI */
+  --aurora-1: oklch(0.78 0.14 30);   /* coral quente */
+  --aurora-2: oklch(0.80 0.13 340);  /* rosa suave */
+  --aurora-3: oklch(0.82 0.12 210);  /* azul sereno */
+  --aurora-4: oklch(0.85 0.13 150);  /* verde matcha */
+  --aurora-5: oklch(0.86 0.14 85);   /* âmbar dourado */
+
+  --grad-aurora:
+    radial-gradient(1000px 600px at 10% 0%,  color-mix(in oklab, var(--aurora-1) 45%, transparent) 0%, transparent 60%),
+    radial-gradient(900px 700px at 100% 10%, color-mix(in oklab, var(--aurora-2) 40%, transparent) 0%, transparent 55%),
+    radial-gradient(800px 600px at 50% 100%, color-mix(in oklab, var(--aurora-3) 38%, transparent) 0%, transparent 60%);
+
+  --grad-sunset: linear-gradient(135deg,
+    color-mix(in oklab, var(--aurora-1) 70%, white),
+    color-mix(in oklab, var(--aurora-2) 70%, white));
+  --grad-ocean: linear-gradient(135deg,
+    color-mix(in oklab, var(--aurora-3) 65%, white),
+    color-mix(in oklab, var(--aurora-4) 65%, white));
+  --grad-gold: linear-gradient(135deg,
+    color-mix(in oklab, var(--aurora-5) 70%, white),
+    color-mix(in oklab, var(--aurora-1) 55%, white));
+
+  --shadow-glow-warm: 0 20px 60px -25px color-mix(in oklab, var(--aurora-1) 55%, transparent);
+  --shadow-glow-cool: 0 20px 60px -25px color-mix(in oklab, var(--aurora-3) 55%, transparent);
+  --shadow-float:    0 30px 80px -30px color-mix(in oklab, var(--foreground) 22%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --aurora-1: oklch(0.70 0.16 30);
+  --aurora-2: oklch(0.68 0.16 340);
+  --aurora-3: oklch(0.72 0.14 210);
+  --aurora-4: oklch(0.75 0.15 150);
+  --aurora-5: oklch(0.78 0.16 85);
+}
+
+/* ---------- Aurora backdrop (usar como fundo de página/hero) ---------- */
+.bg-aurora {
+  position: relative;
+  background: var(--grad-aurora), var(--background);
+  background-attachment: fixed;
+}
+.bg-aurora::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(2px 2px at 20% 30%, color-mix(in oklab, var(--foreground) 8%, transparent), transparent 60%),
+    radial-gradient(1.5px 1.5px at 70% 60%, color-mix(in oklab, var(--foreground) 6%, transparent), transparent 60%);
+  opacity: .4;
+}
+
+/* Orbs flutuantes decorativos */
+.aurora-orb {
+  position: absolute; border-radius: 999px;
+  filter: blur(60px); opacity: .55; pointer-events: none;
+  animation: orbFloat 14s ease-in-out infinite;
+}
+.aurora-orb-1 { width: 320px; height: 320px; background: var(--aurora-1); top: -80px; left: -60px; }
+.aurora-orb-2 { width: 280px; height: 280px; background: var(--aurora-3); top: 40%; right: -80px; animation-delay: -4s; }
+.aurora-orb-3 { width: 240px; height: 240px; background: var(--aurora-4); bottom: -60px; left: 30%; animation-delay: -8s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(20px,-30px) scale(1.08); }
+}
+
+/* ---------- Glass premium (usar em cards por cima de aurora) ---------- */
+.glass-card {
+  position: relative;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--card) 85%, transparent),
+                            color-mix(in oklab, var(--card) 70%, transparent));
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
+    var(--shadow-float);
+  transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, border-color .3s ease;
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--foreground) 14%, transparent);
+}
+
+.glass-card-warm { box-shadow: inset 0 1px 0 color-mix(in oklab, white 40%, transparent), var(--shadow-glow-warm); }
+.glass-card-cool { box-shadow: inset 0 1px 0 color-mix(in oklab, white 40%, transparent), var(--shadow-glow-cool); }
+
+/* Borda com gradiente animado (usar em cards destaque) */
+.card-gradient-border {
+  position: relative; border-radius: 24px; padding: 1px;
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--aurora-1) 50%, transparent),
+    color-mix(in oklab, var(--aurora-2) 45%, transparent),
+    color-mix(in oklab, var(--aurora-3) 50%, transparent));
+  background-size: 200% 200%;
+  animation: gradientShift 10s ease infinite;
+}
+.card-gradient-border > * { border-radius: 23px; background: var(--card); }
+
+/* ---------- AI Result card — showcase deslumbrante para respostas ---------- */
+.ai-result {
+  position: relative; overflow: hidden;
+  border-radius: 28px; padding: 24px;
+  background:
+    radial-gradient(600px 300px at 0% 0%, color-mix(in oklab, var(--aurora-1) 22%, transparent), transparent 60%),
+    radial-gradient(500px 300px at 100% 100%, color-mix(in oklab, var(--aurora-3) 22%, transparent), transparent 60%),
+    color-mix(in oklab, var(--card) 92%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(16px) saturate(160%);
+  animation: fadeUp .5s cubic-bezier(.2,.7,.2,1) both;
+}
+.ai-result::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(120deg, transparent 20%,
+    color-mix(in oklab, white 30%, transparent) 45%,
+    transparent 60%);
+  transform: translateX(-100%);
+  animation: shimmer 3.2s ease-in-out 1;
+}
+@keyframes shimmer { to { transform: translateX(100%); } }
+
+.ai-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--aurora-1) 22%, var(--card)),
+    color-mix(in oklab, var(--aurora-2) 22%, var(--card)));
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+/* Métrica destaque */
+.stat-card {
+  padding: 18px; border-radius: 20px;
+  background: linear-gradient(160deg,
+    color-mix(in oklab, var(--card) 95%, transparent),
+    color-mix(in oklab, var(--card) 80%, transparent));
+  border: 1px solid color-mix(in oklab, var(--foreground) 7%, transparent);
+  box-shadow: 0 8px 24px -16px color-mix(in oklab, var(--foreground) 30%, transparent);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-float); }
+.stat-value { font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.stat-label { font-size: 12px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+
+/* ---------- Botão premium com gradiente + glow ---------- */
+.btn-aurora {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 24px; border-radius: 999px;
+  font-weight: 600; color: white;
+  background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+  background-size: 200% 200%;
+  box-shadow: var(--shadow-glow-warm);
+  transition: transform .2s ease, box-shadow .3s ease, background-position .5s ease;
+  animation: gradientShift 8s ease infinite;
+}
+.btn-aurora:hover:not(:disabled) { transform: translateY(-2px); background-position: 100% 100%; }
+.btn-aurora:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---------- Motion utilitários ---------- */
+.hover-lift { transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease; }
+.hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-float); }
+
+.hover-tilt { transition: transform .4s cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; }
+.hover-tilt:hover { transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-3px); }
+
+.press { transition: transform .1s ease; }
+.press:active { transform: scale(0.97); }
+
+.animate-float { animation: floatY 4s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulseSoft 2.4s ease-in-out infinite; }
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .85; transform: scale(1.02); }
+}
+
+.animate-shimmer-bg {
+  background: linear-gradient(90deg,
+    color-mix(in oklab, var(--muted) 60%, transparent) 0%,
+    color-mix(in oklab, var(--muted) 90%, transparent) 50%,
+    color-mix(in oklab, var(--muted) 60%, transparent) 100%);
+  background-size: 200% 100%;
+  animation: shimmerBg 1.6s ease-in-out infinite;
+}
+@keyframes shimmerBg { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+/* Reveal on scroll (via IntersectionObserver ou classe direta) */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* Stagger estendido */
+.stagger > *:nth-child(7)  { animation-delay: .40s; }
+.stagger > *:nth-child(8)  { animation-delay: .46s; }
+.stagger > *:nth-child(9)  { animation-delay: .52s; }
+.stagger > *:nth-child(10) { animation-delay: .58s; }
+
+/* ---------- Text gradient ---------- */
+.text-gradient {
+  background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+  background-size: 200% 200%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* ---------- Divisor sutil animado ---------- */
+.divider-glow {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in oklab, var(--foreground) 20%, transparent), transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+

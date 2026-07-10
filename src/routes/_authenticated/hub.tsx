@@ -52,14 +52,20 @@ function Hub() {
   const discover = APPS.filter((a) => !mine.includes(a));
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-aurora relative">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden -z-0">
+        <span className="aurora-orb aurora-orb-1" />
+        <span className="aurora-orb aurora-orb-2" />
+        <span className="aurora-orb aurora-orb-3" />
+      </div>
+
       <header className="fixed top-0 left-0 right-0 z-40 glass" style={{ borderBottom: "1px solid var(--line-1)" }}>
         <div className="mx-auto flex h-14 max-w-[960px] items-center justify-between px-5">
           <Link to="/hub" className="flex items-center gap-2 text-[17px] font-bold tracking-tight">
             <SUITE.icon size={18} /> {SUITE.name}
           </Link>
           <button onClick={signOut} title="Sair"
-            className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
+            className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
             style={{ background: "var(--n-100)" }}>
             {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> :
               <span className="text-sm font-semibold">{initial}</span>}
@@ -67,36 +73,42 @@ function Hub() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[960px] px-5 pt-24 pb-16">
+      <main className="relative mx-auto max-w-[960px] px-5 pt-24 pb-16 z-10">
         <div className="fade-up mb-10">
-          <div className="chip mb-3"><Sparkles size={12} /> {SUITE.tagline}</div>
-          <h1 className="text-[32px] sm:text-5xl font-bold tracking-tight">
-            {greeting()}{name ? `, ${name}` : ""}.
+          <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
+          <h1 className="text-[34px] sm:text-6xl font-bold tracking-tight leading-[1.05]">
+            {greeting()}{name ? "," : "."}
+            {name && <> <span className="text-gradient">{name}</span>.</>}
           </h1>
-          <p className="mt-2 text-[15px] sm:text-base" style={{ color: "var(--n-500)" }}>
-            Escolha um app pra abrir ou descubra os próximos.
+          <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
+            Escolha um app pra abrir ou descubra os próximos da suíte.
           </p>
         </div>
 
         <section className="mb-12">
           <div className="edition-tag mb-4">Seus apps</div>
           {loading ? (
-            <div className="surface p-6 text-sm" style={{ color: "var(--n-500)" }}>Carregando…</div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[0,1,2,3].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-32" />)}
+            </div>
           ) : mine.length === 0 ? (
-            <div className="surface p-6 text-sm" style={{ color: "var(--n-500)" }}>
+            <div className="glass-card p-6 text-sm" style={{ color: "var(--muted-foreground)" }}>
               Nenhum app ativo ainda. Explore abaixo.
             </div>
           ) : (
-            <div className="stagger grid gap-3 sm:grid-cols-2">
+            <div className="stagger grid gap-4 sm:grid-cols-2">
               {mine.map((a) => (
-                <Link key={a.slug} to={a.route} className="tile-hero group">
+                <Link key={a.slug} to={a.route} className="glass-card hover-tilt press group p-5 flex flex-col gap-3">
                   <div className="flex items-start justify-between">
-                    <div className="tile-icon-wrap"><a.icon size={20} /></div>
-                    <ChevronRight size={16} className="tile-arrow" />
+                    <div className="w-11 h-11 rounded-2xl grid place-items-center shrink-0"
+                         style={{ background: "var(--grad-sunset)" }}>
+                      <a.icon size={20} className="text-white" />
+                    </div>
+                    <ArrowRight size={16} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </div>
-                  <div className="mt-2">
-                    <div className="tile-title">{a.name}</div>
-                    <div className="tile-desc">{a.tagline}</div>
+                  <div>
+                    <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
+                    <div className="text-[13px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{a.tagline}</div>
                   </div>
                 </Link>
               ))}
@@ -107,22 +119,25 @@ function Hub() {
         {discover.length > 0 && (
           <section>
             <div className="edition-tag mb-4">Descobrir</div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="stagger grid gap-4 sm:grid-cols-2">
               {discover.map((a) => {
                 const soon = a.status === "soon";
                 return (
-                  <div key={a.slug} className="tile-hero relative opacity-90">
+                  <div key={a.slug} className="glass-card hover-lift p-5 flex flex-col gap-3 relative">
                     <div className="flex items-start justify-between">
-                      <div className="tile-icon-wrap"><a.icon size={20} /></div>
-                      <span className="chip chip-neutral text-[10px]">
+                      <div className="w-11 h-11 rounded-2xl grid place-items-center shrink-0 opacity-70"
+                           style={{ background: "var(--grad-ocean)" }}>
+                        <a.icon size={20} className="text-white" />
+                      </div>
+                      <span className="ai-badge text-[10px]">
                         {soon ? "Em breve" : <><Lock size={10} className="mr-1 inline" />Bloqueado</>}
                       </span>
                     </div>
-                    <div className="mt-2">
-                      <div className="tile-title">{a.name}</div>
-                      <div className="tile-desc">{a.description}</div>
+                    <div>
+                      <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
+                      <div className="text-[13px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{a.description}</div>
                     </div>
-                    <div className="mt-4 text-xs" style={{ color: "var(--n-500)" }}>
+                    <div className="mt-1 text-xs" style={{ color: "var(--muted-foreground)" }}>
                       {SUITE.pricePerApp} · {soon ? "avisamos quando abrir" : "assine para desbloquear"}
                     </div>
                   </div>
@@ -135,6 +150,7 @@ function Hub() {
     </div>
   );
 }
+
 
 function greeting() {
   const h = new Date().getHours();
