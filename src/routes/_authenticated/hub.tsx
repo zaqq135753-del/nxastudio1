@@ -73,7 +73,7 @@ function Hub() {
 
   const mine = APPS.filter((a) => a.status === "live" && isEntitled(ents, a.slug));
   const discover = APPS.filter((a) => !mine.includes(a));
-  const featured = mine[0] ?? APPS[0];
+  const featured = mine[0] ?? null;
 
   return (
     <div className="min-h-screen bg-aurora relative overflow-hidden">
