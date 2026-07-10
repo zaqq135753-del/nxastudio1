@@ -16,6 +16,7 @@ import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hu
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
 import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
+import { Route as AuthenticatedAppsRoteiroiaRouteRouteImport } from './routes/_authenticated/apps/roteiroia/route'
 import { Route as AuthenticatedAppsPetiaRouteRouteImport } from './routes/_authenticated/apps/petia/route'
 import { Route as AuthenticatedAppsGranaiaRouteRouteImport } from './routes/_authenticated/apps/granaia/route'
 import { Route as AuthenticatedAppsGlowiaRouteRouteImport } from './routes/_authenticated/apps/glowia/route'
@@ -92,6 +93,12 @@ const AuthenticatedAppsSaboriaRouteRoute =
   AuthenticatedAppsSaboriaRouteRouteImport.update({
     id: '/apps/saboria',
     path: '/apps/saboria',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppsRoteiroiaRouteRoute =
+  AuthenticatedAppsRoteiroiaRouteRouteImport.update({
+    id: '/apps/roteiroia',
+    path: '/apps/roteiroia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppsPetiaRouteRoute =
@@ -345,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   '/apps/granaia': typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
   '/apps/petia': typeof AuthenticatedAppsPetiaRouteRouteWithChildren
+  '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
@@ -388,6 +396,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRoute
+  '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
@@ -436,6 +445,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   '/_authenticated/apps/granaia': typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
   '/_authenticated/apps/petia': typeof AuthenticatedAppsPetiaRouteRouteWithChildren
+  '/_authenticated/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRoute
@@ -486,6 +496,7 @@ export interface FileRouteTypes {
     | '/apps/glowia'
     | '/apps/granaia'
     | '/apps/petia'
+    | '/apps/roteiroia'
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/styleia'
@@ -529,6 +540,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/hub'
     | '/apps/cosmosia'
+    | '/apps/roteiroia'
     | '/apps/styleia'
     | '/apps/fitia/chat'
     | '/apps/fitia/progresso'
@@ -576,6 +588,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/glowia'
     | '/_authenticated/apps/granaia'
     | '/_authenticated/apps/petia'
+    | '/_authenticated/apps/roteiroia'
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/styleia'
@@ -670,6 +683,13 @@ declare module '@tanstack/react-router' {
       path: '/apps/saboria'
       fullPath: '/apps/saboria'
       preLoaderRoute: typeof AuthenticatedAppsSaboriaRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apps/roteiroia': {
+      id: '/_authenticated/apps/roteiroia'
+      path: '/apps/roteiroia'
+      fullPath: '/apps/roteiroia'
+      preLoaderRoute: typeof AuthenticatedAppsRoteiroiaRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/apps/petia': {
@@ -1127,6 +1147,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppsGlowiaRouteRoute: typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   AuthenticatedAppsGranaiaRouteRoute: typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
   AuthenticatedAppsPetiaRouteRoute: typeof AuthenticatedAppsPetiaRouteRouteWithChildren
+  AuthenticatedAppsRoteiroiaRouteRoute: typeof AuthenticatedAppsRoteiroiaRouteRoute
   AuthenticatedAppsSaboriaRouteRoute: typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   AuthenticatedAppsSocialiaRouteRoute: typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   AuthenticatedAppsStyleiaRouteRoute: typeof AuthenticatedAppsStyleiaRouteRoute
@@ -1145,6 +1166,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAppsGranaiaRouteRouteWithChildren,
   AuthenticatedAppsPetiaRouteRoute:
     AuthenticatedAppsPetiaRouteRouteWithChildren,
+  AuthenticatedAppsRoteiroiaRouteRoute: AuthenticatedAppsRoteiroiaRouteRoute,
   AuthenticatedAppsSaboriaRouteRoute:
     AuthenticatedAppsSaboriaRouteRouteWithChildren,
   AuthenticatedAppsSocialiaRouteRoute:
