@@ -18,7 +18,7 @@ export const generateDocOutline = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => DocSchema.parse(d))
   .handler(async ({ data, context }) => {
-    const ctx = await recallContext(context.supabase, context.userId, `${data.appSlug} ${data.topic}`, 4);
+    const ctx = await recallContext(context.supabase, context.userId, data.appSlug, data.topic, 4);
     const isPptx = data.format === "pptx";
     const targetCount = isPptx ? "8 a 10 slides" : "6 a 8 capítulos";
 
