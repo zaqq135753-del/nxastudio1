@@ -199,6 +199,71 @@ export type Database = {
         }
         Relationships: []
       }
+      feed_likes: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "feed_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_posts: {
+        Row: {
+          app_slug: string
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          likes_count: number
+          media_url: string | null
+          meta: Json
+          title: string
+          user_id: string
+        }
+        Insert: {
+          app_slug: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          likes_count?: number
+          media_url?: string | null
+          meta?: Json
+          title: string
+          user_id: string
+        }
+        Update: {
+          app_slug?: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          likes_count?: number
+          media_url?: string | null
+          meta?: Json
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       fin_budgets: {
         Row: {
           category: string
@@ -1433,6 +1498,33 @@ export type Database = {
           id?: string
           last_activity_date?: string | null
           longest_streak?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_xp: {
+        Row: {
+          avatar_url: string | null
+          display_name: string | null
+          level: number
+          total_xp: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          display_name?: string | null
+          level?: number
+          total_xp?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          display_name?: string | null
+          level?: number
+          total_xp?: number
           updated_at?: string
           user_id?: string
         }
