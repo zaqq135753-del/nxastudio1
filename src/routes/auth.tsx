@@ -26,10 +26,11 @@ function AuthPage() {
 
   async function afterAuth() {
     const slug = localStorage.getItem(INTENT_KEY);
-    if (slug && findApp(slug)) {
+    const app = slug ? findApp(slug) : null;
+    if (slug && app) {
       try { await claim({ data: { slug: slug as never } }); } catch { /* noop */ }
       localStorage.removeItem(INTENT_KEY);
-      navigate({ to: "/apps/$slug" as never, params: { slug } as never, replace: true });
+      window.location.href = app.route;
       return;
     }
     navigate({ to: "/hub", replace: true });
