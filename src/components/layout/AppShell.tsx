@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { findApp } from "@/apps/registry";
+import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
 
 export function AppShell({ children, appSlug = "saboria" }: { children: ReactNode; appSlug?: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -96,6 +97,7 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
           </div>
         </nav>
       )}
+      <VoiceAssistant />
     </div>
   );
 }

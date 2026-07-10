@@ -10,6 +10,8 @@ import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
 import { TodayWidget } from "@/components/TodayWidget";
 import { NxaMark } from "@/components/NxaMark";
+import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
+import { hasOnboarded } from "@/lib/onboarding.functions";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -40,7 +42,9 @@ function Hub() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [ents, setEnts] = useState<Entitlement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [onboarded, setOnboarded] = useState(true);
   const load = useServerFn(getMyEntitlements);
+  const checkOnb = useServerFn(hasOnboarded);
 
   useEffect(() => {
     (async () => {
@@ -54,8 +58,9 @@ function Hub() {
         setAvatar((meta.avatar_url as string) ?? null);
       }
       try { setEnts(await load()); } finally { setLoading(false); }
+      try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
     })();
-  }, [load]);
+  }, [load, checkOnb]);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -147,6 +152,24 @@ function Hub() {
             </Link>
           )}
         </div>
+
+        {/* Onboarding CTA */}
+        {!onboarded && !loading && (
+          <Link to="/onboarding"
+            className="press mb-6 flex items-center justify-between gap-4 rounded-3xl border p-5 transition hover:bg-[var(--n-100)]"
+            style={{ borderColor: "var(--line-1)" }}>
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--text-1)", color: "var(--bg-1)" }}>
+                <Sparkles size={18} />
+              </div>
+              <div>
+                <div className="text-sm font-semibold" style={{ color: "var(--text-1)" }}>Personalize toda a NXA em 60s</div>
+                <div className="text-xs" style={{ color: "var(--n-500)" }}>Suas respostas alimentam todos os apps de uma vez.</div>
+              </div>
+            </div>
+            <ArrowUpRight size={16} style={{ color: "var(--n-500)" }} />
+          </Link>
+        )}
 
         {/* Widget "Hoje" — próximo passo por app ativo */}
         <TodayWidget ents={ents} />
@@ -252,6 +275,7 @@ function Hub() {
           </section>
         )}
       </main>
+      <VoiceAssistant />
     </div>
   );
 }
