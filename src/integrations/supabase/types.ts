@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_referrals: {
+        Row: {
+          affiliate_user_id: string
+          code: string
+          created_at: string
+          id: string
+          referred_user_id: string
+          status: string
+        }
+        Insert: {
+          affiliate_user_id: string
+          code: string
+          created_at?: string
+          id?: string
+          referred_user_id: string
+          status?: string
+        }
+        Update: {
+          affiliate_user_id?: string
+          code?: string
+          created_at?: string
+          id?: string
+          referred_user_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      affiliates: {
+        Row: {
+          clicks: number
+          code: string
+          created_at: string
+          paid_conversions: number
+          signups: number
+          user_id: string
+        }
+        Insert: {
+          clicks?: number
+          code: string
+          created_at?: string
+          paid_conversions?: number
+          signups?: number
+          user_id: string
+        }
+        Update: {
+          clicks?: number
+          code?: string
+          created_at?: string
+          paid_conversions?: number
+          signups?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_entitlements: {
         Row: {
           app_slug: string
