@@ -97,6 +97,317 @@ export type Database = {
         }
         Relationships: []
       }
+      fin_budgets: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          monthly_limit: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          monthly_limit: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          monthly_limit?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fin_goals: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          id: string
+          saved_amount: number
+          target_amount: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          saved_amount?: number
+          target_amount: number
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          saved_amount?: number
+          target_amount?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fin_transactions: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          kind: string
+          occurred_on: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind: string
+          occurred_on?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind?: string
+          occurred_on?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fit_profile: {
+        Row: {
+          created_at: string
+          equipment: string[] | null
+          fitness_level: string | null
+          goal: string | null
+          height: number | null
+          id: string
+          restrictions: string | null
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          equipment?: string[] | null
+          fitness_level?: string | null
+          goal?: string | null
+          height?: number | null
+          id?: string
+          restrictions?: string | null
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          equipment?: string[] | null
+          fitness_level?: string | null
+          goal?: string | null
+          height?: number | null
+          id?: string
+          restrictions?: string | null
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      fit_sessions: {
+        Row: {
+          calories: number | null
+          completed_on: string
+          created_at: string
+          duration_min: number
+          id: string
+          notes: string | null
+          user_id: string
+          workout_id: string | null
+        }
+        Insert: {
+          calories?: number | null
+          completed_on?: string
+          created_at?: string
+          duration_min?: number
+          id?: string
+          notes?: string | null
+          user_id: string
+          workout_id?: string | null
+        }
+        Update: {
+          calories?: number | null
+          completed_on?: string
+          created_at?: string
+          duration_min?: number
+          id?: string
+          notes?: string | null
+          user_id?: string
+          workout_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fit_sessions_workout_id_fkey"
+            columns: ["workout_id"]
+            isOneToOne: false
+            referencedRelation: "fit_workouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fit_workouts: {
+        Row: {
+          created_at: string
+          difficulty: string | null
+          duration_min: number | null
+          exercises: Json
+          focus: string | null
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          difficulty?: string | null
+          duration_min?: number | null
+          exercises: Json
+          focus?: string | null
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          difficulty?: string | null
+          duration_min?: number | null
+          exercises?: Json
+          focus?: string | null
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lang_profile: {
+        Row: {
+          created_at: string
+          daily_goal_min: number
+          id: string
+          last_active: string | null
+          level: string
+          streak: number
+          target_lang: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_goal_min?: number
+          id?: string
+          last_active?: string | null
+          level?: string
+          streak?: number
+          target_lang?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_goal_min?: number
+          id?: string
+          last_active?: string | null
+          level?: string
+          streak?: number
+          target_lang?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lang_sessions: {
+        Row: {
+          accuracy: number | null
+          created_at: string
+          duration_min: number
+          id: string
+          kind: string
+          payload: Json | null
+          target_lang: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          created_at?: string
+          duration_min?: number
+          id?: string
+          kind: string
+          payload?: Json | null
+          target_lang: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          created_at?: string
+          duration_min?: number
+          id?: string
+          kind?: string
+          payload?: Json | null
+          target_lang?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lang_vocabulary: {
+        Row: {
+          created_at: string
+          ease: number
+          example: string | null
+          id: string
+          next_review: string
+          target_lang: string
+          term: string
+          translation: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ease?: number
+          example?: string | null
+          id?: string
+          next_review?: string
+          target_lang: string
+          term: string
+          translation: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ease?: number
+          example?: string | null
+          id?: string
+          next_review?: string
+          target_lang?: string
+          term?: string
+          translation?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       palate_profile: {
         Row: {
           budget_weekly: string | null
@@ -496,6 +807,93 @@ export type Database = {
           source?: string | null
           steps?: Json
           time?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skin_analyses: {
+        Row: {
+          created_at: string
+          diagnosis: Json
+          id: string
+          image_url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          diagnosis: Json
+          id?: string
+          image_url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          diagnosis?: Json
+          id?: string
+          image_url?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skin_profile: {
+        Row: {
+          age: number | null
+          allergies: string[] | null
+          climate: string | null
+          concerns: string[] | null
+          created_at: string
+          id: string
+          skin_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          allergies?: string[] | null
+          climate?: string | null
+          concerns?: string[] | null
+          created_at?: string
+          id?: string
+          skin_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          allergies?: string[] | null
+          climate?: string | null
+          concerns?: string[] | null
+          created_at?: string
+          id?: string
+          skin_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skin_routines: {
+        Row: {
+          created_at: string
+          id: string
+          period: string
+          steps: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          period: string
+          steps: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          period?: string
+          steps?: Json
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
