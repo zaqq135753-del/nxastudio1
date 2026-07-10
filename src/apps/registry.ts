@@ -1,5 +1,5 @@
 import { Refrigerator, Camera, CalendarDays, HeartPulse, Home, type LucideIcon,
-         ChefHat, Dumbbell, Wallet, Sparkles } from "lucide-react";
+         ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone } from "lucide-react";
 
 export type AppTab = {
   to: string;                // full path
@@ -34,6 +34,23 @@ export const APPS: readonly AppEntry[] = [
       { to: "/apps/saboria/foto",        label: "Foto",      icon: Camera },
       { to: "/apps/saboria/planner",     label: "Planner",   icon: CalendarDays },
       { to: "/apps/saboria/nutri",       label: "Nutri",     icon: HeartPulse },
+    ],
+  },
+  {
+    slug: "socialia",
+    name: "SocialIA",
+    tagline: "Social media com IA",
+    description:
+      "Gera legendas, ideias de post, calendário editorial, hashtags e analisa perfis de redes sociais.",
+    icon: Megaphone,
+    status: "live",
+    route: "/apps/socialia",
+    tabs: [
+      { to: "/apps/socialia",             label: "Início",     icon: Home },
+      { to: "/apps/socialia/gerador",     label: "Gerador",    icon: PenLine },
+      { to: "/apps/socialia/calendario",  label: "Calendário", icon: CalendarDays },
+      { to: "/apps/socialia/hashtags",    label: "Hashtags",   icon: Hash },
+      { to: "/apps/socialia/analise",     label: "Análise",    icon: LineChart },
     ],
   },
   {

@@ -250,6 +250,93 @@ export type Database = {
         }
         Relationships: []
       }
+      social_calendars: {
+        Row: {
+          created_at: string
+          duration: string | null
+          frequency: string | null
+          goals: Json | null
+          id: string
+          name: string
+          niche: string | null
+          posts: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration?: string | null
+          frequency?: string | null
+          goals?: Json | null
+          id?: string
+          name: string
+          niche?: string | null
+          posts: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration?: string | null
+          frequency?: string | null
+          goals?: Json | null
+          id?: string
+          name?: string
+          niche?: string | null
+          posts?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      social_contents: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          payload: Json
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          payload: Json
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      social_hashtag_sets: {
+        Row: {
+          created_at: string
+          hashtags: Json
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hashtags: Json
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hashtags?: Json
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       usage_counters: {
         Row: {
           ai_calls: number
