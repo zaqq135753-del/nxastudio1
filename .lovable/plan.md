@@ -1,102 +1,75 @@
-# Suíte de apps IA — refatoração
+# NXA Suite → Redesign + Modelo Base/Prime por app
 
-Transformar o projeto atual (SaborIA solo) em uma **plataforma de vários apps** onde:
-- `/` é uma **landing pública** vendendo a suíte (todos os apps, mesmo preço).
-- Após login, o usuário cai num **hub** com switcher entre os apps que contratou + oferta dos que faltam.
-- **SaborIA vira o primeiro app**, movido para `/apps/saboria/*`. A arquitetura já fica pronta pra plugar o próximo app no prompt seguinte (basta criar `/apps/<slug>/*` e registrar no catálogo).
+Escopo grande. Vou entregar em 4 ondas para caber em revisões incrementais, sem quebrar a lógica atual dos apps.
 
-## 1. Catálogo de apps (fonte da verdade)
+## Onda 1 — Fundamentos comerciais (Base + Prime por app)
 
-Arquivo `src/apps/registry.ts` com metadata de cada app:
-```
-{ slug, name, tagline, icon, accent, route, status: 'live'|'soon' }
-```
-Hoje: `saboria` (live). Próximos: placeholders `soon` até a gente construir.
+**Registry**
+- `src/apps/registry.ts`: adicionar `pricing: { base: { price, features[] }, prime: { price, features[] } }` para os 10 apps, com as copies e features do briefing.
+- Nova função `hasPrime(slug)` além do `hasEntitlement(slug)`.
 
-Usado por: landing, hub, switcher, paywall — nada é hardcoded em vários lugares.
+**Entitlements**
+- Migration: coluna `tier text default 'base' check (tier in ('base','prime'))` em `app_entitlements`.
+- `claimTrial(slug, tier)` aceita tier; trial padrão continua Base 7 dias.
+- Helper `useEntitlement(slug)` retorna `{ status: 'active'|'trial'|'locked'|'available', tier: 'base'|'prime'|null, trialEndsAt }`.
 
-## 2. Estrutura de rotas
+**Gate global de recursos Prime**
+- `<LockedFeature slug feature>`: envolve qualquer botão/área Prime; se não Prime abre `<UpsellModal>`.
+- `PrimeBadge`, `TrialBanner` prontos para reutilização.
 
-```text
-/                         Landing pública (vitrine da suíte)
-/auth                     Login/signup (já existe)
-/_authenticated/
-  hub                     Home logada: grid dos apps + switcher
-  apps/saboria/           SaborIA (tudo que hoje é /app, /geladeira, /foto, /planner, /nutri, /receitas, /onboarding)
-    index                 (antigo /app)
-    geladeira
-    foto
-    planner
-    nutri
-    receitas
-    onboarding
-```
+## Onda 2 — Redesign visual (design system)
 
-Movimentação: renomear os arquivos existentes em `src/routes/_authenticated/*.tsx` para dentro de `src/routes/_authenticated/apps/saboria/`. Atualizar todos os `<Link to>` e `createFileRoute` strings (obrigatório pra bater com o filename — regra do TanStack).
+**Tokens (`src/styles.css`)**
+- Paleta nova (fora do roxo genérico): base neutra quente + acento único por tema (Light: âmbar profundo; Paper: tinta+ocre; Dark: verde-oliva elétrico ou cobre — escolho um coerente com "Culinary Editorial" que já existe).
+- Tipografia: manter Inter body + display forte (ex.: Fraunces ou Instrument Serif para editorial premium).
+- Tokens de superfície: `--surface-1/2/3`, `--glass`, `--ring-prime` (gradiente sutil só para elementos Prime), sombras longas suaves.
+- Remover overlays escuros pesados dos tiles atuais; usar mais respiro.
 
-Após login, redirect padrão vai pra `/hub` (não mais `/app`).
+**Componentes**
+- `AppCard` reescrito: nome, subtítulo, imagem, `StatusPill` (Ativo/Trial/Prime/Bloqueado/Disponível), CTA contextual, indicador de valor ("3 sugestões hoje").
+- `PricingCard` (Base + Prime lado a lado) e `FeatureComparison` (tabela ✓/✓).
+- `UpsellModal`, `PrimeBadge`, `TrialBanner`, `LockedFeature` estilizados.
 
-## 3. Modelo de dados (entitlements)
+## Onda 3 — Dashboard como centro de comando
 
-**1 conta, várias assinaturas** → tabela `app_entitlements`:
+`src/routes/hub.tsx` reorganizado em seções:
+1. Saudação personalizada + status trial/assinatura.
+2. **Continue de onde parou** (app mais usado + próxima ação real puxada dos dados do app).
+3. **Seus apps ativos** — cards com indicador de valor real.
+4. **Próximas ações** (agregado de streaks/lembretes/agente).
+5. **Descubra outros apps** — cards com CTA "Começar teste grátis".
+6. **Sua jornada** — XP, streak, badges (compacto).
+- Header: mic global + sino + memória + afiliados agrupados num cluster limpo.
 
-```
-app_entitlements(
-  user_id uuid → auth.users,
-  app_slug text,          -- 'saboria', ...
-  status text,            -- 'active' | 'trial' | 'canceled'
-  granted_at timestamptz,
-  expires_at timestamptz null,
-  PK (user_id, app_slug)
-)
-```
+## Onda 4 — Landings + Checkout por app
 
-RLS: usuário lê os próprios; só `service_role` escreve (Stripe webhook depois). GRANTs no mesmo migration.
+**Landing** (`src/routes/assinar.$slug.tsx` refeita)
+- Hero, frase de impacto, CTA "Começar teste grátis" + "Ver recursos Prime".
+- "O que esse app faz" (bullets do registry).
+- `PricingCard` Base + `PricingCard` Prime.
+- `FeatureComparison` Base vs Prime.
+- Exemplos visuais (screenshots reais do app dentro da plataforma).
+- FAQ curta (3–4 perguntas por app, geradas por template).
+- CTA final fixo no rodapé em mobile.
 
-Helper server fn `getMyEntitlements()` (`requireSupabaseAuth`) usado pelo hub e pelo guard de cada app.
+**Fluxo de upgrade**
+- `/assinar/$slug` → clicou "Assinar" → aciona `claimTrial(slug,'base')` → `<UpsellModal>` "Adicionar [App] Prime?" → "Adicionar Prime" (`claimTrial(slug,'prime')`) ou "Continuar sem Prime" → redireciona pro app.
 
-**Enquanto Stripe não está ligado**: um trigger no signup concede `saboria` como `trial` automaticamente, pra ninguém ficar travado. Fácil de remover quando o paywall entrar.
+**Gates aplicados por app**
+- SaborIA: Planner semanal, Geladeira foto, Scanner despensa, PDF cardápio → Prime.
+- SocialIA: Calendário editorial, análise de @, packs, export PDF/PPTX → Prime.
+- (mesma lógica nos outros 8, seguindo o briefing).
+- Botões `RealtimeCallButton`, `MediaTab`, `MemoryPanel` avançado → `<LockedFeature>` quando Base.
 
-## 4. Guard por app
+**Copies de erro amigáveis**
+- Substituir "A IA retornou uma resposta inválida" e similares por: "Ainda estou preparando suas sugestões." / "Não consegui gerar agora. Tente de novo."
 
-Novo layout `src/routes/_authenticated/apps/saboria/route.tsx` que:
-1. Chama `getMyEntitlements()` no loader.
-2. Se não tem `saboria` ativo → redireciona pra `/hub?upsell=saboria`.
-3. Senão `<Outlet />`.
+## Fora de escopo (intencional)
+- Pagamento real (Stripe/Paddle): trial 7d continua como está; quando você quiser cobrar de verdade eu ligo depois.
+- Nova lógica de IA nos apps — só camada comercial + visual.
+- Não vou tocar arquivos auto-gerados nem alterar auth existente.
 
-Padrão replicável pros próximos apps: cada app tem seu `route.tsx` com o mesmo check trocando o slug.
+## Ordem de execução sugerida
+Faço **Onda 1 + Onda 2** juntas primeiro (fundação), depois você valida o visual, e sigo com **Onda 3 + Onda 4**. Se preferir tudo de uma vez, sigo direto.
 
-## 5. UI
-
-**Landing (`/`)** — reescrita pra vender a suíte:
-- Hero: "Uma assinatura. Vários apps de IA."
-- Grid dos apps do registry (SaborIA + placeholders "em breve" com badge).
-- Preço único destacado, CTA → `/auth`.
-- Mantém o visual mono preto&branco atual.
-
-**Hub (`/hub`)** — nova home logada:
-- Saudação + avatar.
-- Seção "Meus apps": cards dos apps ativos → clica e entra.
-- Seção "Descubra": apps não contratados com CTA "Assinar" (por enquanto desabilitado/coming soon até Stripe).
-- Switcher persistente: dropdown no topbar do `AppShell` mostrando os apps do usuário, permite trocar sem voltar ao hub.
-
-**AppShell** — genérico:
-- Recebe `appSlug` como prop.
-- Bottom nav vira scoped pro app atual (as tabs do SaborIA vêm do registry).
-- Botão "Trocar de app" no topo abre o switcher.
-
-## 6. Fora de escopo agora (próximos prompts)
-
-- Stripe / paywall real (o registry e a tabela já ficam prontos pra plugar).
-- Construir o 2º app — vem no próximo prompt do usuário. Basta:
-  1. Criar `src/routes/_authenticated/apps/<slug>/` com o `route.tsx` guard.
-  2. Adicionar no `registry.ts` como `live`.
-  3. Aparece automático na landing, hub e switcher.
-
-## Detalhes técnicos
-
-- Migration única: cria `app_entitlements` + RLS + GRANTs + trigger de grant no signup.
-- `handle_new_user` existente ganha um `INSERT INTO app_entitlements` pra `saboria` como trial.
-- Todos os `<Link to="/app">`, `/geladeira` etc. viram `/apps/saboria/...`. Uso search-replace em massa.
-- `_authenticated/app.tsx` atual (dashboard do SaborIA) vira `_authenticated/apps/saboria/index.tsx` sem mudança de conteúdo — só path e imports relativos.
-- Registry tipado com `as const` pra ter `slug` union type e navegação type-safe.
+Responde só: **"1+2"**, **"3+4"**, **"tudo"** ou ajustes.
