@@ -197,6 +197,56 @@ function SubscribePage() {
         </div>
       </div>
     </div>
+
+    {/* Pricing Base + Prime */}
+    {pricing && (
+      <section className="border-t border-white/5 bg-neutral-950 px-6 py-16 text-white sm:px-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <div className="text-xs uppercase tracking-[0.16em] text-white/50">Como funciona</div>
+            <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
+              Escolha seu {pricing.base.name}. Adicione Prime quando quiser mais.
+            </h2>
+            <p className="mt-3 max-w-xl text-sm text-white/60">
+              Você começa com 7 dias grátis do plano principal. O Prime é opcional e pode ser adicionado a qualquer momento.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2">
+            <PricingCard
+              plan={pricing.base}
+              variant="base"
+              ctaLabel="Começar teste grátis"
+              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+            />
+            <PricingCard
+              plan={pricing.prime}
+              variant="prime"
+              ctaLabel="Assinar com Prime"
+              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+            />
+          </div>
+
+          <div className="mt-10">
+            <div className="mb-3 text-xs uppercase tracking-[0.16em] text-white/50">Comparativo</div>
+            <FeatureComparison pricing={pricing} />
+          </div>
+
+          <div className="mt-10">
+            <TrialBanner slug={app.slug} />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <UpsellModal
+      slug={app.slug}
+      open={upsellOpen}
+      onOpenChange={setUpsellOpen}
+      onConfirm={addPrime}
+      onSkip={skipPrime}
+      busy={claimBusy}
+    />
+    </>
   );
 }
 
