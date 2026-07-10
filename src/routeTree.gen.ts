@@ -45,6 +45,7 @@ import { Route as AuthenticatedAppsSocialiaHashtagsRouteImport } from './routes/
 import { Route as AuthenticatedAppsSocialiaGeradorRouteImport } from './routes/_authenticated/apps/socialia/gerador'
 import { Route as AuthenticatedAppsSocialiaCalendarioRouteImport } from './routes/_authenticated/apps/socialia/calendario'
 import { Route as AuthenticatedAppsSocialiaAnaliseRouteImport } from './routes/_authenticated/apps/socialia/analise'
+import { Route as AuthenticatedAppsSaboriaScannerRouteImport } from './routes/_authenticated/apps/saboria/scanner'
 import { Route as AuthenticatedAppsSaboriaReceitasRouteImport } from './routes/_authenticated/apps/saboria/receitas'
 import { Route as AuthenticatedAppsSaboriaPlannerRouteImport } from './routes/_authenticated/apps/saboria/planner'
 import { Route as AuthenticatedAppsSaboriaOnboardingRouteImport } from './routes/_authenticated/apps/saboria/onboarding'
@@ -55,12 +56,14 @@ import { Route as AuthenticatedAppsSaboriaAgoraRouteImport } from './routes/_aut
 import { Route as AuthenticatedAppsRoteiroiaMeusRouteImport } from './routes/_authenticated/apps/roteiroia/meus'
 import { Route as AuthenticatedAppsRoteiroiaCriarRouteImport } from './routes/_authenticated/apps/roteiroia/criar'
 import { Route as AuthenticatedAppsRoteiroiaChatRouteImport } from './routes/_authenticated/apps/roteiroia/chat'
+import { Route as AuthenticatedAppsPetiaTriagemRouteImport } from './routes/_authenticated/apps/petia/triagem'
 import { Route as AuthenticatedAppsPetiaTreinoRouteImport } from './routes/_authenticated/apps/petia/treino'
 import { Route as AuthenticatedAppsPetiaSaudeRouteImport } from './routes/_authenticated/apps/petia/saude'
 import { Route as AuthenticatedAppsPetiaPerfilRouteImport } from './routes/_authenticated/apps/petia/perfil'
 import { Route as AuthenticatedAppsPetiaChatRouteImport } from './routes/_authenticated/apps/petia/chat'
 import { Route as AuthenticatedAppsPetiaAlimentacaoRouteImport } from './routes/_authenticated/apps/petia/alimentacao'
 import { Route as AuthenticatedAppsGranaiaTransacoesRouteImport } from './routes/_authenticated/apps/granaia/transacoes'
+import { Route as AuthenticatedAppsGranaiaScannerRouteImport } from './routes/_authenticated/apps/granaia/scanner'
 import { Route as AuthenticatedAppsGranaiaMetasRouteImport } from './routes/_authenticated/apps/granaia/metas'
 import { Route as AuthenticatedAppsGranaiaComprarRouteImport } from './routes/_authenticated/apps/granaia/comprar'
 import { Route as AuthenticatedAppsGranaiaChatRouteImport } from './routes/_authenticated/apps/granaia/chat'
@@ -288,6 +291,12 @@ const AuthenticatedAppsSocialiaAnaliseRoute =
     path: '/analise',
     getParentRoute: () => AuthenticatedAppsSocialiaRouteRoute,
   } as any)
+const AuthenticatedAppsSaboriaScannerRoute =
+  AuthenticatedAppsSaboriaScannerRouteImport.update({
+    id: '/scanner',
+    path: '/scanner',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
 const AuthenticatedAppsSaboriaReceitasRoute =
   AuthenticatedAppsSaboriaReceitasRouteImport.update({
     id: '/receitas',
@@ -348,6 +357,12 @@ const AuthenticatedAppsRoteiroiaChatRoute =
     path: '/chat',
     getParentRoute: () => AuthenticatedAppsRoteiroiaRouteRoute,
   } as any)
+const AuthenticatedAppsPetiaTriagemRoute =
+  AuthenticatedAppsPetiaTriagemRouteImport.update({
+    id: '/triagem',
+    path: '/triagem',
+    getParentRoute: () => AuthenticatedAppsPetiaRouteRoute,
+  } as any)
 const AuthenticatedAppsPetiaTreinoRoute =
   AuthenticatedAppsPetiaTreinoRouteImport.update({
     id: '/treino',
@@ -382,6 +397,12 @@ const AuthenticatedAppsGranaiaTransacoesRoute =
   AuthenticatedAppsGranaiaTransacoesRouteImport.update({
     id: '/transacoes',
     path: '/transacoes',
+    getParentRoute: () => AuthenticatedAppsGranaiaRouteRoute,
+  } as any)
+const AuthenticatedAppsGranaiaScannerRoute =
+  AuthenticatedAppsGranaiaScannerRouteImport.update({
+    id: '/scanner',
+    path: '/scanner',
     getParentRoute: () => AuthenticatedAppsGranaiaRouteRoute,
   } as any)
 const AuthenticatedAppsGranaiaMetasRoute =
@@ -528,12 +549,14 @@ export interface FileRoutesByFullPath {
   '/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
   '/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
+  '/apps/granaia/scanner': typeof AuthenticatedAppsGranaiaScannerRoute
   '/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
   '/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
   '/apps/petia/perfil': typeof AuthenticatedAppsPetiaPerfilRoute
   '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
+  '/apps/petia/triagem': typeof AuthenticatedAppsPetiaTriagemRoute
   '/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
@@ -544,6 +567,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
   '/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
   '/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/apps/saboria/scanner': typeof AuthenticatedAppsSaboriaScannerRoute
   '/apps/socialia/analise': typeof AuthenticatedAppsSocialiaAnaliseRoute
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
@@ -589,12 +613,14 @@ export interface FileRoutesByTo {
   '/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
   '/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
+  '/apps/granaia/scanner': typeof AuthenticatedAppsGranaiaScannerRoute
   '/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
   '/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
   '/apps/petia/perfil': typeof AuthenticatedAppsPetiaPerfilRoute
   '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
+  '/apps/petia/triagem': typeof AuthenticatedAppsPetiaTriagemRoute
   '/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
@@ -605,6 +631,7 @@ export interface FileRoutesByTo {
   '/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
   '/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
   '/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/apps/saboria/scanner': typeof AuthenticatedAppsSaboriaScannerRoute
   '/apps/socialia/analise': typeof AuthenticatedAppsSocialiaAnaliseRoute
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
@@ -662,12 +689,14 @@ export interface FileRoutesById {
   '/_authenticated/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
   '/_authenticated/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/_authenticated/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
+  '/_authenticated/apps/granaia/scanner': typeof AuthenticatedAppsGranaiaScannerRoute
   '/_authenticated/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/_authenticated/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
   '/_authenticated/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
   '/_authenticated/apps/petia/perfil': typeof AuthenticatedAppsPetiaPerfilRoute
   '/_authenticated/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/_authenticated/apps/petia/treino': typeof AuthenticatedAppsPetiaTreinoRoute
+  '/_authenticated/apps/petia/triagem': typeof AuthenticatedAppsPetiaTriagemRoute
   '/_authenticated/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/_authenticated/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/_authenticated/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
@@ -678,6 +707,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria/onboarding': typeof AuthenticatedAppsSaboriaOnboardingRoute
   '/_authenticated/apps/saboria/planner': typeof AuthenticatedAppsSaboriaPlannerRoute
   '/_authenticated/apps/saboria/receitas': typeof AuthenticatedAppsSaboriaReceitasRoute
+  '/_authenticated/apps/saboria/scanner': typeof AuthenticatedAppsSaboriaScannerRoute
   '/_authenticated/apps/socialia/analise': typeof AuthenticatedAppsSocialiaAnaliseRoute
   '/_authenticated/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/_authenticated/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
@@ -735,12 +765,14 @@ export interface FileRouteTypes {
     | '/apps/granaia/chat'
     | '/apps/granaia/comprar'
     | '/apps/granaia/metas'
+    | '/apps/granaia/scanner'
     | '/apps/granaia/transacoes'
     | '/apps/petia/alimentacao'
     | '/apps/petia/chat'
     | '/apps/petia/perfil'
     | '/apps/petia/saude'
     | '/apps/petia/treino'
+    | '/apps/petia/triagem'
     | '/apps/roteiroia/chat'
     | '/apps/roteiroia/criar'
     | '/apps/roteiroia/meus'
@@ -751,6 +783,7 @@ export interface FileRouteTypes {
     | '/apps/saboria/onboarding'
     | '/apps/saboria/planner'
     | '/apps/saboria/receitas'
+    | '/apps/saboria/scanner'
     | '/apps/socialia/analise'
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
@@ -796,12 +829,14 @@ export interface FileRouteTypes {
     | '/apps/granaia/chat'
     | '/apps/granaia/comprar'
     | '/apps/granaia/metas'
+    | '/apps/granaia/scanner'
     | '/apps/granaia/transacoes'
     | '/apps/petia/alimentacao'
     | '/apps/petia/chat'
     | '/apps/petia/perfil'
     | '/apps/petia/saude'
     | '/apps/petia/treino'
+    | '/apps/petia/triagem'
     | '/apps/roteiroia/chat'
     | '/apps/roteiroia/criar'
     | '/apps/roteiroia/meus'
@@ -812,6 +847,7 @@ export interface FileRouteTypes {
     | '/apps/saboria/onboarding'
     | '/apps/saboria/planner'
     | '/apps/saboria/receitas'
+    | '/apps/saboria/scanner'
     | '/apps/socialia/analise'
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
@@ -868,12 +904,14 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/granaia/chat'
     | '/_authenticated/apps/granaia/comprar'
     | '/_authenticated/apps/granaia/metas'
+    | '/_authenticated/apps/granaia/scanner'
     | '/_authenticated/apps/granaia/transacoes'
     | '/_authenticated/apps/petia/alimentacao'
     | '/_authenticated/apps/petia/chat'
     | '/_authenticated/apps/petia/perfil'
     | '/_authenticated/apps/petia/saude'
     | '/_authenticated/apps/petia/treino'
+    | '/_authenticated/apps/petia/triagem'
     | '/_authenticated/apps/roteiroia/chat'
     | '/_authenticated/apps/roteiroia/criar'
     | '/_authenticated/apps/roteiroia/meus'
@@ -884,6 +922,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria/onboarding'
     | '/_authenticated/apps/saboria/planner'
     | '/_authenticated/apps/saboria/receitas'
+    | '/_authenticated/apps/saboria/scanner'
     | '/_authenticated/apps/socialia/analise'
     | '/_authenticated/apps/socialia/calendario'
     | '/_authenticated/apps/socialia/gerador'
@@ -1166,6 +1205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsSocialiaAnaliseRouteImport
       parentRoute: typeof AuthenticatedAppsSocialiaRouteRoute
     }
+    '/_authenticated/apps/saboria/scanner': {
+      id: '/_authenticated/apps/saboria/scanner'
+      path: '/scanner'
+      fullPath: '/apps/saboria/scanner'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaScannerRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
+    }
     '/_authenticated/apps/saboria/receitas': {
       id: '/_authenticated/apps/saboria/receitas'
       path: '/receitas'
@@ -1236,6 +1282,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsRoteiroiaChatRouteImport
       parentRoute: typeof AuthenticatedAppsRoteiroiaRouteRoute
     }
+    '/_authenticated/apps/petia/triagem': {
+      id: '/_authenticated/apps/petia/triagem'
+      path: '/triagem'
+      fullPath: '/apps/petia/triagem'
+      preLoaderRoute: typeof AuthenticatedAppsPetiaTriagemRouteImport
+      parentRoute: typeof AuthenticatedAppsPetiaRouteRoute
+    }
     '/_authenticated/apps/petia/treino': {
       id: '/_authenticated/apps/petia/treino'
       path: '/treino'
@@ -1276,6 +1329,13 @@ declare module '@tanstack/react-router' {
       path: '/transacoes'
       fullPath: '/apps/granaia/transacoes'
       preLoaderRoute: typeof AuthenticatedAppsGranaiaTransacoesRouteImport
+      parentRoute: typeof AuthenticatedAppsGranaiaRouteRoute
+    }
+    '/_authenticated/apps/granaia/scanner': {
+      id: '/_authenticated/apps/granaia/scanner'
+      path: '/scanner'
+      fullPath: '/apps/granaia/scanner'
+      preLoaderRoute: typeof AuthenticatedAppsGranaiaScannerRouteImport
       parentRoute: typeof AuthenticatedAppsGranaiaRouteRoute
     }
     '/_authenticated/apps/granaia/metas': {
@@ -1501,6 +1561,7 @@ interface AuthenticatedAppsGranaiaRouteRouteChildren {
   AuthenticatedAppsGranaiaChatRoute: typeof AuthenticatedAppsGranaiaChatRoute
   AuthenticatedAppsGranaiaComprarRoute: typeof AuthenticatedAppsGranaiaComprarRoute
   AuthenticatedAppsGranaiaMetasRoute: typeof AuthenticatedAppsGranaiaMetasRoute
+  AuthenticatedAppsGranaiaScannerRoute: typeof AuthenticatedAppsGranaiaScannerRoute
   AuthenticatedAppsGranaiaTransacoesRoute: typeof AuthenticatedAppsGranaiaTransacoesRoute
   AuthenticatedAppsGranaiaIndexRoute: typeof AuthenticatedAppsGranaiaIndexRoute
 }
@@ -1510,6 +1571,7 @@ const AuthenticatedAppsGranaiaRouteRouteChildren: AuthenticatedAppsGranaiaRouteR
     AuthenticatedAppsGranaiaChatRoute: AuthenticatedAppsGranaiaChatRoute,
     AuthenticatedAppsGranaiaComprarRoute: AuthenticatedAppsGranaiaComprarRoute,
     AuthenticatedAppsGranaiaMetasRoute: AuthenticatedAppsGranaiaMetasRoute,
+    AuthenticatedAppsGranaiaScannerRoute: AuthenticatedAppsGranaiaScannerRoute,
     AuthenticatedAppsGranaiaTransacoesRoute:
       AuthenticatedAppsGranaiaTransacoesRoute,
     AuthenticatedAppsGranaiaIndexRoute: AuthenticatedAppsGranaiaIndexRoute,
@@ -1526,6 +1588,7 @@ interface AuthenticatedAppsPetiaRouteRouteChildren {
   AuthenticatedAppsPetiaPerfilRoute: typeof AuthenticatedAppsPetiaPerfilRoute
   AuthenticatedAppsPetiaSaudeRoute: typeof AuthenticatedAppsPetiaSaudeRoute
   AuthenticatedAppsPetiaTreinoRoute: typeof AuthenticatedAppsPetiaTreinoRoute
+  AuthenticatedAppsPetiaTriagemRoute: typeof AuthenticatedAppsPetiaTriagemRoute
   AuthenticatedAppsPetiaIndexRoute: typeof AuthenticatedAppsPetiaIndexRoute
 }
 
@@ -1537,6 +1600,7 @@ const AuthenticatedAppsPetiaRouteRouteChildren: AuthenticatedAppsPetiaRouteRoute
     AuthenticatedAppsPetiaPerfilRoute: AuthenticatedAppsPetiaPerfilRoute,
     AuthenticatedAppsPetiaSaudeRoute: AuthenticatedAppsPetiaSaudeRoute,
     AuthenticatedAppsPetiaTreinoRoute: AuthenticatedAppsPetiaTreinoRoute,
+    AuthenticatedAppsPetiaTriagemRoute: AuthenticatedAppsPetiaTriagemRoute,
     AuthenticatedAppsPetiaIndexRoute: AuthenticatedAppsPetiaIndexRoute,
   }
 
@@ -1573,6 +1637,7 @@ interface AuthenticatedAppsSaboriaRouteRouteChildren {
   AuthenticatedAppsSaboriaOnboardingRoute: typeof AuthenticatedAppsSaboriaOnboardingRoute
   AuthenticatedAppsSaboriaPlannerRoute: typeof AuthenticatedAppsSaboriaPlannerRoute
   AuthenticatedAppsSaboriaReceitasRoute: typeof AuthenticatedAppsSaboriaReceitasRoute
+  AuthenticatedAppsSaboriaScannerRoute: typeof AuthenticatedAppsSaboriaScannerRoute
   AuthenticatedAppsSaboriaIndexRoute: typeof AuthenticatedAppsSaboriaIndexRoute
 }
 
@@ -1588,6 +1653,7 @@ const AuthenticatedAppsSaboriaRouteRouteChildren: AuthenticatedAppsSaboriaRouteR
     AuthenticatedAppsSaboriaPlannerRoute: AuthenticatedAppsSaboriaPlannerRoute,
     AuthenticatedAppsSaboriaReceitasRoute:
       AuthenticatedAppsSaboriaReceitasRoute,
+    AuthenticatedAppsSaboriaScannerRoute: AuthenticatedAppsSaboriaScannerRoute,
     AuthenticatedAppsSaboriaIndexRoute: AuthenticatedAppsSaboriaIndexRoute,
   }
 
