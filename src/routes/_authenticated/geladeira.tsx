@@ -2,9 +2,10 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/AppShell";
-import { generateRecipe, type FridgeRecipe } from "@/lib/ai.functions";
+import { generateRecipe, generateRecipeImage, type FridgeRecipe } from "@/lib/ai.functions";
+import { saveRecipe } from "@/lib/recipes.functions";
 import { toast } from "sonner";
-import { Sparkles, Plus, X, RotateCw, BarChart3 } from "lucide-react";
+import { Sparkles, Plus, X, RotateCw, BarChart3, Bookmark, Play, Pause, ImageIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/geladeira")({
   component: GeladeiraPage,
