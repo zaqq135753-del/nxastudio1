@@ -63,6 +63,7 @@ import { Route as AuthenticatedAppsFluencyiaConversarRouteImport } from './route
 import { Route as AuthenticatedAppsFitiaTreinoRouteImport } from './routes/_authenticated/apps/fitia/treino'
 import { Route as AuthenticatedAppsFitiaProgressoRouteImport } from './routes/_authenticated/apps/fitia/progresso'
 import { Route as AuthenticatedAppsFitiaChatRouteImport } from './routes/_authenticated/apps/fitia/chat'
+import { Route as AuthenticatedAppsCosmosiaMapaRouteImport } from './routes/_authenticated/apps/cosmosia/mapa'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -383,6 +384,12 @@ const AuthenticatedAppsFitiaChatRoute =
     path: '/chat',
     getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
   } as any)
+const AuthenticatedAppsCosmosiaMapaRoute =
+  AuthenticatedAppsCosmosiaMapaRouteImport.update({
+    id: '/mapa',
+    path: '/mapa',
+    getParentRoute: () => AuthenticatedAppsCosmosiaRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -398,6 +405,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -444,6 +452,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
   '/apps/roteiroia': typeof AuthenticatedAppsRoteiroiaRouteRoute
+  '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -501,6 +510,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/_authenticated/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
   '/_authenticated/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
   '/_authenticated/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/_authenticated/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
@@ -558,6 +568,7 @@ export interface FileRouteTypes {
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/styleia'
+    | '/apps/cosmosia/mapa'
     | '/apps/fitia/chat'
     | '/apps/fitia/progresso'
     | '/apps/fitia/treino'
@@ -604,6 +615,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/hub'
     | '/apps/roteiroia'
+    | '/apps/cosmosia/mapa'
     | '/apps/fitia/chat'
     | '/apps/fitia/progresso'
     | '/apps/fitia/treino'
@@ -660,6 +672,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/styleia'
+    | '/_authenticated/apps/cosmosia/mapa'
     | '/_authenticated/apps/fitia/chat'
     | '/_authenticated/apps/fitia/progresso'
     | '/_authenticated/apps/fitia/treino'
@@ -1088,15 +1101,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsFitiaChatRouteImport
       parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
     }
+    '/_authenticated/apps/cosmosia/mapa': {
+      id: '/_authenticated/apps/cosmosia/mapa'
+      path: '/mapa'
+      fullPath: '/apps/cosmosia/mapa'
+      preLoaderRoute: typeof AuthenticatedAppsCosmosiaMapaRouteImport
+      parentRoute: typeof AuthenticatedAppsCosmosiaRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAppsCosmosiaRouteRouteChildren {
+  AuthenticatedAppsCosmosiaMapaRoute: typeof AuthenticatedAppsCosmosiaMapaRoute
   AuthenticatedAppsCosmosiaIndexRoute: typeof AuthenticatedAppsCosmosiaIndexRoute
 }
 
 const AuthenticatedAppsCosmosiaRouteRouteChildren: AuthenticatedAppsCosmosiaRouteRouteChildren =
   {
+    AuthenticatedAppsCosmosiaMapaRoute: AuthenticatedAppsCosmosiaMapaRoute,
     AuthenticatedAppsCosmosiaIndexRoute: AuthenticatedAppsCosmosiaIndexRoute,
   }
 
