@@ -76,6 +76,7 @@ function Dashboard() {
             <Link to="/nutri" className="chip chip-neutral">💬 Falar com a Nutri</Link>
             <Link to="/geladeira" className="chip chip-neutral">🧊 O que fazer hoje</Link>
             <Link to="/planner" className="chip chip-neutral">📅 Plano da semana</Link>
+            <Link to="/receitas" className="chip chip-neutral"><BookOpen size={12} className="mr-1 inline" />Minhas receitas</Link>
           </div>
         </div>
       </section>
