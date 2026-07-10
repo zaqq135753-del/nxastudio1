@@ -1,5 +1,6 @@
 import { Refrigerator, Camera, CalendarDays, HeartPulse, Home, type LucideIcon,
-         ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone } from "lucide-react";
+         ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone,
+         PawPrint, MessageCircleHeart, Utensils, GraduationCap, User } from "lucide-react";
 
 export type AppTab = {
   to: string;                // full path
@@ -51,6 +52,24 @@ export const APPS: readonly AppEntry[] = [
       { to: "/apps/socialia/calendario",  label: "Calendário", icon: CalendarDays },
       { to: "/apps/socialia/hashtags",    label: "Hashtags",   icon: Hash },
       { to: "/apps/socialia/analise",     label: "Análise",    icon: LineChart },
+    ],
+  },
+  {
+    slug: "petia",
+    name: "PetIA",
+    tagline: "Veterinário virtual com IA",
+    description:
+      "Chat veterinário 24h, saúde, alimentação e treino guiados por IA para cães e gatos.",
+    icon: PawPrint,
+    status: "live",
+    route: "/apps/petia",
+    tabs: [
+      { to: "/apps/petia",             label: "Início",      icon: Home },
+      { to: "/apps/petia/chat",        label: "Chat Vet",    icon: MessageCircleHeart },
+      { to: "/apps/petia/saude",       label: "Saúde",       icon: HeartPulse },
+      { to: "/apps/petia/alimentacao", label: "Alimentação", icon: Utensils },
+      { to: "/apps/petia/treino",      label: "Treino",      icon: GraduationCap },
+      { to: "/apps/petia/perfil",      label: "Perfil",      icon: User },
     ],
   },
   {
