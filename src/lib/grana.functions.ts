@@ -165,3 +165,50 @@ export const canIBuy = createServerFn({ method: "POST" })
     rememberFact(context.supabase, context.userId, "granaia", "compra", `Consultou "${data.item}" R$${data.amount.toFixed(2)} → veredito: ${parsed.verdict}. ${parsed.headline}`);
     return parsed;
   });
+
+/* =============== Receipt OCR — foto de comprovante → transações =============== */
+export type ScannedReceipt = {
+  merchant: string | null;
+  date: string | null;
+  total: number | null;
+  items: Array<{ description: string; amount: number; category: string }>;
+};
+
+export const scanReceipt = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { imageBase64: string }) => {
+    if (!d?.imageBase64?.startsWith("data:image/")) throw new Error("Imagem inválida");
+    return d;
+  })
+  .handler(async ({ data }): Promise<ScannedReceipt> => {
+    const raw = await callGateway({
+      model: "openai/gpt-5", max_tokens: 3000,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: `Você extrai dados de comprovantes/notas fiscais brasileiros.
+Retorne APENAS JSON válido:
+{"merchant":"Nome do estabelecimento","date":"YYYY-MM-DD","total":123.45,"items":[{"description":"item","amount":12.34,"category":"alimentação"}]}
+Categorias: alimentação, transporte, moradia, lazer, saúde, educação, assinaturas, outros.
+Se não conseguir ler: {"merchant":null,"date":null,"total":null,"items":[]}` },
+        { role: "user", content: [
+          { type: "text", text: "Extraia os dados desta nota." },
+          { type: "image_url", image_url: { url: data.imageBase64 } },
+        ] as unknown as string },
+      ],
+    });
+    return parseJson<ScannedReceipt>(raw);
+  });
+
+export const importReceiptItems = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { items: Array<{ description: string; amount: number; category: string }>; date?: string }) => d)
+  .handler(async ({ data, context }) => {
+    const rows = data.items.map(it => ({
+      user_id: context.userId, kind: "expense" as const,
+      category: it.category, amount: it.amount, description: it.description,
+      occurred_on: data.date ?? new Date().toISOString().slice(0, 10),
+    }));
+    const { error } = await context.supabase.from("fin_transactions").insert(rows);
+    if (error) throw error;
+    return { ok: true, count: rows.length };
+  });
