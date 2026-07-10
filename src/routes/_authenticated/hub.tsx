@@ -42,7 +42,9 @@ function Hub() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [ents, setEnts] = useState<Entitlement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [onboarded, setOnboarded] = useState(true);
   const load = useServerFn(getMyEntitlements);
+  const checkOnb = useServerFn(hasOnboarded);
 
   useEffect(() => {
     (async () => {
@@ -56,8 +58,9 @@ function Hub() {
         setAvatar((meta.avatar_url as string) ?? null);
       }
       try { setEnts(await load()); } finally { setLoading(false); }
+      try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
     })();
-  }, [load]);
+  }, [load, checkOnb]);
 
   async function signOut() {
     await qc.cancelQueries();
