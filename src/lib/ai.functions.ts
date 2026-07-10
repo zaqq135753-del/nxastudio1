@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const TEXT_MODEL = "google/gemini-2.5-flash";
 const VISION_MODEL = "google/gemini-2.5-pro";
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
@@ -15,6 +16,10 @@ type ChatMessage = {
       >;
 };
 
+/**
+ * Se o model começa com "openai/" e OPENAI_API_KEY existe → chama OpenAI direto (chave do usuário).
+ * Caso contrário → Lovable AI Gateway.
+ */
 async function callGateway(body: {
   model: string;
   messages: ChatMessage[];
@@ -22,28 +27,36 @@ async function callGateway(body: {
   max_tokens?: number;
   response_format?: { type: "json_object" };
 }): Promise<string> {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("LOVABLE_API_KEY não configurada");
+  const openaiKey = process.env.OPENAI_API_KEY;
+  const useOpenAI = openaiKey && body.model.startsWith("openai/");
 
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": key,
-    },
-    body: JSON.stringify(body),
-  });
+  const url = useOpenAI ? OPENAI_URL : GATEWAY_URL;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const payload = { ...body };
+
+  if (useOpenAI) {
+    headers["Authorization"] = `Bearer ${openaiKey}`;
+    payload.model = body.model.replace(/^openai\//, "");
+  } else {
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("LOVABLE_API_KEY não configurada");
+    headers["Lovable-API-Key"] = key;
+  }
+
+  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
 
   if (!res.ok) {
     const text = await res.text();
     if (res.status === 429) throw new Error("Muitas requisições. Tente novamente em instantes.");
     if (res.status === 402) throw new Error("Créditos de IA esgotados. Adicione créditos no workspace.");
+    if (res.status === 401 && useOpenAI) throw new Error("OPENAI_API_KEY inválida ou sem créditos.");
     throw new Error(`Erro da IA: ${res.status} ${text.slice(0, 200)}`);
   }
 
   const json = await res.json();
   return json.choices?.[0]?.message?.content ?? "";
 }
+
 
 function parseJson<T>(raw: string): T {
   const cleaned = raw
