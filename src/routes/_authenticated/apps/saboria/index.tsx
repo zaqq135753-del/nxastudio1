@@ -66,7 +66,8 @@ function Dashboard() {
           <Link
             key={q.to}
             to={q.to}
-            className="tile-hero group"
+            className="tile-hero tile-cover group"
+            style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}
           >
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
