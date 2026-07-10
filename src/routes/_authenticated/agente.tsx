@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/AppShell";
 import { agentTurn, runAgentAction, type AgentAction } from "@/lib/agent-actions.functions";
-import { Send, Check, X, ArrowRight, Sparkles, Zap } from "lucide-react";
+import { Send, Check, X, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { MicButton } from "@/components/voice/MicButton";
 import { SpeakButton } from "@/components/voice/SpeakButton";
