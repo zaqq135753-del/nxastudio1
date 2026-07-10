@@ -2,7 +2,9 @@ import { Refrigerator, Camera, CalendarDays, HeartPulse, Home, type LucideIcon,
          ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone,
          PawPrint, MessageCircleHeart, Utensils, GraduationCap, User,
          Languages, BookOpen, MessageCircle, Flower2, ClipboardList, ListChecks,
-         Receipt, Target, Activity } from "lucide-react";
+         Receipt, Target, Activity, Shirt, Palette, ShoppingBag,
+         Moon, Stars, Heart, Sparkle,
+         Plane, MapPin, Compass, Route as RouteIcon } from "lucide-react";
 
 export type AppTab = {
   to: string;
