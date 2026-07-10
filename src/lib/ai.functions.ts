@@ -164,7 +164,7 @@ Se a imagem não for comida:
 
     const raw = await callGateway({
       model: VISION_MODEL,
-      max_tokens: 1500,
+      max_tokens: 3000,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: system },
