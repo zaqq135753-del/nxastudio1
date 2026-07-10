@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { financialSummary, financialInsights, type FinancialInsight } from "@/lib/grana.functions";
 import { Receipt, MessageCircle, Target, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
+import coverImg from "@/assets/cover-granaia.jpg";
 
 export const Route = createFileRoute("/_authenticated/apps/granaia/")({
   component: GranaHome,
@@ -109,7 +110,12 @@ function GranaHome() {
 
       <section className="stagger grid grid-cols-1 gap-3 sm:grid-cols-3">
         {quick.map((q) => (
-          <Link key={q.to} to={q.to} className="tile-hero">
+          <Link
+            key={q.to}
+            to={q.to}
+            className="tile-hero tile-cover"
+            style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}
+          >
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
               <ArrowRight size={14} className="tile-arrow" />

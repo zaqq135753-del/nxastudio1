@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemePicker, useInitTheme } from "@/components/ThemePicker";
+import coverImg from "@/assets/cover-saboria.jpg";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/")({
   component: Dashboard,
@@ -65,7 +66,8 @@ function Dashboard() {
           <Link
             key={q.to}
             to={q.to}
-            className="tile-hero group"
+            className="tile-hero tile-cover group"
+            style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}
           >
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
