@@ -10,10 +10,10 @@ export const Route = createFileRoute("/_authenticated/app")({
 });
 
 const quickAccess = [
-  { to: "/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",     desc: "Do que tem em casa",        color: "var(--c-purple)", grad: "linear-gradient(135deg,#8b5cf6,#6d28d9)" },
-  { to: "/foto" as const,      icon: Camera,       title: "Foto → Receita",   desc: "Identifica qualquer prato", color: "var(--c-pink)",   grad: "linear-gradient(135deg,#ff5a7a,#e11d74)" },
-  { to: "/planner" as const,   icon: CalendarDays, title: "Planner semanal",  desc: "7 dias na hora",            color: "var(--c-green)",  grad: "linear-gradient(135deg,#34c07a,#0f9d58)" },
-  { to: "/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",    desc: "Chat 24h com IA",           color: "var(--c-blue)",   grad: "linear-gradient(135deg,#2e90fa,#1d4ed8)" },
+  { to: "/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",    desc: "Do que tem em casa" },
+  { to: "/foto" as const,      icon: Camera,       title: "Foto → Receita",  desc: "Identifica qualquer prato" },
+  { to: "/planner" as const,   icon: CalendarDays, title: "Planner semanal", desc: "7 dias na hora" },
+  { to: "/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",   desc: "Chat 24h com IA" },
 ];
 
 function Dashboard() {
