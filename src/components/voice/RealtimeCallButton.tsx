@@ -54,7 +54,7 @@ export function RealtimeCallButton({ slug, label = "Ligar com a IA", className }
     try { await conv.endSession(); } catch {}
   }, [conv]);
 
-  useEffect(() => () => { conv.endSession().catch(() => {}); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => { try { void conv.endSession(); } catch {} }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <button
