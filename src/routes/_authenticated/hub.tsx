@@ -98,6 +98,11 @@ function Hub() {
               style={{ color: "var(--muted-foreground)" }}>
               <Command size={13} /> Memória
             </Link>
+            <Link to="/afiliados" title="Programa de afiliados"
+              className="press hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
+              style={{ color: "var(--muted-foreground)" }}>
+              🎁 Afiliados
+            </Link>
             <NotificationBell />
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"

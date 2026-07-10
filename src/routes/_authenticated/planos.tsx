@@ -99,6 +99,8 @@ function Planos() {
 
         <p className="text-center text-xs text-muted-foreground">
           Pagamento seguro será ativado em breve — por enquanto, o plano é registrado sem cobrança.
+          <br />
+          Quer ganhar dinheiro indicando? <a href="/afiliados" className="underline">Programa de afiliados →</a>
         </p>
       </div>
     </div>
