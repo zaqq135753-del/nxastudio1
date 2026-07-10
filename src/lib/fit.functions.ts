@@ -99,8 +99,9 @@ export const coachChat = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: profile } = await context.supabase.from("fit_profile")
       .select("*").eq("user_id", context.userId).maybeSingle();
+    const mem = await recallContext(context.supabase, context.userId, "fitia", data.message);
     const system = `Você é um personal trainer brasileiro motivador. Perfil do aluno: ${JSON.stringify(profile ?? {})}.
-Regras: seja prático, cite exercícios reais, avise sobre segurança, no máximo 200 palavras.`;
+Regras: seja prático, cite exercícios reais, avise sobre segurança, no máximo 200 palavras.${mem ? "\n\n" + mem : ""}`;
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
@@ -110,6 +111,7 @@ Regras: seja prático, cite exercícios reais, avise sobre segurança, no máxim
       ],
       temperature: 0.7, max_tokens: 800,
     });
+    rememberFact(context.supabase, context.userId, "fitia", "coach", `Pergunta: ${data.message.slice(0, 200)}`);
     return { reply: raw };
   });
 
