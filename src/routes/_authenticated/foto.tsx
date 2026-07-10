@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { AppShell, ScreenHeader, TypingIndicator } from "../components/layout/AppShell";
-import { analyzePhoto, type PhotoResult } from "../lib/ai.functions";
+import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/AppShell";
+import { analyzePhoto, type PhotoResult } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Search, X, Camera } from "lucide-react";
 

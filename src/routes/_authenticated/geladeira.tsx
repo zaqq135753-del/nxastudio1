@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { AppShell, ScreenHeader, TypingIndicator } from "../components/layout/AppShell";
-import { generateRecipe, type FridgeRecipe } from "../lib/ai.functions";
+import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/AppShell";
+import { generateRecipe, type FridgeRecipe } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Sparkles, Plus, X, RotateCw, BarChart3 } from "lucide-react";
 

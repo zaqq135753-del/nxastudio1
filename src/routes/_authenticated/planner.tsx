@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { AppShell, ScreenHeader, TypingIndicator } from "../components/layout/AppShell";
-import { generateMealPlan, type MealPlan } from "../lib/ai.functions";
+import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/AppShell";
+import { generateMealPlan, type MealPlan } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Sparkles, ChevronDown } from "lucide-react";
 
