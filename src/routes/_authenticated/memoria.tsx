@@ -6,7 +6,7 @@ import { Brain, Trash2, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { listMemories, forgetMemory } from "@/lib/memory.functions";
-import { APP_REGISTRY } from "@/apps/registry";
+import { APPS } from "@/apps/registry";
 
 export const Route = createFileRoute("/_authenticated/memoria")({
   component: MemoryPage,
@@ -27,10 +27,12 @@ function MemoryPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["memories"] }),
   });
 
-  const bySlug = Object.fromEntries(APP_REGISTRY.map((a) => [a.slug, a]));
+  const bySlug = Object.fromEntries(APPS.map((a) => [a.slug, a]));
 
   return (
-    <AppShell title="Sua Memória IA">
+    <AppShell>
+      <>
+      <title>Sua Memória IA</title>
       <div className="mx-auto max-w-3xl px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
