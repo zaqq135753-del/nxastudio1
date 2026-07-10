@@ -74,17 +74,18 @@ export const createItinerary = createServerFn({ method: "POST" })
     days_count: number;
   }) => d)
   .handler(async ({ data, context }) => {
-    const system = `Você é agente de viagens brasileiro. Crie um roteiro DETALHADO de ${data.days_count} dias para ${data.destination}.
-Contexto: ${data.travelers} viajante(s), estilo "${data.style ?? "equilibrado"}", interesses: ${(data.interests ?? []).join(", ") || "gerais"}${data.budget_brl ? `, orçamento total R$ ${data.budget_brl}` : ""}.
-${data.start_date ? `Início: ${data.start_date}. ` : ""}Preços em BRL realistas.
-Responda APENAS em JSON válido:
-{"destination":"${data.destination}","overview":"3-4 frases sobre o destino","best_time_to_visit":"...","days":[{"day":1,"theme":"chegada e centro histórico","activities":[{"time":"09:00","title":"...","description":"...","category":"atracao","estimated_cost_brl":50,"tip":"..."}],"daily_total_brl":250}],"budget_breakdown":{"flights_brl":1500,"lodging_brl":2000,"food_brl":800,"attractions_brl":600,"transport_brl":300,"extras_brl":200,"total_brl":5400},"packing_tips":["...","...","..."],"local_tips":["...","...","..."]}
-Inclua 4-6 atividades por dia com horários.`;
+    const perDay = data.days_count <= 4 ? 5 : data.days_count <= 8 ? 4 : 3;
+    const system = `Você é agente de viagens brasileiro. Crie roteiro de ${data.days_count} dias para ${data.destination}.
+Contexto: ${data.travelers} viajante(s), estilo "${data.style ?? "equilibrado"}", interesses: ${(data.interests ?? []).join(", ") || "gerais"}${data.budget_brl ? `, orçamento R$ ${data.budget_brl}` : ""}.
+${data.start_date ? `Início: ${data.start_date}. ` : ""}Preços BRL realistas. Textos CURTOS (description ≤120 chars, tip ≤80).
+Responda APENAS JSON válido, sem markdown:
+{"destination":"${data.destination}","overview":"2-3 frases","best_time_to_visit":"...","days":[{"day":1,"theme":"...","activities":[{"time":"09:00","title":"...","description":"...","category":"atracao","estimated_cost_brl":50,"tip":"..."}],"daily_total_brl":250}],"budget_breakdown":{"flights_brl":0,"lodging_brl":0,"food_brl":0,"attractions_brl":0,"transport_brl":0,"extras_brl":0,"total_brl":0},"packing_tips":["..."],"local_tips":["..."]}
+Inclua exatamente ${perDay} atividades por dia. 3 packing_tips e 3 local_tips.`;
 
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [{ role: "system", content: system }, { role: "user", content: data.destination }],
-      temperature: 0.75, max_tokens: 4000,
+      temperature: 0.7, max_tokens: 8000,
     });
     const parsed = parseJson<Itinerary>(raw);
 
