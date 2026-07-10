@@ -148,6 +148,9 @@ function Hub() {
           )}
         </div>
 
+        {/* Widget "Hoje" — próximo passo por app ativo */}
+        <TodayWidget ents={ents} />
+
         {/* Proactive briefing */}
         <section className="mb-10"><BriefingCard /></section>
 
