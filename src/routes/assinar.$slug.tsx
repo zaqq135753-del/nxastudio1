@@ -43,12 +43,26 @@ function SubscribePage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const [claimBusy, setClaimBusy] = useState(false);
   const claim = useServerFn(claimTrial);
   const landing = getLanding(app.slug, app);
+  const pricing = getPricing(app.slug);
 
   async function afterAuth() {
-    try { await claim({ data: { slug: app.slug as never } }); } catch { /* noop */ }
+    try { await claim({ data: { slug: app.slug as never, tier: "base" } }); } catch { /* noop */ }
     localStorage.removeItem(INTENT_KEY);
+    setUpsellOpen(true); // oferece Prime antes de redirecionar
+  }
+
+  async function addPrime() {
+    setClaimBusy(true);
+    try { await claim({ data: { slug: app.slug as never, tier: "prime" } }); } catch { /* noop */ }
+    setClaimBusy(false);
+    window.location.href = app.route;
+  }
+
+  function skipPrime() {
     window.location.href = app.route;
   }
 
