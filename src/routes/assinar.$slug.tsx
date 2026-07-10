@@ -104,6 +104,7 @@ function SubscribePage() {
   }
 
   return (
+    <>
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
       {/* Left: editorial hero per app */}
       <div className="relative hidden overflow-hidden md:block">
