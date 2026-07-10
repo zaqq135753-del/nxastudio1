@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/apps/petia/triagem")({
 
 const COMMON = ["vômito", "diarreia", "apatia", "sem apetite", "mancando", "coçando muito", "tosse", "espirros", "olho vermelho", "sangramento", "convulsão", "dificuldade pra respirar"];
 
-type Pet = { id: string; name: string; species: string; birth_date?: string | null };
+type Pet = { id: string; name: string; type: string; birth_date?: string | null };
 
 function Triagem() {
   const load = useServerFn(listPets);
