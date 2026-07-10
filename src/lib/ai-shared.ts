@@ -1,31 +1,49 @@
 // Shared AI helpers used by all IA apps in the suite.
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 export const TEXT_MODEL = "google/gemini-2.5-flash";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
+/**
+ * Roteamento inteligente:
+ * - Se model começa com "openai/" E OPENAI_API_KEY existe → chama OpenAI direto (usa sua chave/créditos).
+ * - Caso contrário → passa pelo Lovable AI Gateway.
+ */
 export async function callGateway(body: {
   model: string;
   messages: ChatMessage[];
   temperature?: number;
   max_tokens?: number;
 }): Promise<string> {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("LOVABLE_API_KEY não configurada");
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-    body: JSON.stringify(body),
-  });
+  const openaiKey = process.env.OPENAI_API_KEY;
+  const useOpenAI = openaiKey && body.model.startsWith("openai/");
+
+  const url = useOpenAI ? OPENAI_URL : GATEWAY_URL;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const payload = { ...body };
+
+  if (useOpenAI) {
+    headers["Authorization"] = `Bearer ${openaiKey}`;
+    payload.model = body.model.replace(/^openai\//, "");
+  } else {
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("LOVABLE_API_KEY não configurada");
+    headers["Lovable-API-Key"] = key;
+  }
+
+  const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
   if (!res.ok) {
     const txt = await res.text();
     if (res.status === 429) throw new Error("Muitas requisições. Tente novamente em instantes.");
     if (res.status === 402) throw new Error("Créditos de IA esgotados.");
+    if (res.status === 401 && useOpenAI) throw new Error("OPENAI_API_KEY inválida.");
     throw new Error(`Erro da IA: ${res.status} ${txt.slice(0, 200)}`);
   }
   const j = await res.json();
   return j.choices?.[0]?.message?.content ?? "";
 }
+
 
 function balance(s: string): string {
   let inStr = false, esc = false;
