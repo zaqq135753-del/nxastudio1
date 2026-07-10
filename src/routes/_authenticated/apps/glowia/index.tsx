@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { getSkinProfile, listAnalyses } from "@/lib/glow.functions";
 import { Camera, ListChecks, ClipboardList, ArrowRight, Sun } from "lucide-react";
+import coverImg from "@/assets/cover-glowia.jpg";
 
 export const Route = createFileRoute("/_authenticated/apps/glowia/")({
   component: GlowHome,
