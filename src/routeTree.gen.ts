@@ -47,6 +47,7 @@ import { Route as AuthenticatedAppsSaboriaOnboardingRouteImport } from './routes
 import { Route as AuthenticatedAppsSaboriaNutriRouteImport } from './routes/_authenticated/apps/saboria/nutri'
 import { Route as AuthenticatedAppsSaboriaGeladeiraRouteImport } from './routes/_authenticated/apps/saboria/geladeira'
 import { Route as AuthenticatedAppsSaboriaFotoRouteImport } from './routes/_authenticated/apps/saboria/foto'
+import { Route as AuthenticatedAppsSaboriaAgoraRouteImport } from './routes/_authenticated/apps/saboria/agora'
 import { Route as AuthenticatedAppsRoteiroiaMeusRouteImport } from './routes/_authenticated/apps/roteiroia/meus'
 import { Route as AuthenticatedAppsRoteiroiaCriarRouteImport } from './routes/_authenticated/apps/roteiroia/criar'
 import { Route as AuthenticatedAppsRoteiroiaChatRouteImport } from './routes/_authenticated/apps/roteiroia/chat'
@@ -57,15 +58,18 @@ import { Route as AuthenticatedAppsPetiaChatRouteImport } from './routes/_authen
 import { Route as AuthenticatedAppsPetiaAlimentacaoRouteImport } from './routes/_authenticated/apps/petia/alimentacao'
 import { Route as AuthenticatedAppsGranaiaTransacoesRouteImport } from './routes/_authenticated/apps/granaia/transacoes'
 import { Route as AuthenticatedAppsGranaiaMetasRouteImport } from './routes/_authenticated/apps/granaia/metas'
+import { Route as AuthenticatedAppsGranaiaComprarRouteImport } from './routes/_authenticated/apps/granaia/comprar'
 import { Route as AuthenticatedAppsGranaiaChatRouteImport } from './routes/_authenticated/apps/granaia/chat'
 import { Route as AuthenticatedAppsGlowiaRotinaRouteImport } from './routes/_authenticated/apps/glowia/rotina'
 import { Route as AuthenticatedAppsGlowiaPerfilRouteImport } from './routes/_authenticated/apps/glowia/perfil'
+import { Route as AuthenticatedAppsGlowiaHojeRouteImport } from './routes/_authenticated/apps/glowia/hoje'
 import { Route as AuthenticatedAppsGlowiaAnaliseRouteImport } from './routes/_authenticated/apps/glowia/analise'
 import { Route as AuthenticatedAppsFluencyiaVocabularioRouteImport } from './routes/_authenticated/apps/fluencyia/vocabulario'
 import { Route as AuthenticatedAppsFluencyiaPerfilRouteImport } from './routes/_authenticated/apps/fluencyia/perfil'
 import { Route as AuthenticatedAppsFluencyiaConversarRouteImport } from './routes/_authenticated/apps/fluencyia/conversar'
 import { Route as AuthenticatedAppsFitiaTreinoRouteImport } from './routes/_authenticated/apps/fitia/treino'
 import { Route as AuthenticatedAppsFitiaProgressoRouteImport } from './routes/_authenticated/apps/fitia/progresso'
+import { Route as AuthenticatedAppsFitiaHojeRouteImport } from './routes/_authenticated/apps/fitia/hoje'
 import { Route as AuthenticatedAppsFitiaChatRouteImport } from './routes/_authenticated/apps/fitia/chat'
 import { Route as AuthenticatedAppsCosmosiaTarotRouteImport } from './routes/_authenticated/apps/cosmosia/tarot'
 import { Route as AuthenticatedAppsCosmosiaPerfilRouteImport } from './routes/_authenticated/apps/cosmosia/perfil'
@@ -295,6 +299,12 @@ const AuthenticatedAppsSaboriaFotoRoute =
     path: '/foto',
     getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
   } as any)
+const AuthenticatedAppsSaboriaAgoraRoute =
+  AuthenticatedAppsSaboriaAgoraRouteImport.update({
+    id: '/agora',
+    path: '/agora',
+    getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
+  } as any)
 const AuthenticatedAppsRoteiroiaMeusRoute =
   AuthenticatedAppsRoteiroiaMeusRouteImport.update({
     id: '/meus',
@@ -355,6 +365,12 @@ const AuthenticatedAppsGranaiaMetasRoute =
     path: '/metas',
     getParentRoute: () => AuthenticatedAppsGranaiaRouteRoute,
   } as any)
+const AuthenticatedAppsGranaiaComprarRoute =
+  AuthenticatedAppsGranaiaComprarRouteImport.update({
+    id: '/comprar',
+    path: '/comprar',
+    getParentRoute: () => AuthenticatedAppsGranaiaRouteRoute,
+  } as any)
 const AuthenticatedAppsGranaiaChatRoute =
   AuthenticatedAppsGranaiaChatRouteImport.update({
     id: '/chat',
@@ -371,6 +387,12 @@ const AuthenticatedAppsGlowiaPerfilRoute =
   AuthenticatedAppsGlowiaPerfilRouteImport.update({
     id: '/perfil',
     path: '/perfil',
+    getParentRoute: () => AuthenticatedAppsGlowiaRouteRoute,
+  } as any)
+const AuthenticatedAppsGlowiaHojeRoute =
+  AuthenticatedAppsGlowiaHojeRouteImport.update({
+    id: '/hoje',
+    path: '/hoje',
     getParentRoute: () => AuthenticatedAppsGlowiaRouteRoute,
   } as any)
 const AuthenticatedAppsGlowiaAnaliseRoute =
@@ -407,6 +429,12 @@ const AuthenticatedAppsFitiaProgressoRoute =
   AuthenticatedAppsFitiaProgressoRouteImport.update({
     id: '/progresso',
     path: '/progresso',
+    getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
+const AuthenticatedAppsFitiaHojeRoute =
+  AuthenticatedAppsFitiaHojeRouteImport.update({
+    id: '/hoje',
+    path: '/hoje',
     getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
   } as any)
 const AuthenticatedAppsFitiaChatRoute =
@@ -459,15 +487,18 @@ export interface FileRoutesByFullPath {
   '/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
   '/apps/cosmosia/tarot': typeof AuthenticatedAppsCosmosiaTarotRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/apps/fitia/hoje': typeof AuthenticatedAppsFitiaHojeRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
   '/apps/glowia/analise': typeof AuthenticatedAppsGlowiaAnaliseRoute
+  '/apps/glowia/hoje': typeof AuthenticatedAppsGlowiaHojeRoute
   '/apps/glowia/perfil': typeof AuthenticatedAppsGlowiaPerfilRoute
   '/apps/glowia/rotina': typeof AuthenticatedAppsGlowiaRotinaRoute
   '/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
+  '/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
   '/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
@@ -478,6 +509,7 @@ export interface FileRoutesByFullPath {
   '/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
+  '/apps/saboria/agora': typeof AuthenticatedAppsSaboriaAgoraRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -512,15 +544,18 @@ export interface FileRoutesByTo {
   '/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
   '/apps/cosmosia/tarot': typeof AuthenticatedAppsCosmosiaTarotRoute
   '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/apps/fitia/hoje': typeof AuthenticatedAppsFitiaHojeRoute
   '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
   '/apps/glowia/analise': typeof AuthenticatedAppsGlowiaAnaliseRoute
+  '/apps/glowia/hoje': typeof AuthenticatedAppsGlowiaHojeRoute
   '/apps/glowia/perfil': typeof AuthenticatedAppsGlowiaPerfilRoute
   '/apps/glowia/rotina': typeof AuthenticatedAppsGlowiaRotinaRoute
   '/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
+  '/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
   '/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
@@ -531,6 +566,7 @@ export interface FileRoutesByTo {
   '/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
+  '/apps/saboria/agora': typeof AuthenticatedAppsSaboriaAgoraRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -577,15 +613,18 @@ export interface FileRoutesById {
   '/_authenticated/apps/cosmosia/perfil': typeof AuthenticatedAppsCosmosiaPerfilRoute
   '/_authenticated/apps/cosmosia/tarot': typeof AuthenticatedAppsCosmosiaTarotRoute
   '/_authenticated/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/_authenticated/apps/fitia/hoje': typeof AuthenticatedAppsFitiaHojeRoute
   '/_authenticated/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
   '/_authenticated/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/_authenticated/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/_authenticated/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/_authenticated/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
   '/_authenticated/apps/glowia/analise': typeof AuthenticatedAppsGlowiaAnaliseRoute
+  '/_authenticated/apps/glowia/hoje': typeof AuthenticatedAppsGlowiaHojeRoute
   '/_authenticated/apps/glowia/perfil': typeof AuthenticatedAppsGlowiaPerfilRoute
   '/_authenticated/apps/glowia/rotina': typeof AuthenticatedAppsGlowiaRotinaRoute
   '/_authenticated/apps/granaia/chat': typeof AuthenticatedAppsGranaiaChatRoute
+  '/_authenticated/apps/granaia/comprar': typeof AuthenticatedAppsGranaiaComprarRoute
   '/_authenticated/apps/granaia/metas': typeof AuthenticatedAppsGranaiaMetasRoute
   '/_authenticated/apps/granaia/transacoes': typeof AuthenticatedAppsGranaiaTransacoesRoute
   '/_authenticated/apps/petia/alimentacao': typeof AuthenticatedAppsPetiaAlimentacaoRoute
@@ -596,6 +635,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/roteiroia/chat': typeof AuthenticatedAppsRoteiroiaChatRoute
   '/_authenticated/apps/roteiroia/criar': typeof AuthenticatedAppsRoteiroiaCriarRoute
   '/_authenticated/apps/roteiroia/meus': typeof AuthenticatedAppsRoteiroiaMeusRoute
+  '/_authenticated/apps/saboria/agora': typeof AuthenticatedAppsSaboriaAgoraRoute
   '/_authenticated/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/_authenticated/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/_authenticated/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -642,15 +682,18 @@ export interface FileRouteTypes {
     | '/apps/cosmosia/perfil'
     | '/apps/cosmosia/tarot'
     | '/apps/fitia/chat'
+    | '/apps/fitia/hoje'
     | '/apps/fitia/progresso'
     | '/apps/fitia/treino'
     | '/apps/fluencyia/conversar'
     | '/apps/fluencyia/perfil'
     | '/apps/fluencyia/vocabulario'
     | '/apps/glowia/analise'
+    | '/apps/glowia/hoje'
     | '/apps/glowia/perfil'
     | '/apps/glowia/rotina'
     | '/apps/granaia/chat'
+    | '/apps/granaia/comprar'
     | '/apps/granaia/metas'
     | '/apps/granaia/transacoes'
     | '/apps/petia/alimentacao'
@@ -661,6 +704,7 @@ export interface FileRouteTypes {
     | '/apps/roteiroia/chat'
     | '/apps/roteiroia/criar'
     | '/apps/roteiroia/meus'
+    | '/apps/saboria/agora'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -695,15 +739,18 @@ export interface FileRouteTypes {
     | '/apps/cosmosia/perfil'
     | '/apps/cosmosia/tarot'
     | '/apps/fitia/chat'
+    | '/apps/fitia/hoje'
     | '/apps/fitia/progresso'
     | '/apps/fitia/treino'
     | '/apps/fluencyia/conversar'
     | '/apps/fluencyia/perfil'
     | '/apps/fluencyia/vocabulario'
     | '/apps/glowia/analise'
+    | '/apps/glowia/hoje'
     | '/apps/glowia/perfil'
     | '/apps/glowia/rotina'
     | '/apps/granaia/chat'
+    | '/apps/granaia/comprar'
     | '/apps/granaia/metas'
     | '/apps/granaia/transacoes'
     | '/apps/petia/alimentacao'
@@ -714,6 +761,7 @@ export interface FileRouteTypes {
     | '/apps/roteiroia/chat'
     | '/apps/roteiroia/criar'
     | '/apps/roteiroia/meus'
+    | '/apps/saboria/agora'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -759,15 +807,18 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/cosmosia/perfil'
     | '/_authenticated/apps/cosmosia/tarot'
     | '/_authenticated/apps/fitia/chat'
+    | '/_authenticated/apps/fitia/hoje'
     | '/_authenticated/apps/fitia/progresso'
     | '/_authenticated/apps/fitia/treino'
     | '/_authenticated/apps/fluencyia/conversar'
     | '/_authenticated/apps/fluencyia/perfil'
     | '/_authenticated/apps/fluencyia/vocabulario'
     | '/_authenticated/apps/glowia/analise'
+    | '/_authenticated/apps/glowia/hoje'
     | '/_authenticated/apps/glowia/perfil'
     | '/_authenticated/apps/glowia/rotina'
     | '/_authenticated/apps/granaia/chat'
+    | '/_authenticated/apps/granaia/comprar'
     | '/_authenticated/apps/granaia/metas'
     | '/_authenticated/apps/granaia/transacoes'
     | '/_authenticated/apps/petia/alimentacao'
@@ -778,6 +829,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/roteiroia/chat'
     | '/_authenticated/apps/roteiroia/criar'
     | '/_authenticated/apps/roteiroia/meus'
+    | '/_authenticated/apps/saboria/agora'
     | '/_authenticated/apps/saboria/foto'
     | '/_authenticated/apps/saboria/geladeira'
     | '/_authenticated/apps/saboria/nutri'
@@ -1078,6 +1130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsSaboriaFotoRouteImport
       parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
+    '/_authenticated/apps/saboria/agora': {
+      id: '/_authenticated/apps/saboria/agora'
+      path: '/agora'
+      fullPath: '/apps/saboria/agora'
+      preLoaderRoute: typeof AuthenticatedAppsSaboriaAgoraRouteImport
+      parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
+    }
     '/_authenticated/apps/roteiroia/meus': {
       id: '/_authenticated/apps/roteiroia/meus'
       path: '/meus'
@@ -1148,6 +1207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsGranaiaMetasRouteImport
       parentRoute: typeof AuthenticatedAppsGranaiaRouteRoute
     }
+    '/_authenticated/apps/granaia/comprar': {
+      id: '/_authenticated/apps/granaia/comprar'
+      path: '/comprar'
+      fullPath: '/apps/granaia/comprar'
+      preLoaderRoute: typeof AuthenticatedAppsGranaiaComprarRouteImport
+      parentRoute: typeof AuthenticatedAppsGranaiaRouteRoute
+    }
     '/_authenticated/apps/granaia/chat': {
       id: '/_authenticated/apps/granaia/chat'
       path: '/chat'
@@ -1167,6 +1233,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/apps/glowia/perfil'
       preLoaderRoute: typeof AuthenticatedAppsGlowiaPerfilRouteImport
+      parentRoute: typeof AuthenticatedAppsGlowiaRouteRoute
+    }
+    '/_authenticated/apps/glowia/hoje': {
+      id: '/_authenticated/apps/glowia/hoje'
+      path: '/hoje'
+      fullPath: '/apps/glowia/hoje'
+      preLoaderRoute: typeof AuthenticatedAppsGlowiaHojeRouteImport
       parentRoute: typeof AuthenticatedAppsGlowiaRouteRoute
     }
     '/_authenticated/apps/glowia/analise': {
@@ -1209,6 +1282,13 @@ declare module '@tanstack/react-router' {
       path: '/progresso'
       fullPath: '/apps/fitia/progresso'
       preLoaderRoute: typeof AuthenticatedAppsFitiaProgressoRouteImport
+      parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
+    '/_authenticated/apps/fitia/hoje': {
+      id: '/_authenticated/apps/fitia/hoje'
+      path: '/hoje'
+      fullPath: '/apps/fitia/hoje'
+      preLoaderRoute: typeof AuthenticatedAppsFitiaHojeRouteImport
       parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
     }
     '/_authenticated/apps/fitia/chat': {
@@ -1274,6 +1354,7 @@ const AuthenticatedAppsCosmosiaRouteRouteWithChildren =
 
 interface AuthenticatedAppsFitiaRouteRouteChildren {
   AuthenticatedAppsFitiaChatRoute: typeof AuthenticatedAppsFitiaChatRoute
+  AuthenticatedAppsFitiaHojeRoute: typeof AuthenticatedAppsFitiaHojeRoute
   AuthenticatedAppsFitiaProgressoRoute: typeof AuthenticatedAppsFitiaProgressoRoute
   AuthenticatedAppsFitiaTreinoRoute: typeof AuthenticatedAppsFitiaTreinoRoute
   AuthenticatedAppsFitiaIndexRoute: typeof AuthenticatedAppsFitiaIndexRoute
@@ -1282,6 +1363,7 @@ interface AuthenticatedAppsFitiaRouteRouteChildren {
 const AuthenticatedAppsFitiaRouteRouteChildren: AuthenticatedAppsFitiaRouteRouteChildren =
   {
     AuthenticatedAppsFitiaChatRoute: AuthenticatedAppsFitiaChatRoute,
+    AuthenticatedAppsFitiaHojeRoute: AuthenticatedAppsFitiaHojeRoute,
     AuthenticatedAppsFitiaProgressoRoute: AuthenticatedAppsFitiaProgressoRoute,
     AuthenticatedAppsFitiaTreinoRoute: AuthenticatedAppsFitiaTreinoRoute,
     AuthenticatedAppsFitiaIndexRoute: AuthenticatedAppsFitiaIndexRoute,
@@ -1317,6 +1399,7 @@ const AuthenticatedAppsFluencyiaRouteRouteWithChildren =
 
 interface AuthenticatedAppsGlowiaRouteRouteChildren {
   AuthenticatedAppsGlowiaAnaliseRoute: typeof AuthenticatedAppsGlowiaAnaliseRoute
+  AuthenticatedAppsGlowiaHojeRoute: typeof AuthenticatedAppsGlowiaHojeRoute
   AuthenticatedAppsGlowiaPerfilRoute: typeof AuthenticatedAppsGlowiaPerfilRoute
   AuthenticatedAppsGlowiaRotinaRoute: typeof AuthenticatedAppsGlowiaRotinaRoute
   AuthenticatedAppsGlowiaIndexRoute: typeof AuthenticatedAppsGlowiaIndexRoute
@@ -1325,6 +1408,7 @@ interface AuthenticatedAppsGlowiaRouteRouteChildren {
 const AuthenticatedAppsGlowiaRouteRouteChildren: AuthenticatedAppsGlowiaRouteRouteChildren =
   {
     AuthenticatedAppsGlowiaAnaliseRoute: AuthenticatedAppsGlowiaAnaliseRoute,
+    AuthenticatedAppsGlowiaHojeRoute: AuthenticatedAppsGlowiaHojeRoute,
     AuthenticatedAppsGlowiaPerfilRoute: AuthenticatedAppsGlowiaPerfilRoute,
     AuthenticatedAppsGlowiaRotinaRoute: AuthenticatedAppsGlowiaRotinaRoute,
     AuthenticatedAppsGlowiaIndexRoute: AuthenticatedAppsGlowiaIndexRoute,
@@ -1337,6 +1421,7 @@ const AuthenticatedAppsGlowiaRouteRouteWithChildren =
 
 interface AuthenticatedAppsGranaiaRouteRouteChildren {
   AuthenticatedAppsGranaiaChatRoute: typeof AuthenticatedAppsGranaiaChatRoute
+  AuthenticatedAppsGranaiaComprarRoute: typeof AuthenticatedAppsGranaiaComprarRoute
   AuthenticatedAppsGranaiaMetasRoute: typeof AuthenticatedAppsGranaiaMetasRoute
   AuthenticatedAppsGranaiaTransacoesRoute: typeof AuthenticatedAppsGranaiaTransacoesRoute
   AuthenticatedAppsGranaiaIndexRoute: typeof AuthenticatedAppsGranaiaIndexRoute
@@ -1345,6 +1430,7 @@ interface AuthenticatedAppsGranaiaRouteRouteChildren {
 const AuthenticatedAppsGranaiaRouteRouteChildren: AuthenticatedAppsGranaiaRouteRouteChildren =
   {
     AuthenticatedAppsGranaiaChatRoute: AuthenticatedAppsGranaiaChatRoute,
+    AuthenticatedAppsGranaiaComprarRoute: AuthenticatedAppsGranaiaComprarRoute,
     AuthenticatedAppsGranaiaMetasRoute: AuthenticatedAppsGranaiaMetasRoute,
     AuthenticatedAppsGranaiaTransacoesRoute:
       AuthenticatedAppsGranaiaTransacoesRoute,
@@ -1402,6 +1488,7 @@ const AuthenticatedAppsRoteiroiaRouteRouteWithChildren =
   )
 
 interface AuthenticatedAppsSaboriaRouteRouteChildren {
+  AuthenticatedAppsSaboriaAgoraRoute: typeof AuthenticatedAppsSaboriaAgoraRoute
   AuthenticatedAppsSaboriaFotoRoute: typeof AuthenticatedAppsSaboriaFotoRoute
   AuthenticatedAppsSaboriaGeladeiraRoute: typeof AuthenticatedAppsSaboriaGeladeiraRoute
   AuthenticatedAppsSaboriaNutriRoute: typeof AuthenticatedAppsSaboriaNutriRoute
@@ -1413,6 +1500,7 @@ interface AuthenticatedAppsSaboriaRouteRouteChildren {
 
 const AuthenticatedAppsSaboriaRouteRouteChildren: AuthenticatedAppsSaboriaRouteRouteChildren =
   {
+    AuthenticatedAppsSaboriaAgoraRoute: AuthenticatedAppsSaboriaAgoraRoute,
     AuthenticatedAppsSaboriaFotoRoute: AuthenticatedAppsSaboriaFotoRoute,
     AuthenticatedAppsSaboriaGeladeiraRoute:
       AuthenticatedAppsSaboriaGeladeiraRoute,

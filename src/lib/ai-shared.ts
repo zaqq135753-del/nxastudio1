@@ -15,6 +15,7 @@ export async function callGateway(body: {
   messages: ChatMessage[];
   temperature?: number;
   max_tokens?: number;
+  response_format?: { type: "json_object" };
 }): Promise<string> {
   const openaiKey = process.env.OPENAI_API_KEY;
   const useOpenAI = openaiKey && body.model.startsWith("openai/");

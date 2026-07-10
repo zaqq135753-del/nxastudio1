@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { financialSummary, financialInsights, type FinancialInsight } from "@/lib/grana.functions";
-import { Receipt, MessageCircle, Target, ArrowRight, Sparkles } from "lucide-react";
+import { Receipt, MessageCircle, Target, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/apps/granaia/")({
@@ -11,9 +11,10 @@ export const Route = createFileRoute("/_authenticated/apps/granaia/")({
 });
 
 const quick = [
-  { to: "/apps/granaia/transacoes" as const, icon: Receipt, title: "Transações", desc: "Registre receitas e gastos" },
-  { to: "/apps/granaia/chat" as const, icon: MessageCircle, title: "Chat IA", desc: "Consultor financeiro 24h" },
-  { to: "/apps/granaia/metas" as const, icon: Target, title: "Metas", desc: "Defina e acompanhe objetivos" },
+  { to: "/apps/granaia/comprar" as const, icon: ShoppingBag, title: "Posso comprar?", desc: "Análise honesta em 5s" },
+  { to: "/apps/granaia/transacoes" as const, icon: Receipt, title: "Transações", desc: "Receitas e gastos" },
+  { to: "/apps/granaia/chat" as const, icon: MessageCircle, title: "Chat IA", desc: "Consultor 24h" },
+  { to: "/apps/granaia/metas" as const, icon: Target, title: "Metas", desc: "Objetivos e progresso" },
 ];
 
 function fmt(v: number) {

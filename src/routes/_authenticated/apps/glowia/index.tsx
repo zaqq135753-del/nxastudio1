@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { getSkinProfile, listAnalyses } from "@/lib/glow.functions";
-import { Camera, ListChecks, ClipboardList, ArrowRight } from "lucide-react";
+import { Camera, ListChecks, ClipboardList, ArrowRight, Sun } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/apps/glowia/")({
   component: GlowHome,
 });
 
 const quick = [
-  { to: "/apps/glowia/analise" as const, icon: Camera, title: "Análise", desc: "Envie foto e receba diagnóstico" },
-  { to: "/apps/glowia/rotina" as const, icon: ListChecks, title: "Rotina AM/PM", desc: "Gere rotina personalizada" },
-  { to: "/apps/glowia/perfil" as const, icon: ClipboardList, title: "Perfil de pele", desc: "Tipo, preocupações, alergias" },
+  { to: "/apps/glowia/hoje" as const, icon: Sun, title: "Rotina de hoje", desc: "Adaptada ao clima e à pele" },
+  { to: "/apps/glowia/analise" as const, icon: Camera, title: "Análise por foto", desc: "Diagnóstico com IA" },
+  { to: "/apps/glowia/rotina" as const, icon: ListChecks, title: "Rotina base", desc: "AM/PM personalizada" },
+  { to: "/apps/glowia/perfil" as const, icon: ClipboardList, title: "Perfil de pele", desc: "Tipo, alergias, foco" },
 ];
 
 function GlowHome() {

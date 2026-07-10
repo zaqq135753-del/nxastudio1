@@ -99,3 +99,30 @@ export const listAnalyses = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false }).limit(10);
     return data ?? [];
   });
+
+// ============ HERO: "Rotina de hoje" contextual ============
+export type TodayRoutine = {
+  period: "AM" | "PM";
+  context_tip: string;
+  steps: { order: number; step: string; product: string; why: string; time_sec: number }[];
+  warning?: string;
+};
+
+export const todayRoutine = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { period: "AM"|"PM"; weather?: string; feeling?: string; uv_index?: number }) => d)
+  .handler(async ({ data, context }): Promise<TodayRoutine> => {
+    const { data: profile } = await context.supabase.from("skin_profile")
+      .select("*").eq("user_id", context.userId).maybeSingle();
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Dermato-consultora brasileira. Monte a rotina de HOJE (${data.period}) adaptada ao clima, UV e como a pele está agora. Cite ativos, não marcas. Se houver conflito de ativos, use warning. Responda APENAS JSON: {"period":"AM|PM","context_tip":"tip curta e prática","steps":[{"order":1,"step":"...","product":"tipo de produto","why":"...","time_sec":30}],"warning":"opcional"}` },
+        { role: "user", content: `Perfil: ${JSON.stringify(profile) || "não preenchido"}.\nHoje: clima ${data.weather ?? "n/a"}, UV ${data.uv_index ?? "n/a"}, pele: ${data.feeling ?? "normal"}.` },
+      ],
+      temperature: 0.5,
+      max_tokens: 1500,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<TodayRoutine>(raw);
+  });

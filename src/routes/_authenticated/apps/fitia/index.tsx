@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { getFitProfile, listSessions } from "@/lib/fit.functions";
-import { Dumbbell, MessageCircle, Activity, ArrowRight } from "lucide-react";
+import { Dumbbell, MessageCircle, Activity, ArrowRight, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/apps/fitia/")({
   component: FitHome,
 });
 
 const quick = [
-  { to: "/apps/fitia/treino" as const, icon: Dumbbell, title: "Treino de hoje", desc: "Gere e execute" },
-  { to: "/apps/fitia/chat" as const, icon: MessageCircle, title: "Coach IA", desc: "Tire dúvidas e ajuste treinos" },
-  { to: "/apps/fitia/progresso" as const, icon: Activity, title: "Progresso", desc: "Histórico e estatísticas" },
+  { to: "/apps/fitia/hoje" as const, icon: Zap, title: "Treino de hoje", desc: "Adaptado ao seu momento" },
+  { to: "/apps/fitia/treino" as const, icon: Dumbbell, title: "Treino livre", desc: "Gere por objetivo" },
+  { to: "/apps/fitia/chat" as const, icon: MessageCircle, title: "Coach IA", desc: "Tire dúvidas e ajuste" },
+  { to: "/apps/fitia/progresso" as const, icon: Activity, title: "Progresso", desc: "Histórico e stats" },
 ];
 
 function FitHome() {
