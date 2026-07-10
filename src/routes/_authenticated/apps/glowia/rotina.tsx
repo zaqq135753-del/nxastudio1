@@ -23,14 +23,14 @@ function RotinaPage() {
   const fetch = useServerFn(listRoutines);
   const gen = useServerFn(generateRoutine);
 
-  useEffect(() => { fetch().then((r) => setRoutines(r as Routine[])); }, [fetch]);
+  useEffect(() => { fetch().then((r) => setRoutines(r as unknown as Routine[])); }, [fetch]);
 
   async function make(period: "AM" | "PM") {
     setLoading(period);
     try {
       await gen({ data: { period } });
       const rows = await fetch();
-      setRoutines(rows as Routine[]);
+      setRoutines(rows as unknown as Routine[]);
       toast.success("Rotina gerada");
     } catch (e) { toast.error(e instanceof Error ? e.message : "Erro"); }
     finally { setLoading(null); }
