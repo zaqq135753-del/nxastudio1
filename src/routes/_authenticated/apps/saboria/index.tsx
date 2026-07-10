@@ -10,10 +10,11 @@ export const Route = createFileRoute("/_authenticated/apps/saboria/")({
 });
 
 const quickAccess = [
-  { to: "/apps/saboria/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",    desc: "Do que tem em casa" },
-  { to: "/apps/saboria/foto" as const,      icon: Camera,       title: "Foto → Receita",  desc: "Identifica qualquer prato" },
-  { to: "/apps/saboria/planner" as const,   icon: CalendarDays, title: "Planner semanal", desc: "7 dias na hora" },
-  { to: "/apps/saboria/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",   desc: "Chat 24h com IA" },
+  { to: "/apps/saboria/agora" as const,     icon: Sparkles,     title: "O que faço agora?", desc: "3 ideias em segundos" },
+  { to: "/apps/saboria/geladeira" as const, icon: Refrigerator, title: "Geladeira IA",      desc: "Do que tem em casa" },
+  { to: "/apps/saboria/foto" as const,      icon: Camera,       title: "Foto → Receita",    desc: "Identifica qualquer prato" },
+  { to: "/apps/saboria/planner" as const,   icon: CalendarDays, title: "Planner semanal",   desc: "7 dias na hora" },
+  { to: "/apps/saboria/nutri" as const,     icon: HeartPulse,   title: "Nutri virtual",     desc: "Chat 24h com IA" },
 ];
 
 function Dashboard() {
