@@ -45,7 +45,7 @@ export const recall = createServerFn({ method: "POST" })
     const { data: rows, error } = await context.supabase.rpc("match_user_memories", {
       _user_id: context.userId,
       _query_embedding: vec as unknown as string,
-      _app_slugs: data.appSlugs ?? null,
+      _app_slugs: data.appSlugs,
       _match_count: data.limit,
     });
     if (error) return { memories: [] };
