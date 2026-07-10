@@ -23,11 +23,18 @@ const CATEGORIES: Array<{ label: string; items: string[] }> = [
 function GeladeiraPage() {
   const navigate = useNavigate();
   const call = useServerFn(generateRecipe);
+  const callImage = useServerFn(generateRecipeImage);
+  const callSave = useServerFn(saveRecipe);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [activeChip, setActiveChip] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState<FridgeRecipe | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [cookingStep, setCookingStep] = useState<number | null>(null);
 
   function addIngredient(name: string) {
     const clean = name.trim().toLowerCase();
@@ -51,9 +58,17 @@ function GeladeiraPage() {
       return;
     }
     setLoading(true);
+    setImageUrl(null);
+    setSaved(false);
     try {
       const r = await call({ data: { ingredients } });
       setRecipe(r);
+      // Gera imagem em paralelo (não bloqueia UI)
+      setImageLoading(true);
+      callImage({ data: { name: r.name, description: r.description } })
+        .then((res) => setImageUrl(res.imageUrl))
+        .catch(() => {/* silencioso, receita já apareceu */})
+        .finally(() => setImageLoading(false));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Falha ao gerar receita");
     } finally {
@@ -61,11 +76,76 @@ function GeladeiraPage() {
     }
   }
 
+  async function handleSave() {
+    if (!recipe) return;
+    setSaving(true);
+    try {
+      await callSave({
+        data: {
+          name: recipe.name,
+          emoji: recipe.emoji,
+          description: recipe.description,
+          time: recipe.time,
+          servings: recipe.servings,
+          difficulty: recipe.difficulty,
+          calories: recipe.calories,
+          ingredients: recipe.ingredients,
+          steps: recipe.steps,
+          imageUrl: imageUrl ?? undefined,
+          source: "geladeira",
+        },
+      });
+      setSaved(true);
+      toast.success("Receita salva em Minhas Receitas");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Falha ao salvar");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function speak(text: string) {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "pt-BR";
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+  }
+
+  function toggleLiveCooking() {
+    if (!recipe) return;
+    if (cookingStep === null) {
+      setCookingStep(0);
+      speak(`Passo 1. ${recipe.steps[0]}`);
+    } else {
+      const next = cookingStep + 1;
+      if (next >= recipe.steps.length) {
+        setCookingStep(null);
+        speak("Pronto! Bom apetite.");
+        return;
+      }
+      setCookingStep(next);
+      speak(`Passo ${next + 1}. ${recipe.steps[next]}`);
+    }
+  }
+
+  function stopCooking() {
+    setCookingStep(null);
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
   function clearAll() {
+    stopCooking();
     setIngredients([]);
     setRecipe(null);
+    setImageUrl(null);
+    setSaved(false);
     setInput("");
   }
+
 
   return (
     <AppShell>
