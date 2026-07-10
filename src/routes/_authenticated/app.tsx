@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
-import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight } from "lucide-react";
+import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, BookOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/app")({
