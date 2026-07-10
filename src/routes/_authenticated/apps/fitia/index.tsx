@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { getFitProfile, listSessions } from "@/lib/fit.functions";
 import { Dumbbell, MessageCircle, Activity, ArrowRight, Zap } from "lucide-react";
+import coverImg from "@/assets/cover-fitia.jpg";
 
 export const Route = createFileRoute("/_authenticated/apps/fitia/")({
   component: FitHome,
