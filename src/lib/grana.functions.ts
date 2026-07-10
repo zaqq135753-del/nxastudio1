@@ -67,8 +67,9 @@ export const financialChat = createServerFn({ method: "POST" })
       .gte("occurred_on", start.toISOString().slice(0, 10))
       .order("occurred_on", { ascending: false }).limit(80);
 
+    const mem = await recallContext(context.supabase, context.userId, "granaia", data.message);
     const system = `Você é um consultor financeiro brasileiro. Analise os dados reais do usuário. Seja prático, empático e específico. Máximo 200 palavras. Use R$.
-Últimas transações: ${JSON.stringify(tx ?? [])}`;
+Últimas transações: ${JSON.stringify(tx ?? [])}${mem ? "\n\n" + mem : ""}`;
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
@@ -78,6 +79,7 @@ export const financialChat = createServerFn({ method: "POST" })
       ],
       temperature: 0.6, max_tokens: 800,
     });
+    rememberFact(context.supabase, context.userId, "granaia", "consulta", `Pergunta financeira: ${data.message.slice(0, 200)}`);
     return { reply: raw };
   });
 
