@@ -82,6 +82,11 @@ function Hub() {
               style={{ borderColor: "var(--line-1)", color: "var(--muted-foreground)" }}>
               <Command size={11} /> {mine.length} ativo{mine.length === 1 ? "" : "s"} · {APPS.length} apps
             </span>
+            <Link to="/memoria" title="Sua Memória IA"
+              className="press hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
+              style={{ color: "var(--muted-foreground)" }}>
+              <Command size={13} /> Memória
+            </Link>
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
               style={{ background: "var(--n-100)" }}>

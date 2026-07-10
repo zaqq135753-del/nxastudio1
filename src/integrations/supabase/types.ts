@@ -1279,6 +1279,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_memories: {
+        Row: {
+          app_slug: string
+          content: string
+          created_at: string
+          embedding: string | null
+          id: string
+          kind: string
+          metadata: Json
+          user_id: string
+        }
+        Insert: {
+          app_slug: string
+          content: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          user_id: string
+        }
+        Update: {
+          app_slug?: string
+          content?: string
+          created_at?: string
+          embedding?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -1308,6 +1341,23 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      match_user_memories: {
+        Args: {
+          _app_slugs?: string[]
+          _match_count?: number
+          _query_embedding: string
+          _user_id: string
+        }
+        Returns: {
+          app_slug: string
+          content: string
+          created_at: string
+          id: string
+          kind: string
+          metadata: Json
+          similarity: number
+        }[]
       }
     }
     Enums: {
