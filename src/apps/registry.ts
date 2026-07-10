@@ -1,5 +1,6 @@
 import { Refrigerator, Camera, CalendarDays, HeartPulse, Home, type LucideIcon,
-         ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone } from "lucide-react";
+         ChefHat, Dumbbell, Wallet, Sparkles, PenLine, Hash, LineChart, Megaphone,
+         PawPrint, MessageCircleHeart, Utensils, GraduationCap, User } from "lucide-react";
 
 export type AppTab = {
   to: string;                // full path
