@@ -35,7 +35,7 @@ function Triagem() {
     setLoading(true); setResult(null);
     try {
       const r = await call({ data: {
-        species: selected?.species ?? "cão",
+        species: selected?.type ?? "cão",
         age: selected?.birth_date ?? undefined,
         symptoms, notes: notes || undefined,
         pet_id: selected?.id,
@@ -59,7 +59,7 @@ function Triagem() {
           {pets.map(p => (
             <button key={p.id} onClick={() => setSelected(p)}
               className={`rounded-full border px-3 py-1.5 text-sm whitespace-nowrap ${selected?.id === p.id ? "bg-primary text-primary-foreground border-primary" : "bg-card/60 border-border/60"}`}>
-              {p.name} · {p.species}
+              {p.name} · {p.type}
             </button>
           ))}
         </div>
