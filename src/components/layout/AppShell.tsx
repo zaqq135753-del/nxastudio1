@@ -38,21 +38,22 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-28">
       {/* Top bar */}
-      <header className="fixed top-0 left-0 right-0 z-40 border-b"
-        style={{ background: "rgba(14,11,8,0.75)", backdropFilter: "blur(14px)", borderColor: "var(--line-1)" }}>
-        <div className="mx-auto flex h-14 max-w-[820px] items-center justify-between px-4">
-          <Link to="/app" className="text-lg" style={{ fontFamily: "var(--font-display)" }}>
-            Sabor<em style={{ color: "var(--saffron)" }}>IA</em>
+      <header className="fixed top-0 left-0 right-0 z-40 border-b glass"
+        style={{ borderRadius: 0, borderColor: "var(--line-1)" }}>
+        <div className="mx-auto flex h-14 max-w-[820px] items-center justify-between px-5">
+          <Link to="/app" className="text-[17px] font-bold tracking-tight">
+            Sabor<span style={{ color: "var(--c-orange)" }}>IA</span>
           </Link>
           <div className="flex items-center gap-2">
             <span className="chip">✨ IA Ativa</span>
-            <button onClick={signOut} title="Sair" className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border" style={{ borderColor: "var(--line-2)", background: "var(--ink-800)" }}>
+            <button onClick={signOut} title="Sair" className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
+              style={{ background: "var(--n-100)" }}>
               {avatar ? (
                 <img src={avatar} alt="" className="h-full w-full object-cover" />
               ) : (
-                <span className="text-sm font-medium" style={{ color: "var(--saffron)" }}>{initial}</span>
+                <span className="text-sm font-semibold" style={{ color: "var(--c-orange)" }}>{initial}</span>
               )}
             </button>
           </div>
@@ -61,19 +62,22 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-[820px] px-4 pt-20">{children}</main>
 
-      {/* Bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 border-t"
-        style={{ background: "rgba(14,11,8,0.85)", backdropFilter: "blur(14px)", borderColor: "var(--line-1)" }}>
-        <div className="mx-auto flex max-w-[520px] items-center justify-around px-2 py-2">
+      {/* Bottom nav — floating pill */}
+      <nav className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2">
+        <div className="glass flex items-center gap-1 rounded-full px-2 py-1.5"
+          style={{ boxShadow: "var(--shadow-elev)" }}>
           {tabs.map((t) => {
             const active = pathname === t.to;
             const Icon = t.icon;
             return (
               <Link key={t.to} to={t.to}
-                className="flex flex-1 flex-col items-center gap-1 rounded-lg py-2 text-xs transition-colors"
-                style={{ color: active ? "var(--saffron)" : "var(--cream-400)" }}>
-                <Icon size={20} strokeWidth={active ? 2.4 : 1.8} />
-                <span style={{ fontWeight: active ? 600 : 500 }}>{t.label}</span>
+                className="flex flex-col items-center justify-center rounded-full px-3.5 py-2 text-[10px] font-medium transition-all"
+                style={{
+                  color: active ? "#fff" : "var(--n-500)",
+                  background: active ? "var(--c-orange)" : "transparent",
+                }}>
+                <Icon size={19} strokeWidth={active ? 2.4 : 1.9} />
+                <span className="mt-0.5">{t.label}</span>
               </Link>
             );
           })}
@@ -85,9 +89,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 export function TypingIndicator({ label }: { label?: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border p-4" style={{ borderColor: "var(--line-1)", background: "var(--ink-800)" }}>
+    <div className="flex items-center gap-3 rounded-2xl p-4 surface">
       <div className="flex gap-1.5"><span className="typing-dot" /><span className="typing-dot" /><span className="typing-dot" /></div>
-      {label && <span className="text-sm" style={{ color: "var(--cream-400)" }}>{label}</span>}
+      {label && <span className="text-sm" style={{ color: "var(--n-500)" }}>{label}</span>}
     </div>
   );
 }
@@ -95,9 +99,9 @@ export function TypingIndicator({ label }: { label?: string }) {
 export function ScreenHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
     <div className="mb-6 fade-up">
-      <h1 className="text-3xl sm:text-4xl">{title}</h1>
+      <h1 className="text-[28px] sm:text-4xl font-bold tracking-tight">{title}</h1>
       {subtitle && (
-        <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--cream-400)" }}>{subtitle}</p>
+        <p className="mt-1.5 text-[15px] sm:text-base" style={{ color: "var(--n-500)" }}>{subtitle}</p>
       )}
     </div>
   );
