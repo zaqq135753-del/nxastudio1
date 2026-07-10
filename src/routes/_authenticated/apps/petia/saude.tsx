@@ -85,7 +85,7 @@ function SaudePage() {
 
   return (
     <AppShell appSlug="petia">
-      <ScreenHeader title="Saúde de " subtitle="Peso, vacinas e relatório veterinário." />
+      <ScreenHeader title={`Saúde de ${active.name}`} subtitle="Peso, vacinas e relatório veterinário." />
 
       {/* Registro de peso */}
       <section className="mb-6 surface p-5 fade-up">
