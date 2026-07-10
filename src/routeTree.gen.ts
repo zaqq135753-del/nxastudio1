@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AssinarSlugRouteImport } from './routes/assinar.$slug'
 import { Route as AuthenticatedPlanosRouteImport } from './routes/_authenticated/planos'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedMemoriaRouteImport } from './routes/_authenticated/memoria'
@@ -99,6 +100,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssinarSlugRoute = AssinarSlugRouteImport.update({
+  id: '/assinar/$slug',
+  path: '/assinar/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedPlanosRoute = AuthenticatedPlanosRouteImport.update({
@@ -549,6 +555,7 @@ export interface FileRoutesByFullPath {
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/planos': typeof AuthenticatedPlanosRoute
+  '/assinar/$slug': typeof AssinarSlugRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
@@ -627,6 +634,7 @@ export interface FileRoutesByTo {
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/planos': typeof AuthenticatedPlanosRoute
+  '/assinar/$slug': typeof AssinarSlugRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
@@ -697,6 +705,7 @@ export interface FileRoutesById {
   '/_authenticated/memoria': typeof AuthenticatedMemoriaRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/planos': typeof AuthenticatedPlanosRoute
+  '/assinar/$slug': typeof AssinarSlugRoute
   '/_authenticated/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/_authenticated/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
@@ -777,6 +786,7 @@ export interface FileRouteTypes {
     | '/memoria'
     | '/onboarding'
     | '/planos'
+    | '/assinar/$slug'
     | '/apps/cosmosia'
     | '/apps/fitia'
     | '/apps/fluencyia'
@@ -855,6 +865,7 @@ export interface FileRouteTypes {
     | '/memoria'
     | '/onboarding'
     | '/planos'
+    | '/assinar/$slug'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
@@ -924,6 +935,7 @@ export interface FileRouteTypes {
     | '/_authenticated/memoria'
     | '/_authenticated/onboarding'
     | '/_authenticated/planos'
+    | '/assinar/$slug'
     | '/_authenticated/apps/cosmosia'
     | '/_authenticated/apps/fitia'
     | '/_authenticated/apps/fluencyia'
@@ -997,6 +1009,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AssinarSlugRoute: typeof AssinarSlugRoute
   ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
 
@@ -1021,6 +1034,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assinar/$slug': {
+      id: '/assinar/$slug'
+      path: '/assinar/$slug'
+      fullPath: '/assinar/$slug'
+      preLoaderRoute: typeof AssinarSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/planos': {
@@ -1846,6 +1866,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AssinarSlugRoute: AssinarSlugRoute,
   ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
 export const routeTree = rootRouteImport
