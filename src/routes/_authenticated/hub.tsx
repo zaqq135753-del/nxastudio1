@@ -275,6 +275,7 @@ function Hub() {
           </section>
         )}
       </main>
+      <VoiceAssistant />
     </div>
   );
 }
