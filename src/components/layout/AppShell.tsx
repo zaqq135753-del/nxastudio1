@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { findApp } from "@/apps/registry";
 import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
+import { useServerFn } from "@tanstack/react-start";
+import { pingActivity } from "@/lib/streaks.functions";
 
 export function AppShell({ children, appSlug = "saboria" }: { children: ReactNode; appSlug?: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -14,6 +16,8 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
   const [initial, setInitial] = useState("S");
   const app = findApp(appSlug);
   const tabs = app?.tabs ?? [];
+
+  const ping = useServerFn(pingActivity);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -25,6 +29,15 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
       setInitial(name.charAt(0).toUpperCase());
     });
   }, []);
+
+  // Ping streak once per app per session
+  useEffect(() => {
+    if (!appSlug) return;
+    const key = `nxa:pinged:${appSlug}:${new Date().toISOString().slice(0,10)}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+    ping({ data: { app_slug: appSlug } }).catch(() => {});
+  }, [appSlug, ping]);
 
   async function signOut() {
     await qc.cancelQueries();
