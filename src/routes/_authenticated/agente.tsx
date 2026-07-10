@@ -66,7 +66,7 @@ function AgentePage() {
   return (
     <AppShell>
       <ScreenHeader
-        title={<span className="inline-flex items-center gap-2"><Zap size={22} /> NXA Agente</span>}
+        title="NXA Agente"
         subtitle="Fale o que precisa. Eu proponho ações — você confirma."
       />
 
