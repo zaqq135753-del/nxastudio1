@@ -31,6 +31,7 @@ import { Route as AuthenticatedAppsGranaiaIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedAppsGlowiaIndexRouteImport } from './routes/_authenticated/apps/glowia/index'
 import { Route as AuthenticatedAppsFluencyiaIndexRouteImport } from './routes/_authenticated/apps/fluencyia/index'
 import { Route as AuthenticatedAppsFitiaIndexRouteImport } from './routes/_authenticated/apps/fitia/index'
+import { Route as AuthenticatedAppsStyleiaArmarioRouteImport } from './routes/_authenticated/apps/styleia/armario'
 import { Route as AuthenticatedAppsSocialiaHashtagsRouteImport } from './routes/_authenticated/apps/socialia/hashtags'
 import { Route as AuthenticatedAppsSocialiaGeradorRouteImport } from './routes/_authenticated/apps/socialia/gerador'
 import { Route as AuthenticatedAppsSocialiaCalendarioRouteImport } from './routes/_authenticated/apps/socialia/calendario'
@@ -185,6 +186,12 @@ const AuthenticatedAppsFitiaIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
+const AuthenticatedAppsStyleiaArmarioRoute =
+  AuthenticatedAppsStyleiaArmarioRouteImport.update({
+    id: '/armario',
+    path: '/armario',
+    getParentRoute: () => AuthenticatedAppsStyleiaRouteRoute,
   } as any)
 const AuthenticatedAppsSocialiaHashtagsRoute =
   AuthenticatedAppsSocialiaHashtagsRouteImport.update({
@@ -390,6 +397,7 @@ export interface FileRoutesByFullPath {
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -432,6 +440,7 @@ export interface FileRoutesByTo {
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/apps/fitia': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -484,6 +493,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/_authenticated/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/_authenticated/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/_authenticated/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/_authenticated/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/_authenticated/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/_authenticated/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
@@ -536,6 +546,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
     | '/apps/socialia/hashtags'
+    | '/apps/styleia/armario'
     | '/apps/fitia/'
     | '/apps/fluencyia/'
     | '/apps/glowia/'
@@ -578,6 +589,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
     | '/apps/socialia/hashtags'
+    | '/apps/styleia/armario'
     | '/apps/fitia'
     | '/apps/fluencyia'
     | '/apps/glowia'
@@ -629,6 +641,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/socialia/calendario'
     | '/_authenticated/apps/socialia/gerador'
     | '/_authenticated/apps/socialia/hashtags'
+    | '/_authenticated/apps/styleia/armario'
     | '/_authenticated/apps/fitia/'
     | '/_authenticated/apps/fluencyia/'
     | '/_authenticated/apps/glowia/'
@@ -800,6 +813,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/fitia/'
       preLoaderRoute: typeof AuthenticatedAppsFitiaIndexRouteImport
       parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
+    '/_authenticated/apps/styleia/armario': {
+      id: '/_authenticated/apps/styleia/armario'
+      path: '/armario'
+      fullPath: '/apps/styleia/armario'
+      preLoaderRoute: typeof AuthenticatedAppsStyleiaArmarioRouteImport
+      parentRoute: typeof AuthenticatedAppsStyleiaRouteRoute
     }
     '/_authenticated/apps/socialia/hashtags': {
       id: '/_authenticated/apps/socialia/hashtags'
@@ -1158,11 +1178,13 @@ const AuthenticatedAppsSocialiaRouteRouteWithChildren =
   )
 
 interface AuthenticatedAppsStyleiaRouteRouteChildren {
+  AuthenticatedAppsStyleiaArmarioRoute: typeof AuthenticatedAppsStyleiaArmarioRoute
   AuthenticatedAppsStyleiaIndexRoute: typeof AuthenticatedAppsStyleiaIndexRoute
 }
 
 const AuthenticatedAppsStyleiaRouteRouteChildren: AuthenticatedAppsStyleiaRouteRouteChildren =
   {
+    AuthenticatedAppsStyleiaArmarioRoute: AuthenticatedAppsStyleiaArmarioRoute,
     AuthenticatedAppsStyleiaIndexRoute: AuthenticatedAppsStyleiaIndexRoute,
   }
 
