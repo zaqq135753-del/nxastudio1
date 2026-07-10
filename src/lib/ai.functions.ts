@@ -300,7 +300,8 @@ export const nutriChat = createServerFn({ method: "POST" })
     };
   })
   .handler(async ({ data, context }) => {
-    const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const lastUserRaw = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const lastUser = typeof lastUserRaw === "string" ? lastUserRaw : "";
     const mem = await recallContext(context.supabase, context.userId, "saboria", lastUser);
     const system = `Você é um nutricionista virtual brasileiro, amigável e didático.
 
