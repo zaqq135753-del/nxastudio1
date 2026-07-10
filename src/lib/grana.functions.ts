@@ -150,15 +150,18 @@ export const canIBuy = createServerFn({ method: "POST" })
       context.supabase.from("fin_goals").select("*").eq("user_id", context.userId),
       context.supabase.from("fin_budgets").select("*").eq("user_id", context.userId),
     ]);
+    const mem = await recallContext(context.supabase, context.userId, "granaia", `comprar ${data.item} R$${data.amount}`);
     const raw = await callGateway({
       model: TEXT_MODEL,
       messages: [
-        { role: "system", content: `Consultor financeiro pessoal, direto e honesto. Analise se a compra faz sentido AGORA considerando fluxo real, metas e orçamentos. Verdict deve ser "sim" | "pode" | "espere" | "nao". Responda APENAS JSON: {"verdict":"...","headline":"frase curta e clara","reasoning":["motivo 1","motivo 2","motivo 3"],"impact":{"on_month":"...","on_goals":"..."},"alternatives":["opção mais barata","adiar 30d","etc"]}` },
+        { role: "system", content: `Consultor financeiro pessoal, direto e honesto. Analise se a compra faz sentido AGORA considerando fluxo real, metas e orçamentos. Verdict deve ser "sim" | "pode" | "espere" | "nao". Responda APENAS JSON: {"verdict":"...","headline":"frase curta e clara","reasoning":["motivo 1","motivo 2","motivo 3"],"impact":{"on_month":"...","on_goals":"..."},"alternatives":["opção mais barata","adiar 30d","etc"]}${mem ? "\n\n" + mem : ""}` },
         { role: "user", content: `Compra: ${data.item} — R$ ${data.amount.toFixed(2)} (urgência: ${data.urgency ?? "media"}).\nTransações recentes: ${JSON.stringify(tx?.slice(0,40) ?? [])}.\nMetas: ${JSON.stringify(goals ?? [])}.\nOrçamentos: ${JSON.stringify(budgets ?? [])}.` },
       ],
       temperature: 0.4,
       max_tokens: 1500,
       response_format: { type: "json_object" },
     });
-    return parseJson<PurchaseAdvice>(raw);
+    const parsed = parseJson<PurchaseAdvice>(raw);
+    rememberFact(context.supabase, context.userId, "granaia", "compra", `Consultou "${data.item}" R$${data.amount.toFixed(2)} → veredito: ${parsed.verdict}. ${parsed.headline}`);
+    return parsed;
   });
