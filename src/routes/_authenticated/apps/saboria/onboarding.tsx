@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/onboarding")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/onboarding")({
   component: Onboarding,
 });
 

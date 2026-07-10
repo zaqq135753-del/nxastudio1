@@ -6,7 +6,7 @@ import { nutriChat } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/nutri")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/nutri")({
   component: NutriPage,
 });
 

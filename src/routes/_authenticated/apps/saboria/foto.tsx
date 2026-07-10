@@ -6,7 +6,7 @@ import { analyzePhoto, type PhotoResult } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Search, X, Camera } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/foto")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/foto")({
   component: FotoPage,
 });
 

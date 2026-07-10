@@ -7,7 +7,7 @@ import { saveRecipe } from "@/lib/recipes.functions";
 import { toast } from "sonner";
 import { Sparkles, Plus, X, RotateCw, BarChart3, Bookmark, Play, Pause, ImageIcon } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/geladeira")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/geladeira")({
   component: GeladeiraPage,
 });
 

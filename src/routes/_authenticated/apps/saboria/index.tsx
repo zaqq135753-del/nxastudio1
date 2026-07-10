@@ -5,7 +5,7 @@ import { Refrigerator, Camera, CalendarDays, HeartPulse, Sparkles, ArrowRight, B
 import { supabase } from "@/integrations/supabase/client";
 import { ThemePicker, useInitTheme } from "@/components/ThemePicker";
 
-export const Route = createFileRoute("/_authenticated/app")({
+export const Route = createFileRoute("/_authenticated/apps/saboria/")({
   component: Dashboard,
 });
 
