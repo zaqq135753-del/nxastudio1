@@ -65,7 +65,6 @@ function Dashboard() {
             key={q.to}
             to={q.to}
             className="tile-hero group"
-            style={{ ["--tile-color" as any]: q.color, ["--tile-grad" as any]: q.grad }}
           >
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
