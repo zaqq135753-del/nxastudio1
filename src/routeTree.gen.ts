@@ -29,6 +29,7 @@ import { Route as AuthenticatedAppsSaboriaOnboardingRouteImport } from './routes
 import { Route as AuthenticatedAppsSaboriaNutriRouteImport } from './routes/_authenticated/apps/saboria/nutri'
 import { Route as AuthenticatedAppsSaboriaGeladeiraRouteImport } from './routes/_authenticated/apps/saboria/geladeira'
 import { Route as AuthenticatedAppsSaboriaFotoRouteImport } from './routes/_authenticated/apps/saboria/foto'
+import { Route as AuthenticatedAppsPetiaSaudeRouteImport } from './routes/_authenticated/apps/petia/saude'
 import { Route as AuthenticatedAppsPetiaChatRouteImport } from './routes/_authenticated/apps/petia/chat'
 
 const AuthRoute = AuthRouteImport.update({
@@ -146,6 +147,12 @@ const AuthenticatedAppsSaboriaFotoRoute =
     path: '/foto',
     getParentRoute: () => AuthenticatedAppsSaboriaRouteRoute,
   } as any)
+const AuthenticatedAppsPetiaSaudeRoute =
+  AuthenticatedAppsPetiaSaudeRouteImport.update({
+    id: '/saude',
+    path: '/saude',
+    getParentRoute: () => AuthenticatedAppsPetiaRouteRoute,
+  } as any)
 const AuthenticatedAppsPetiaChatRoute =
   AuthenticatedAppsPetiaChatRouteImport.update({
     id: '/chat',
@@ -161,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
+  '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -180,6 +188,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
   '/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
+  '/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -204,6 +213,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/petia/chat': typeof AuthenticatedAppsPetiaChatRoute
+  '/_authenticated/apps/petia/saude': typeof AuthenticatedAppsPetiaSaudeRoute
   '/_authenticated/apps/saboria/foto': typeof AuthenticatedAppsSaboriaFotoRoute
   '/_authenticated/apps/saboria/geladeira': typeof AuthenticatedAppsSaboriaGeladeiraRoute
   '/_authenticated/apps/saboria/nutri': typeof AuthenticatedAppsSaboriaNutriRoute
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/petia/chat'
+    | '/apps/petia/saude'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/hub'
     | '/apps/petia/chat'
+    | '/apps/petia/saude'
     | '/apps/saboria/foto'
     | '/apps/saboria/geladeira'
     | '/apps/saboria/nutri'
@@ -270,6 +282,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/petia/chat'
+    | '/_authenticated/apps/petia/saude'
     | '/_authenticated/apps/saboria/foto'
     | '/_authenticated/apps/saboria/geladeira'
     | '/_authenticated/apps/saboria/nutri'
@@ -433,6 +446,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsSaboriaFotoRouteImport
       parentRoute: typeof AuthenticatedAppsSaboriaRouteRoute
     }
+    '/_authenticated/apps/petia/saude': {
+      id: '/_authenticated/apps/petia/saude'
+      path: '/saude'
+      fullPath: '/apps/petia/saude'
+      preLoaderRoute: typeof AuthenticatedAppsPetiaSaudeRouteImport
+      parentRoute: typeof AuthenticatedAppsPetiaRouteRoute
+    }
     '/_authenticated/apps/petia/chat': {
       id: '/_authenticated/apps/petia/chat'
       path: '/chat'
@@ -445,12 +465,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAppsPetiaRouteRouteChildren {
   AuthenticatedAppsPetiaChatRoute: typeof AuthenticatedAppsPetiaChatRoute
+  AuthenticatedAppsPetiaSaudeRoute: typeof AuthenticatedAppsPetiaSaudeRoute
   AuthenticatedAppsPetiaIndexRoute: typeof AuthenticatedAppsPetiaIndexRoute
 }
 
 const AuthenticatedAppsPetiaRouteRouteChildren: AuthenticatedAppsPetiaRouteRouteChildren =
   {
     AuthenticatedAppsPetiaChatRoute: AuthenticatedAppsPetiaChatRoute,
+    AuthenticatedAppsPetiaSaudeRoute: AuthenticatedAppsPetiaSaudeRoute,
     AuthenticatedAppsPetiaIndexRoute: AuthenticatedAppsPetiaIndexRoute,
   }
 
