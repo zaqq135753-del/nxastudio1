@@ -287,6 +287,7 @@ Orçamento semanal: ${data.budget}`;
 /* ================= Nutri chat ================= */
 
 export const nutriChat = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data: { messages: Array<{ role: "user" | "assistant"; content: string }> }) => {
     if (!Array.isArray(data?.messages) || data.messages.length === 0) {
       throw new Error("Mensagens inválidas");
@@ -298,7 +299,9 @@ export const nutriChat = createServerFn({ method: "POST" })
       })) as ChatMessage[],
     };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const mem = await recallContext(context.supabase, context.userId, "saboria", lastUser);
     const system = `Você é um nutricionista virtual brasileiro, amigável e didático.
 
 Especialidades:
@@ -315,7 +318,7 @@ Regras:
 - NUNCA prescreva dietas restritivas sem recomendar acompanhamento profissional
 - Inclua um disclaimer sutil de que orientações não substituem nutricionista
 - Alimentos acessíveis no Brasil
-- Máximo 200 palavras`;
+- Máximo 200 palavras${mem ? "\n\n" + mem : ""}`;
 
     const content = await callGateway({
       model: TEXT_MODEL,
@@ -323,6 +326,7 @@ Regras:
       max_tokens: 800,
       messages: [{ role: "system", content: system }, ...data.messages],
     });
+    if (lastUser) rememberFact(context.supabase, context.userId, "saboria", "nutri", `Pergunta ao nutri: ${lastUser.slice(0, 200)}`);
     return { content };
   });
 
