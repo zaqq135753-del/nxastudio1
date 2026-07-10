@@ -5,6 +5,8 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { coachChat } from "@/lib/fit.functions";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { MicButton } from "@/components/voice/MicButton";
+import { SpeakButton } from "@/components/voice/SpeakButton";
 
 export const Route = createFileRoute("/_authenticated/apps/fitia/chat")({
   component: ChatPage,
@@ -47,8 +49,11 @@ function ChatPage() {
         )}
         {msgs.map((m, i) => (
           <div key={i} className={`surface p-4 whitespace-pre-wrap ${m.role === "user" ? "ml-8" : "mr-8"}`}>
-            <div className="text-[11px] uppercase tracking-wide mb-1" style={{ color: "var(--n-500)" }}>
-              {m.role === "user" ? "Você" : "Coach IA"}
+            <div className="mb-1 flex items-center justify-between">
+              <div className="text-[11px] uppercase tracking-wide" style={{ color: "var(--n-500)" }}>
+                {m.role === "user" ? "Você" : "Coach IA"}
+              </div>
+              {m.role === "assistant" && <SpeakButton text={m.content} />}
             </div>
             <div className="text-[15px]">{m.content}</div>
           </div>
@@ -62,6 +67,7 @@ function ChatPage() {
           <input value={input} onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && send()}
             placeholder="Fale com o coach…" className="flex-1 bg-transparent px-3 py-2 text-sm outline-none" />
+          <MicButton onTranscript={(t) => setInput((v) => (v ? v + " " : "") + t)} disabled={loading} />
           <button onClick={send} disabled={loading || !input.trim()} className="btn-primary rounded-full !p-2.5"><Send size={16} /></button>
         </div>
       </div>

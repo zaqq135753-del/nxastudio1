@@ -5,6 +5,8 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { conversationTurn, getLangProfile, LANGS, type ConversationTurn } from "@/lib/fluency.functions";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { MicButton } from "@/components/voice/MicButton";
+import { SpeakButton } from "@/components/voice/SpeakButton";
 
 export const Route = createFileRoute("/_authenticated/apps/fluencyia/conversar")({
   component: ConversarPage,
@@ -68,8 +70,11 @@ function ConversarPage() {
         )}
         {turns.map((t, i) => (
           <div key={i} className={`surface p-4 ${t.role === "user" ? "ml-8" : "mr-8"}`}>
-            <div className="text-[11px] uppercase tracking-wide mb-1" style={{ color: "var(--n-500)" }}>
-              {t.role === "user" ? "Você" : "Tutor IA"}
+            <div className="mb-1 flex items-center justify-between">
+              <div className="text-[11px] uppercase tracking-wide" style={{ color: "var(--n-500)" }}>
+                {t.role === "user" ? "Você" : "Tutor IA"}
+              </div>
+              {t.role === "assistant" && <SpeakButton text={t.content} />}
             </div>
             <div className="text-[15px]">{t.content}</div>
             {t.extra && (
@@ -97,8 +102,9 @@ function ConversarPage() {
         <div className="glass flex items-center gap-2 rounded-full p-2" style={{ boxShadow: "var(--shadow-elev)" }}>
           <input value={input} onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && send()}
-            placeholder={`Escreva em ${langName} ou pt-BR…`}
+            placeholder={`Escreva ou fale em ${langName} ou pt-BR…`}
             className="flex-1 bg-transparent px-3 py-2 text-sm outline-none" />
+          <MicButton onTranscript={(t) => setInput((v) => (v ? v + " " : "") + t)} disabled={loading} />
           <button onClick={send} disabled={loading || !input.trim()}
             className="btn-primary rounded-full !p-2.5"><Send size={16} /></button>
         </div>

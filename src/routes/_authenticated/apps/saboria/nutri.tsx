@@ -5,6 +5,8 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { nutriChat } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
+import { MicButton } from "@/components/voice/MicButton";
+import { SpeakButton } from "@/components/voice/SpeakButton";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/nutri")({
   component: NutriPage,
@@ -114,6 +116,9 @@ function NutriPage() {
                 }
               >
                 {renderContent(m.content)}
+                {m.role === "assistant" && (
+                  <div className="mt-1"><SpeakButton text={m.content} /></div>
+                )}
               </div>
             </div>
           ))}
@@ -154,6 +159,7 @@ function NutriPage() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send(input)}
         />
+        <MicButton onTranscript={(t) => setInput((v) => (v ? v + " " : "") + t)} disabled={loading} />
         <button
           className="btn-primary shrink-0"
           onClick={() => send(input)}
