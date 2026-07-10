@@ -32,6 +32,7 @@ import { Route as AuthenticatedAppsGlowiaIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAppsFluencyiaIndexRouteImport } from './routes/_authenticated/apps/fluencyia/index'
 import { Route as AuthenticatedAppsFitiaIndexRouteImport } from './routes/_authenticated/apps/fitia/index'
 import { Route as AuthenticatedAppsStyleiaShopperRouteImport } from './routes/_authenticated/apps/styleia/shopper'
+import { Route as AuthenticatedAppsStyleiaPerfilRouteImport } from './routes/_authenticated/apps/styleia/perfil'
 import { Route as AuthenticatedAppsStyleiaLookRouteImport } from './routes/_authenticated/apps/styleia/look'
 import { Route as AuthenticatedAppsStyleiaArmarioRouteImport } from './routes/_authenticated/apps/styleia/armario'
 import { Route as AuthenticatedAppsSocialiaHashtagsRouteImport } from './routes/_authenticated/apps/socialia/hashtags'
@@ -193,6 +194,12 @@ const AuthenticatedAppsStyleiaShopperRoute =
   AuthenticatedAppsStyleiaShopperRouteImport.update({
     id: '/shopper',
     path: '/shopper',
+    getParentRoute: () => AuthenticatedAppsStyleiaRouteRoute,
+  } as any)
+const AuthenticatedAppsStyleiaPerfilRoute =
+  AuthenticatedAppsStyleiaPerfilRouteImport.update({
+    id: '/perfil',
+    path: '/perfil',
     getParentRoute: () => AuthenticatedAppsStyleiaRouteRoute,
   } as any)
 const AuthenticatedAppsStyleiaLookRoute =
@@ -413,6 +420,7 @@ export interface FileRoutesByFullPath {
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
   '/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
+  '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
   '/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -458,6 +466,7 @@ export interface FileRoutesByTo {
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
   '/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
+  '/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
   '/apps/fitia': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -513,6 +522,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
   '/_authenticated/apps/styleia/armario': typeof AuthenticatedAppsStyleiaArmarioRoute
   '/_authenticated/apps/styleia/look': typeof AuthenticatedAppsStyleiaLookRoute
+  '/_authenticated/apps/styleia/perfil': typeof AuthenticatedAppsStyleiaPerfilRoute
   '/_authenticated/apps/styleia/shopper': typeof AuthenticatedAppsStyleiaShopperRoute
   '/_authenticated/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/_authenticated/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
@@ -568,6 +578,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/hashtags'
     | '/apps/styleia/armario'
     | '/apps/styleia/look'
+    | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
     | '/apps/fitia/'
     | '/apps/fluencyia/'
@@ -613,6 +624,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/hashtags'
     | '/apps/styleia/armario'
     | '/apps/styleia/look'
+    | '/apps/styleia/perfil'
     | '/apps/styleia/shopper'
     | '/apps/fitia'
     | '/apps/fluencyia'
@@ -667,6 +679,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/socialia/hashtags'
     | '/_authenticated/apps/styleia/armario'
     | '/_authenticated/apps/styleia/look'
+    | '/_authenticated/apps/styleia/perfil'
     | '/_authenticated/apps/styleia/shopper'
     | '/_authenticated/apps/fitia/'
     | '/_authenticated/apps/fluencyia/'
@@ -845,6 +858,13 @@ declare module '@tanstack/react-router' {
       path: '/shopper'
       fullPath: '/apps/styleia/shopper'
       preLoaderRoute: typeof AuthenticatedAppsStyleiaShopperRouteImport
+      parentRoute: typeof AuthenticatedAppsStyleiaRouteRoute
+    }
+    '/_authenticated/apps/styleia/perfil': {
+      id: '/_authenticated/apps/styleia/perfil'
+      path: '/perfil'
+      fullPath: '/apps/styleia/perfil'
+      preLoaderRoute: typeof AuthenticatedAppsStyleiaPerfilRouteImport
       parentRoute: typeof AuthenticatedAppsStyleiaRouteRoute
     }
     '/_authenticated/apps/styleia/look': {
@@ -1220,6 +1240,7 @@ const AuthenticatedAppsSocialiaRouteRouteWithChildren =
 interface AuthenticatedAppsStyleiaRouteRouteChildren {
   AuthenticatedAppsStyleiaArmarioRoute: typeof AuthenticatedAppsStyleiaArmarioRoute
   AuthenticatedAppsStyleiaLookRoute: typeof AuthenticatedAppsStyleiaLookRoute
+  AuthenticatedAppsStyleiaPerfilRoute: typeof AuthenticatedAppsStyleiaPerfilRoute
   AuthenticatedAppsStyleiaShopperRoute: typeof AuthenticatedAppsStyleiaShopperRoute
   AuthenticatedAppsStyleiaIndexRoute: typeof AuthenticatedAppsStyleiaIndexRoute
 }
@@ -1228,6 +1249,7 @@ const AuthenticatedAppsStyleiaRouteRouteChildren: AuthenticatedAppsStyleiaRouteR
   {
     AuthenticatedAppsStyleiaArmarioRoute: AuthenticatedAppsStyleiaArmarioRoute,
     AuthenticatedAppsStyleiaLookRoute: AuthenticatedAppsStyleiaLookRoute,
+    AuthenticatedAppsStyleiaPerfilRoute: AuthenticatedAppsStyleiaPerfilRoute,
     AuthenticatedAppsStyleiaShopperRoute: AuthenticatedAppsStyleiaShopperRoute,
     AuthenticatedAppsStyleiaIndexRoute: AuthenticatedAppsStyleiaIndexRoute,
   }
