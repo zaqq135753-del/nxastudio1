@@ -19,21 +19,27 @@ export type Database = {
           app_slug: string
           expires_at: string | null
           granted_at: string
+          plan: string
           status: string
+          trial_ends_at: string | null
           user_id: string
         }
         Insert: {
           app_slug: string
           expires_at?: string | null
           granted_at?: string
+          plan?: string
           status?: string
+          trial_ends_at?: string | null
           user_id: string
         }
         Update: {
           app_slug?: string
           expires_at?: string | null
           granted_at?: string
+          plan?: string
           status?: string
+          trial_ends_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -1318,6 +1324,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          app_slug: string | null
+          badge_slug: string
+          description: string | null
+          earned_at: string
+          icon: string | null
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          app_slug?: string | null
+          badge_slug: string
+          description?: string | null
+          earned_at?: string
+          icon?: string | null
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          app_slug?: string | null
+          badge_slug?: string
+          description?: string | null
+          earned_at?: string
+          icon?: string | null
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_memories: {
         Row: {
           app_slug: string
@@ -1365,6 +1404,36 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_streaks: {
+        Row: {
+          app_slug: string
+          current_streak: number
+          id: string
+          last_activity_date: string | null
+          longest_streak: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_slug: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_slug?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
