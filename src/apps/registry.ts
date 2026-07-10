@@ -26,7 +26,7 @@ export type AppEntry = {
 export const APPS: readonly AppEntry[] = [
   {
     slug: "saboria",
-    name: "SaborIA",
+    name: "NXA Chef",
     tagline: "Chef pessoal com IA",
     description: "Receitas do que você tem em casa, planner semanal, foto → receita e nutri virtual 24h.",
     icon: ChefHat,
@@ -42,7 +42,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "socialia",
-    name: "SocialIA",
+    name: "NXA Social",
     tagline: "Social media com IA",
     description: "Gera legendas, ideias de post, calendário editorial, hashtags e analisa perfis.",
     icon: Megaphone,
@@ -58,7 +58,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "petia",
-    name: "PetIA",
+    name: "NXA Pet",
     tagline: "Veterinário virtual com IA",
     description: "Chat veterinário 24h, saúde, alimentação e treino guiados por IA.",
     icon: PawPrint,
@@ -75,7 +75,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "fluencyia",
-    name: "FluencyIA",
+    name: "NXA Lingua",
     tagline: "Tutor de idiomas com IA",
     description: "Converse, aprenda vocabulário e evolua em inglês, espanhol e mais — com IA que corrige em tempo real.",
     icon: Languages,
@@ -90,7 +90,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "glowia",
-    name: "GlowIA",
+    name: "NXA Glow",
     tagline: "Skincare com IA",
     description: "Análise de pele por foto, rotina AM/PM personalizada e dermatologista virtual.",
     icon: Flower2,
@@ -105,7 +105,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "granaia",
-    name: "GranaIA",
+    name: "NXA Money",
     tagline: "Finanças com IA",
     description: "Controle gastos, orçamento inteligente e consultor financeiro IA.",
     icon: Wallet,
@@ -120,7 +120,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "fitia",
-    name: "FitIA",
+    name: "NXA Fit",
     tagline: "Personal trainer com IA",
     description: "Treinos personalizados, chat com coach IA e histórico de progresso.",
     icon: Dumbbell,
@@ -135,7 +135,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "styleia",
-    name: "StyleIA",
+    name: "NXA Style",
     tagline: "Consultora de estilo com IA",
     description: "Guarda-roupa digital, looks do dia e personal shopper com IA.",
     icon: Shirt,
@@ -151,7 +151,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "cosmosia",
-    name: "CosmosIA",
+    name: "NXA Cosmos",
     tagline: "Astrólogo virtual com IA",
     description: "Mapa astral, horóscopo diário personalizado, tarot e compatibilidade.",
     icon: Moon,
@@ -167,7 +167,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "roteiroia",
-    name: "RoteiroIA",
+    name: "NXA Travel",
     tagline: "Agente de viagens com IA",
     description: "Roteiros dia-a-dia personalizados, orçamento e chat de destinos.",
     icon: Plane,
@@ -188,7 +188,7 @@ export function findApp(slug: string): AppEntry | undefined {
 }
 
 export const SUITE = {
-  name: "Studio IA",
+  name: "NXA Studio",
   tagline: "Uma conta. Vários apps de IA.",
   pricePerApp: "R$ 29 / mês",
   icon: Sparkles,
