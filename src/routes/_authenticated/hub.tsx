@@ -289,7 +289,7 @@ function Hub() {
                           {soon ? (
                             <span className="text-[11px] text-white/60">Avisamos você</span>
                           ) : (
-                            <Link to="/auth" search={{ app: a.slug } as never}
+                            <Link to="/assinar/$slug" params={{ slug: a.slug }}
                               className="press inline-flex items-center gap-1 rounded-full bg-white text-black px-3 py-1.5 text-[11px] font-semibold">
                               Assinar <ArrowUpRight size={11} />
                             </Link>
