@@ -110,3 +110,22 @@ Regras: seja prático, cite exercícios reais, avise sobre segurança, no máxim
     });
     return { reply: raw };
   });
+
+// ============ HERO: "Treino de hoje" adaptativo ============
+export const todayWorkout = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { energy: 1|2|3|4|5; time_min: number; location: "casa"|"academia"|"ar_livre"; pain?: string }) => d)
+  .handler(async ({ data, context }): Promise<Workout> => {
+    const { data: profile } = await context.supabase.from("fit_profile")
+      .select("*").eq("user_id", context.userId).maybeSingle();
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Personal trainer brasileiro. Monte UM treino adaptado ao contexto de HOJE (energia, tempo, local, dor). Se houver dor, substitua exercícios que agravem. Responda APENAS JSON: {"title":"...","focus":"...","duration_min":30,"difficulty":"...","warmup":["..."],"exercises":[{"name":"...","sets":3,"reps":"12","rest_s":45,"tips":"..."}],"cooldown":["..."]}` },
+        { role: "user", content: `Perfil: ${JSON.stringify(profile) || "iniciante"}. Hoje: energia ${data.energy}/5, ${data.time_min} min, local: ${data.location}${data.pain ? `, dor/limitação: ${data.pain}` : ""}.` },
+      ],
+      temperature: 0.6,
+      max_tokens: 2500,
+    });
+    return parseJson<Workout>(raw);
+  });

@@ -129,3 +129,34 @@ export const deleteGoal = createServerFn({ method: "POST" })
     await context.supabase.from("fin_goals").delete().eq("id", data.id).eq("user_id", context.userId);
     return { ok: true };
   });
+
+// ============ HERO: "Posso comprar?" ============
+export type PurchaseAdvice = {
+  verdict: "sim" | "pode" | "espere" | "nao";
+  headline: string;
+  reasoning: string[];
+  impact: { on_month: string; on_goals: string };
+  alternatives: string[];
+};
+
+export const canIBuy = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { item: string; amount: number; urgency?: "baixa"|"media"|"alta" }) => d)
+  .handler(async ({ data, context }): Promise<PurchaseAdvice> => {
+    const [{ data: tx }, { data: goals }, { data: budgets }] = await Promise.all([
+      context.supabase.from("fin_transactions").select("kind,category,amount,occurred_on").eq("user_id", context.userId).order("occurred_on",{ascending:false}).limit(80),
+      context.supabase.from("fin_goals").select("*").eq("user_id", context.userId),
+      context.supabase.from("fin_budgets").select("*").eq("user_id", context.userId),
+    ]);
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Consultor financeiro pessoal, direto e honesto. Analise se a compra faz sentido AGORA considerando fluxo real, metas e orçamentos. Verdict deve ser "sim" | "pode" | "espere" | "nao". Responda APENAS JSON: {"verdict":"...","headline":"frase curta e clara","reasoning":["motivo 1","motivo 2","motivo 3"],"impact":{"on_month":"...","on_goals":"..."},"alternatives":["opção mais barata","adiar 30d","etc"]}` },
+        { role: "user", content: `Compra: ${data.item} — R$ ${data.amount.toFixed(2)} (urgência: ${data.urgency ?? "media"}).\nTransações recentes: ${JSON.stringify(tx?.slice(0,40) ?? [])}.\nMetas: ${JSON.stringify(goals ?? [])}.\nOrçamentos: ${JSON.stringify(budgets ?? [])}.` },
+      ],
+      temperature: 0.4,
+      max_tokens: 1500,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<PurchaseAdvice>(raw);
+  });

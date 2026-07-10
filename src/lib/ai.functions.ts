@@ -356,3 +356,23 @@ export const generateRecipeImage = createServerFn({ method: "POST" })
     return { imageUrl: url as string };
   });
 
+
+// ============ HERO: "O que faço agora?" ============
+export type QuickIdea = { title: string; time_min: number; why: string; ingredients: string[]; steps: string[] };
+export type QuickIdeasResult = { intro: string; ideas: QuickIdea[] };
+
+export const quickIdeas = createServerFn({ method: "POST" })
+  .inputValidator((d: { ingredients: string[]; time_min: number; mood?: string }) => d)
+  .handler(async ({ data }): Promise<QuickIdeasResult> => {
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Você é um chef brasileiro prático. Dada uma lista de ingredientes, tempo disponível e humor, sugira EXATAMENTE 3 pratos rápidos e realistas. Responda APENAS JSON: {"intro":"...","ideas":[{"title":"...","time_min":15,"why":"por que combina agora","ingredients":["..."],"steps":["passo curto"]}]}` },
+        { role: "user", content: `Ingredientes: ${data.ingredients.join(", ") || "básicos de despensa"}. Tempo: ${data.time_min} min. Humor: ${data.mood ?? "sem preferência"}.` },
+      ],
+      temperature: 0.8,
+      max_tokens: 2000,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<QuickIdeasResult>(raw);
+  });
