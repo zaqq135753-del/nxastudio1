@@ -207,7 +207,9 @@ function Hub() {
             </div>
           ) : (
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {mine.map((a) => (
+              {mine.map((a) => {
+                const prime = entIsPrime(ents, a.slug);
+                return (
                 <Link key={a.slug} to={a.route}
                   className="press group relative block h-52 overflow-hidden rounded-3xl border"
                   style={{
@@ -229,17 +231,33 @@ function Hub() {
                       <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 backdrop-blur">
                         <a.icon size={18} />
                       </div>
-                      <div className="grid h-8 w-8 place-items-center rounded-full bg-white/10 backdrop-blur opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0 translate-x-1">
-                        <ArrowUpRight size={14} />
-                      </div>
+                      {prime ? (
+                        <PrimeBadge />
+                      ) : (
+                        <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider">
+                          Base
+                        </span>
+                      )}
                     </div>
                     <div>
                       <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
                       <div className="text-[13px] text-white/75 mt-0.5 line-clamp-1">{a.tagline}</div>
+                      {!prime && (
+                        <Link
+                          to="/assinar/$slug"
+                          params={{ slug: a.slug }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-white/90 hover:text-white"
+                        >
+                          <Sparkles size={11} /> Ativar Prime
+                          <ArrowUpRight size={11} />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
