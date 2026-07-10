@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import coverImg from "@/assets/cover-styleia.jpg";
+import type { CSSProperties } from "react";
 import { styleStats, generateLook, type Look } from "@/lib/style.functions";
 import { Palette, ShoppingBag, Sparkles, User, ArrowRight, Wand2 } from "lucide-react";
 import { toast } from "sonner";
@@ -91,7 +93,7 @@ function StyleHome() {
 
       <section className="stagger grid grid-cols-1 gap-3 sm:grid-cols-2">
         {quick.map((q) => (
-          <Link key={q.to} to={q.to} className="tile-hero">
+          <Link key={q.to} to={q.to} className="tile-hero tile-cover" style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}>
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
               <ArrowRight size={14} className="tile-arrow" />

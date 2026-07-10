@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import coverImg from "@/assets/cover-socialia.jpg";
+import type { CSSProperties } from "react";
 import { Sparkles, PenLine, CalendarDays, Hash, LineChart, ArrowRight, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -71,7 +73,7 @@ function SocialHome() {
 
       <section className="stagger mb-8 grid grid-cols-2 gap-3">
         {quick.map((q) => (
-          <Link key={q.to} to={q.to} className="tile-hero group">
+          <Link key={q.to} to={q.to} className="tile-hero tile-cover group" style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}>
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
               <ArrowRight size={14} className="tile-arrow" />

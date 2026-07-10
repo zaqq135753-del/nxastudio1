@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import coverImg from "@/assets/cover-fluencyia.jpg";
+import type { CSSProperties } from "react";
 import { getLangProfile, langStats, LANGS } from "@/lib/fluency.functions";
 import { MessageCircle, BookOpen, User, ArrowRight, Sparkles } from "lucide-react";
 
@@ -58,7 +60,7 @@ function FluencyHome() {
 
       <section className="stagger grid grid-cols-1 gap-3 sm:grid-cols-3">
         {quick.map((q) => (
-          <Link key={q.to} to={q.to} className="tile-hero">
+          <Link key={q.to} to={q.to} className="tile-hero tile-cover" style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}>
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
               <ArrowRight size={14} className="tile-arrow" />

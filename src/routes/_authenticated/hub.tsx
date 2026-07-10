@@ -1,11 +1,28 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { APPS, SUITE } from "@/apps/registry";
 import { getMyEntitlements, isEntitled, type Entitlement } from "@/lib/entitlements.functions";
-import { ArrowRight, ChevronRight, LogOut, Lock, Sparkles } from "lucide-react";
+import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+
+import saboriaCover from "@/assets/cover-saboria.jpg";
+import fitiaCover from "@/assets/cover-fitia.jpg";
+import granaiaCover from "@/assets/cover-granaia.jpg";
+import glowiaCover from "@/assets/cover-glowia.jpg";
+import petiaCover from "@/assets/cover-petia.jpg";
+import socialiaCover from "@/assets/cover-socialia.jpg";
+import fluencyiaCover from "@/assets/cover-fluencyia.jpg";
+import styleiaCover from "@/assets/cover-styleia.jpg";
+import cosmosiaCover from "@/assets/cover-cosmosia.jpg";
+import roteiroiaCover from "@/assets/cover-roteiroia.jpg";
+
+const COVERS: Record<string, string> = {
+  saboria: saboriaCover, fitia: fitiaCover, granaia: granaiaCover, glowia: glowiaCover,
+  petia: petiaCover, socialia: socialiaCover, fluencyia: fluencyiaCover, styleia: styleiaCover,
+  cosmosia: cosmosiaCover, roteiroia: roteiroiaCover,
+};
 
 export const Route = createFileRoute("/_authenticated/hub")({
   component: Hub,
@@ -32,12 +49,7 @@ function Hub() {
         setInitial((dn || "S").charAt(0).toUpperCase());
         setAvatar((meta.avatar_url as string) ?? null);
       }
-      try {
-        const res = await load();
-        setEnts(res);
-      } finally {
-        setLoading(false);
-      }
+      try { setEnts(await load()); } finally { setLoading(false); }
     })();
   }, [load]);
 
@@ -50,65 +62,128 @@ function Hub() {
 
   const mine = APPS.filter((a) => a.status === "live" && isEntitled(ents, a.slug));
   const discover = APPS.filter((a) => !mine.includes(a));
+  const featured = mine[0] ?? APPS[0];
 
   return (
-    <div className="min-h-screen bg-aurora relative">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden -z-0">
+    <div className="min-h-screen bg-aurora relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-0">
         <span className="aurora-orb aurora-orb-1" />
         <span className="aurora-orb aurora-orb-2" />
         <span className="aurora-orb aurora-orb-3" />
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-40 glass" style={{ borderBottom: "1px solid var(--line-1)" }}>
-        <div className="mx-auto flex h-14 max-w-[960px] items-center justify-between px-5">
+        <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-5">
           <Link to="/hub" className="flex items-center gap-2 text-[17px] font-bold tracking-tight">
             <SUITE.icon size={18} /> {SUITE.name}
           </Link>
-          <button onClick={signOut} title="Sair"
-            className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
-            style={{ background: "var(--n-100)" }}>
-            {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> :
-              <span className="text-sm font-semibold">{initial}</span>}
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
+              style={{ borderColor: "var(--line-1)", color: "var(--muted-foreground)" }}>
+              <Command size={11} /> {mine.length} ativo{mine.length === 1 ? "" : "s"} · {APPS.length} apps
+            </span>
+            <button onClick={signOut} title="Sair"
+              className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
+              style={{ background: "var(--n-100)" }}>
+              {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> :
+                <span className="text-sm font-semibold">{initial}</span>}
+            </button>
+            <button onClick={signOut} className="hidden sm:inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
+              style={{ color: "var(--muted-foreground)" }}>
+              <LogOut size={13} /> Sair
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-[960px] px-5 pt-24 pb-16 z-10">
-        <div className="fade-up mb-10">
-          <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
-          <h1 className="text-[34px] sm:text-6xl font-bold tracking-tight leading-[1.05]">
-            {greeting()}{name ? "," : "."}
-            {name && <> <span className="text-gradient">{name}</span>.</>}
-          </h1>
-          <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
-            Escolha um app pra abrir ou descubra os próximos da suíte.
-          </p>
+      <main className="relative mx-auto max-w-[1100px] px-5 pt-24 pb-20 z-10">
+        {/* Hero */}
+        <div className="fade-up mb-10 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+          <div>
+            <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
+            <h1 className="text-[38px] sm:text-[64px] font-bold tracking-tight leading-[1.02]">
+              {greeting()}{name ? "," : "."}
+              {name && <> <span className="text-gradient">{name}</span>.</>}
+            </h1>
+            <p className="mt-4 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
+              Uma suíte de {APPS.length} apps de IA. Um assinatura, um login, tudo conectado no seu ritmo.
+            </p>
+          </div>
+
+          {/* Featured spotlight */}
+          {featured && (
+            <Link to={featured.route}
+              className="press group relative block h-56 overflow-hidden rounded-3xl border"
+              style={{
+                borderColor: "var(--line-1)",
+                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.85) 100%), url(${COVERS[featured.slug]})`,
+                backgroundSize: "cover", backgroundPosition: "center",
+                boxShadow: "var(--shadow-elev)",
+              }}>
+              <div className="absolute inset-0 flex flex-col justify-between p-5 text-white">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider">
+                    Em destaque
+                  </span>
+                  <div className="grid h-9 w-9 place-items-center rounded-full bg-white/15 backdrop-blur transition-transform group-hover:scale-110">
+                    <ArrowUpRight size={16} />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold tracking-tight">{featured.name}</div>
+                  <div className="mt-0.5 text-sm text-white/75">{featured.tagline}</div>
+                </div>
+              </div>
+            </Link>
+          )}
         </div>
 
-        <section className="mb-12">
-          <div className="edition-tag mb-4">Seus apps</div>
+        {/* My apps grid */}
+        <section className="mb-14">
+          <div className="mb-4 flex items-end justify-between">
+            <div className="edition-tag">Seus apps</div>
+            <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{mine.length} de {APPS.length}</span>
+          </div>
           {loading ? (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {[0,1,2,3].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-32" />)}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-52" />)}
             </div>
           ) : mine.length === 0 ? (
             <div className="glass-card p-6 text-sm" style={{ color: "var(--muted-foreground)" }}>
               Nenhum app ativo ainda. Explore abaixo.
             </div>
           ) : (
-            <div className="stagger grid gap-4 sm:grid-cols-2">
+            <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {mine.map((a) => (
-                <Link key={a.slug} to={a.route} className="glass-card hover-tilt press group p-5 flex flex-col gap-3">
-                  <div className="flex items-start justify-between">
-                    <div className="w-11 h-11 rounded-2xl grid place-items-center shrink-0"
-                         style={{ background: "var(--grad-sunset)" }}>
-                      <a.icon size={20} className="text-white" />
+                <Link key={a.slug} to={a.route}
+                  className="press group relative block h-52 overflow-hidden rounded-3xl border"
+                  style={{
+                    borderColor: "var(--line-1)",
+                    ["--tile-img" as string]: `url(${COVERS[a.slug]})`,
+                  } as CSSProperties}>
+                  <div
+                    className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+                    style={{
+                      backgroundImage: `var(--tile-img)`,
+                      backgroundSize: "cover", backgroundPosition: "center",
+                    }}
+                  />
+                  <div className="absolute inset-0" style={{
+                    background: "linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.85) 100%)",
+                  }} />
+                  <div className="relative flex h-full flex-col justify-between p-5 text-white">
+                    <div className="flex items-start justify-between">
+                      <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 backdrop-blur">
+                        <a.icon size={18} />
+                      </div>
+                      <div className="grid h-8 w-8 place-items-center rounded-full bg-white/10 backdrop-blur opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0 translate-x-1">
+                        <ArrowUpRight size={14} />
+                      </div>
                     </div>
-                    <ArrowRight size={16} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                  </div>
-                  <div>
-                    <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
-                    <div className="text-[13px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{a.tagline}</div>
+                    <div>
+                      <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
+                      <div className="text-[13px] text-white/75 mt-0.5 line-clamp-1">{a.tagline}</div>
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -116,29 +191,43 @@ function Hub() {
           )}
         </section>
 
+        {/* Discover */}
         {discover.length > 0 && (
           <section>
-            <div className="edition-tag mb-4">Descobrir</div>
-            <div className="stagger grid gap-4 sm:grid-cols-2">
+            <div className="mb-4 edition-tag">Descobrir mais</div>
+            <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {discover.map((a) => {
                 const soon = a.status === "soon";
                 return (
-                  <div key={a.slug} className="glass-card hover-lift p-5 flex flex-col gap-3 relative">
-                    <div className="flex items-start justify-between">
-                      <div className="w-11 h-11 rounded-2xl grid place-items-center shrink-0 opacity-70"
-                           style={{ background: "var(--grad-ocean)" }}>
-                        <a.icon size={20} className="text-white" />
+                  <div key={a.slug}
+                    className="hover-lift relative block h-52 overflow-hidden rounded-3xl border"
+                    style={{ borderColor: "var(--line-1)" }}>
+                    <div className="absolute inset-0"
+                      style={{
+                        backgroundImage: `url(${COVERS[a.slug]})`,
+                        backgroundSize: "cover", backgroundPosition: "center",
+                        filter: "grayscale(0.7) brightness(0.55)",
+                      }}
+                    />
+                    <div className="absolute inset-0" style={{
+                      background: "linear-gradient(180deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.9) 100%)",
+                    }} />
+                    <div className="relative flex h-full flex-col justify-between p-5 text-white">
+                      <div className="flex items-start justify-between">
+                        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 backdrop-blur">
+                          <a.icon size={18} />
+                        </div>
+                        <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider inline-flex items-center gap-1">
+                          {soon ? "Em breve" : <><Lock size={10} /> Bloqueado</>}
+                        </span>
                       </div>
-                      <span className="ai-badge text-[10px]">
-                        {soon ? "Em breve" : <><Lock size={10} className="mr-1 inline" />Bloqueado</>}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
-                      <div className="text-[13px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{a.description}</div>
-                    </div>
-                    <div className="mt-1 text-xs" style={{ color: "var(--muted-foreground)" }}>
-                      {SUITE.pricePerApp} · {soon ? "avisamos quando abrir" : "assine para desbloquear"}
+                      <div>
+                        <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
+                        <div className="text-[13px] text-white/75 mt-0.5 line-clamp-2">{a.description}</div>
+                        <div className="mt-2 text-[11px] text-white/60">
+                          {SUITE.pricePerApp} · {soon ? "avisamos quando abrir" : "assine para desbloquear"}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -150,7 +239,6 @@ function Hub() {
     </div>
   );
 }
-
 
 function greeting() {
   const h = new Date().getHours();

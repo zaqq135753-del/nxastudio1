@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import coverImg from "@/assets/cover-cosmosia.jpg";
+import type { CSSProperties } from "react";
 import { dailyHoroscope, getCosmosProfile, type Horoscope } from "@/lib/cosmos.functions";
 import { Stars, Sparkle, Heart, User, ArrowRight, Moon } from "lucide-react";
 import { toast } from "sonner";
@@ -98,7 +100,7 @@ function CosmosHome() {
 
       <section className="stagger grid grid-cols-2 gap-3">
         {quick.map((q) => (
-          <Link key={q.to} to={q.to} className="tile-hero">
+          <Link key={q.to} to={q.to} className="tile-hero tile-cover" style={{ ["--tile-img" as string]: `url(${coverImg})` } as CSSProperties}>
             <div className="flex items-start justify-between">
               <div className="tile-icon-wrap"><q.icon size={20} /></div>
               <ArrowRight size={14} className="tile-arrow" />
