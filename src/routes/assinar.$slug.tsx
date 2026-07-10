@@ -8,6 +8,11 @@ import { lovable } from "@/integrations/lovable";
 import { claimTrial } from "@/lib/entitlements.functions";
 import { findApp } from "@/apps/registry";
 import { getLanding } from "@/apps/landings";
+import { getPricing } from "@/apps/pricing";
+import { PricingCard } from "@/components/commerce/PricingCard";
+import { FeatureComparison } from "@/components/commerce/FeatureComparison";
+import { UpsellModal } from "@/components/commerce/UpsellModal";
+import { TrialBanner } from "@/components/commerce/TrialBanner";
 
 const INTENT_KEY = "nxa_intent_app";
 
