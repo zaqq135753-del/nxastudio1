@@ -52,7 +52,18 @@ function parseJson<T>(raw: string): T {
   const start = cleaned.indexOf("{");
   const end = cleaned.lastIndexOf("}");
   const slice = start >= 0 && end > start ? cleaned.slice(start, end + 1) : cleaned;
-  return JSON.parse(slice) as T;
+  try {
+    return JSON.parse(slice) as T;
+  } catch {
+    const repaired = slice
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
+      .replace(/,\s*([}\]])/g, "$1");
+    try {
+      return JSON.parse(repaired) as T;
+    } catch {
+      throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
+    }
+  }
 }
 
 /* ================= Geladeira ================= */
@@ -153,7 +164,7 @@ Se a imagem não for comida:
 
     const raw = await callGateway({
       model: VISION_MODEL,
-      max_tokens: 1500,
+      max_tokens: 3000,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: system },
