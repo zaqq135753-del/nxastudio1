@@ -67,7 +67,7 @@ function PetHome() {
   if (pets.length === 0) {
     return (
       <AppShell appSlug="petia">
-        <ScreenHeader title="🐾 PetIA" subtitle="Seu veterinário virtual e guia de cuidados com IA." />
+        <ScreenHeader title="🐾 NXA Pet" subtitle="Seu veterinário virtual e guia de cuidados com IA." />
         <div className="surface p-8 text-center fade-up">
           <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full text-3xl" style={{ background: "var(--n-100)" }}>🐶</div>
           <h2 className="text-xl font-semibold">Cadastre seu primeiro pet</h2>
@@ -84,7 +84,7 @@ function PetHome() {
 
   return (
     <AppShell appSlug="petia">
-      <ScreenHeader title="🐾 PetIA" subtitle="Seu veterinário virtual e guia de cuidados." />
+      <ScreenHeader title="🐾 NXA Pet" subtitle="Seu veterinário virtual e guia de cuidados." />
 
       {/* Pet picker + card */}
       <section className="mb-6 fade-up">

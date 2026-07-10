@@ -33,7 +33,7 @@ function RoteiroHome() {
 
   return (
     <AppShell appSlug="roteiroia">
-      <ScreenHeader title="✈️ RoteiroIA" subtitle="Roteiros de viagem sob medida com IA." />
+      <ScreenHeader title="✈️ NXA Travel" subtitle="Roteiros de viagem sob medida com IA." />
 
       <section className="stagger grid grid-cols-1 gap-3 sm:grid-cols-3">
         {quick.map((q) => (

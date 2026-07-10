@@ -56,7 +56,7 @@ function AuthPage() {
         <div className="absolute inset-0 mesh-hero" />
         <div className="absolute inset-0 flex flex-col justify-between p-10">
           <div className="edition-tag" style={{ color: "var(--cream-200)" }}>
-            SaborIA · Edição nº 001
+            NXA Chef · Edição nº 001
           </div>
           <div>
             <div className="text-8xl leading-none" style={{ fontFamily: "var(--font-display)", color: "var(--cream-50)" }}>
@@ -85,7 +85,7 @@ function AuthPage() {
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-sm fade-up">
           <div className="chip mb-6"><Sparkles size={12} /> IA ativa · sem senhas</div>
-          <h1 className="text-4xl">Entrar no SaborIA</h1>
+          <h1 className="text-4xl">Entrar no NXA Chef</h1>
           <p className="mt-2 text-sm" style={{ color: "var(--cream-400)" }}>
             Enviamos um link mágico pro seu e-mail. Sem senha pra decorar.
           </p>

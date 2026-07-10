@@ -46,7 +46,7 @@ function FitHome() {
 
   return (
     <AppShell appSlug="fitia">
-      <ScreenHeader title="💪 FitIA" subtitle={profile?.goal ? `Objetivo: ${profile.goal}` : "Seu personal trainer pessoal com IA."} />
+      <ScreenHeader title="💪 NXA Fit" subtitle={profile?.goal ? `Objetivo: ${profile.goal}` : "Seu personal trainer pessoal com IA."} />
 
       <section className="mb-6 grid grid-cols-3 gap-3">
         <Stat label="Sessões" value={sessions} />

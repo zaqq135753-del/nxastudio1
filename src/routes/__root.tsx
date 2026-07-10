@@ -59,7 +59,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
-      { title: "SaborIA — O chef pessoal com IA que aprende seu paladar" },
+      { title: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
       {
         name: "description",
         content:
@@ -68,7 +68,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#fafaf9" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { property: "og:title", content: "SaborIA — O chef pessoal com IA" },
+      { property: "og:title", content: "NXA Chef — O chef pessoal com IA" },
       { property: "og:description", content: "Receitas, planos e nutri IA que aprendem seu paladar." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

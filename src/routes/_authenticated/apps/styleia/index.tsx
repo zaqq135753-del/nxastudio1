@@ -40,7 +40,7 @@ function StyleHome() {
 
   return (
     <AppShell appSlug="styleia">
-      <ScreenHeader title="👗 StyleIA" subtitle="Sua consultora de estilo pessoal com IA." />
+      <ScreenHeader title="👗 NXA Style" subtitle="Sua consultora de estilo pessoal com IA." />
 
       <section className="mb-6 grid grid-cols-3 gap-3">
         <Stat label="Peças" value={stats.items} />

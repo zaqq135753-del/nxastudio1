@@ -33,7 +33,7 @@ function GlowHome() {
 
   return (
     <AppShell appSlug="glowia">
-      <ScreenHeader title="✨ GlowIA" subtitle="Sua consultora de skincare com IA." />
+      <ScreenHeader title="✨ NXA Glow" subtitle="Sua consultora de skincare com IA." />
 
       {hasProfile === false && (
         <div className="surface p-5 mb-6 fade-up">

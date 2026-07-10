@@ -44,7 +44,7 @@ function CosmosHome() {
 
   return (
     <AppShell appSlug="cosmosia">
-      <ScreenHeader title="🔮 CosmosIA" subtitle="Seu astrólogo virtual com IA." />
+      <ScreenHeader title="🔮 NXA Cosmos" subtitle="Seu astrólogo virtual com IA." />
 
       {profile?.sun_sign ? (
         <div className="surface p-5 mb-6 fade-up">

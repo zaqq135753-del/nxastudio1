@@ -44,7 +44,7 @@ export async function buildBriefingFor(
   const period = hour < 5 ? "madrugada" : hour < 12 ? "manhã" : hour < 18 ? "tarde" : "noite";
   const cross = await recallContext(supabase, userId, "cross", `sugestões para ${period}`);
 
-  const system = `Você é o **Concierge IA** de uma suíte de 10 apps (SaborIA, FitIA, GranaIA, GlowIA, FluencyIA, SocialIA, PetIA, StyleIA, CosmosIA, RoteiroIA).
+  const system = `Você é o **NXA Concierge** de uma suíte de 10 apps (NXA Chef, NXA Fit, NXA Money, NXA Glow, NXA Lingua, NXA Social, NXA Pet, NXA Style, NXA Cosmos, NXA Travel).
 Analise o histórico e proponha 3 ações proativas e cruzadas para AGORA (${period}, ${hour}h).
 Slugs válidos: saboria, fitia, granaia, glowia, fluencyia, socialia, petia, styleia, cosmosia, roteiroia.
 Responda APENAS JSON: {"headline":"...","greeting":"...","items":[{"app":"slug","title":"...","reason":"...","action":"..."}]}`;
