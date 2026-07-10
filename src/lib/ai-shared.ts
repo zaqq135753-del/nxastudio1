@@ -22,11 +22,21 @@ export async function callGateway(body: {
 
   const url = useOpenAI ? OPENAI_URL : GATEWAY_URL;
   const headers: Record<string, string> = { "Content-Type": "application/json" };
-  const payload = { ...body };
+  const payload: Record<string, unknown> = { ...body };
 
   if (useOpenAI) {
     headers["Authorization"] = `Bearer ${openaiKey}`;
     payload.model = body.model.replace(/^openai\//, "");
+    // GPT-5 family (and o1/o3): use max_completion_tokens and no custom temperature
+    const m = payload.model as string;
+    const isNewModel = /^(gpt-5|o1|o3|gpt-4\.1)/.test(m);
+    if (isNewModel) {
+      if (body.max_tokens !== undefined) {
+        payload.max_completion_tokens = body.max_tokens;
+        delete payload.max_tokens;
+      }
+      delete payload.temperature;
+    }
   } else {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("LOVABLE_API_KEY não configurada");
