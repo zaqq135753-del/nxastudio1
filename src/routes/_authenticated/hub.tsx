@@ -243,10 +243,18 @@ function Hub() {
           )}
         </section>
 
-        {/* Discover */}
+        {/* Discover / upsell */}
         {discover.length > 0 && (
           <section>
-            <div className="mb-4 edition-tag">Descobrir mais</div>
+            <div className="mb-4 flex items-end justify-between">
+              <div>
+                <div className="edition-tag">Adicione mais apps NXA</div>
+                <p className="mt-1 text-sm" style={{ color: "var(--muted-foreground)" }}>
+                  Já tem sua conta. Ative outro app em 1 clique — 7 dias grátis, depois {SUITE.pricePerApp}.
+                </p>
+              </div>
+              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{discover.length} disponíve{discover.length === 1 ? "l" : "is"}</span>
+            </div>
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {discover.map((a) => {
                 const soon = a.status === "soon";
@@ -258,7 +266,7 @@ function Hub() {
                       style={{
                         backgroundImage: `url(${COVERS[a.slug]})`,
                         backgroundSize: "cover", backgroundPosition: "center",
-                        filter: "grayscale(0.7) brightness(0.55)",
+                        filter: "grayscale(0.5) brightness(0.6)",
                       }}
                     />
                     <div className="absolute inset-0" style={{
@@ -270,14 +278,22 @@ function Hub() {
                           <a.icon size={18} />
                         </div>
                         <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider inline-flex items-center gap-1">
-                          {soon ? "Em breve" : <><Lock size={10} /> Bloqueado</>}
+                          {soon ? "Em breve" : <><Lock size={10} /> Não assinado</>}
                         </span>
                       </div>
                       <div>
                         <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
                         <div className="text-[13px] text-white/75 mt-0.5 line-clamp-2">{a.description}</div>
-                        <div className="mt-2 text-[11px] text-white/60">
-                          {SUITE.pricePerApp} · {soon ? "avisamos quando abrir" : "assine para desbloquear"}
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="text-[11px] text-white/70">{SUITE.pricePerApp}</span>
+                          {soon ? (
+                            <span className="text-[11px] text-white/60">Avisamos você</span>
+                          ) : (
+                            <Link to="/auth" search={{ app: a.slug } as never}
+                              className="press inline-flex items-center gap-1 rounded-full bg-white text-black px-3 py-1.5 text-[11px] font-semibold">
+                              Assinar <ArrowUpRight size={11} />
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
