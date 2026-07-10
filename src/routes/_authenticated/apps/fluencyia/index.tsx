@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import coverImg from "@/assets/cover-fluencyia.jpg";
 import type { CSSProperties } from "react";
 import { getLangProfile, langStats, LANGS } from "@/lib/fluency.functions";
@@ -37,6 +38,7 @@ function FluencyHome() {
   return (
     <AppShell appSlug="fluencyia">
       <ScreenHeader title="NXA Lingua" subtitle={`Seu tutor de ${lang}. Nível atual: ${level}.`} />
+      <div className="mb-4 flex justify-center"><RealtimeCallButton slug="fluencyia" /></div>
 
       <section className="mb-6 grid grid-cols-3 gap-3">
         <Stat label="Palavras" value={stats.vocab} />

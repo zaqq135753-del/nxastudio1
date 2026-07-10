@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Mic, Square, Loader2 } from "lucide-react";
 import { transcribeAudio } from "@/lib/voice.functions";
+import { handleAiError, useAiOutage } from "@/lib/ai-errors";
 import { toast } from "sonner";
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
  */
 export function MicButton({ onTranscript, disabled, className }: Props) {
   const call = useServerFn(transcribeAudio);
+  const outage = useAiOutage();
   const recRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -48,7 +50,7 @@ export function MicButton({ onTranscript, disabled, className }: Props) {
           if (text.trim()) onTranscript(text.trim());
           else toast.error("Não entendi, tente de novo");
         } catch (e) {
-          toast.error(e instanceof Error ? e.message : "Falha na transcrição");
+          handleAiError(e, toast);
         } finally { setState("idle"); }
       };
       rec.start();
@@ -70,9 +72,10 @@ export function MicButton({ onTranscript, disabled, className }: Props) {
     <button
       type="button"
       onClick={rec ? stop : start}
-      disabled={disabled || busy}
-      aria-label={rec ? "Parar gravação" : "Falar"}
-      className={`rounded-full p-2.5 transition ${className ?? ""}`}
+      disabled={disabled || busy || (outage && !rec)}
+      aria-label={rec ? "Parar gravação" : outage ? "IA sem crédito" : "Falar"}
+      title={outage && !rec ? "IA sem crédito no momento" : undefined}
+      className={`rounded-full p-2.5 transition disabled:opacity-40 disabled:cursor-not-allowed ${className ?? ""}`}
       style={{
         background: rec ? "#ef4444" : "var(--bg-3, rgba(0,0,0,0.05))",
         color: rec ? "#fff" : "var(--text-1)",

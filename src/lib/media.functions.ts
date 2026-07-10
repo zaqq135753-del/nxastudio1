@@ -88,7 +88,8 @@ export const brandTTS = createServerFn({ method: "POST" })
     });
     if (!res.ok) {
       const t = await res.text().catch(() => "");
-      throw new Error(`TTS falhou: ${res.status} ${t.slice(0, 200)}`);
+      const tag = res.status === 402 ? "[NO_CREDITS]" : res.status === 429 ? "[RATE_LIMIT]" : "";
+      throw new Error(`${tag} TTS falhou (${res.status}) ${t.slice(0, 160)}`.trim());
     }
     const buf = await res.arrayBuffer();
     const bytes = new Uint8Array(buf);

@@ -28,7 +28,8 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     });
     if (!res.ok) {
       const t = await res.text().catch(() => "");
-      throw new Error(`STT falhou: ${res.status} ${t.slice(0, 160)}`);
+      const tag = res.status === 402 ? "[NO_CREDITS]" : res.status === 429 ? "[RATE_LIMIT]" : "";
+      throw new Error(`${tag} STT falhou (${res.status}) ${t.slice(0, 120)}`.trim());
     }
     const j = (await res.json()) as { text?: string };
     return { text: j.text ?? "" };
@@ -50,7 +51,8 @@ export const synthesizeSpeech = createServerFn({ method: "POST" })
     });
     if (!res.ok) {
       const t = await res.text().catch(() => "");
-      throw new Error(`TTS falhou: ${res.status} ${t.slice(0, 160)}`);
+      const tag = res.status === 402 ? "[NO_CREDITS]" : res.status === 429 ? "[RATE_LIMIT]" : "";
+      throw new Error(`${tag} TTS falhou (${res.status}) ${t.slice(0, 120)}`.trim());
     }
     const buf = await res.arrayBuffer();
     // btoa on chunks to avoid stack overflow

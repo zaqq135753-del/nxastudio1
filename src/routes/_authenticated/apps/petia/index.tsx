@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import coverImg from "@/assets/cover-petia.jpg";
 import type { CSSProperties } from "react";
 import { usePets, petAgeLabel, petEmoji } from "@/hooks/use-pets";
@@ -68,6 +69,7 @@ function PetHome() {
     return (
       <AppShell appSlug="petia">
         <ScreenHeader title="🐾 NXA Pet" subtitle="Seu veterinário virtual e guia de cuidados com IA." />
+      <div className="mb-4 flex justify-center"><RealtimeCallButton slug="petia" /></div>
         <div className="surface p-8 text-center fade-up">
           <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full text-3xl" style={{ background: "var(--n-100)" }}>🐶</div>
           <h2 className="text-xl font-semibold">Cadastre seu primeiro pet</h2>
