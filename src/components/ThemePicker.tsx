@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
 const THEMES = [
-  { id: "coral",    label: "Coral",    color: "#ff8a3d" },
-  { id: "matcha",   label: "Matcha",   color: "#2fb673" },
-  { id: "berry",    label: "Berry",    color: "#d1476b" },
-  { id: "midnight", label: "Midnight", color: "#14161c" },
+  { id: "light", label: "Light", color: "#fafaf9" },
+  { id: "paper", label: "Paper", color: "#f6f4ee" },
+  { id: "dark",  label: "Dark",  color: "#111111" },
 ] as const;
 
 export type ThemeId = typeof THEMES[number]["id"];
@@ -17,17 +16,17 @@ export function applyTheme(id: ThemeId) {
 export function useInitTheme() {
   useEffect(() => {
     try {
-      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "coral";
+      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "light";
       applyTheme(saved);
-    } catch { applyTheme("coral"); }
+    } catch { applyTheme("light"); }
   }, []);
 }
 
 export function ThemePicker() {
-  const [active, setActive] = useState<ThemeId>("coral");
+  const [active, setActive] = useState<ThemeId>("light");
   useEffect(() => {
     try {
-      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "coral";
+      const saved = (localStorage.getItem("saboria.theme") as ThemeId | null) ?? "light";
       setActive(saved);
       applyTheme(saved);
     } catch {}
