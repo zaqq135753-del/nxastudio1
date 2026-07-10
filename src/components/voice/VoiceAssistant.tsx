@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mic, Square, Loader2, X, ArrowRight, Sparkles } from "lucide-react";
 import { transcribeAudio, synthesizeSpeech } from "@/lib/voice.functions";
 import { voiceRoute } from "@/lib/voice-route.functions";
+import { handleAiError, useAiOutage } from "@/lib/ai-errors";
 import { toast } from "sonner";
 
 type Result = { reply: string; appSlug: string | null; appName: string | null; route: string | null; action: string | null };
@@ -15,6 +16,7 @@ export function VoiceAssistant() {
   const stt = useServerFn(transcribeAudio);
   const tts = useServerFn(synthesizeSpeech);
   const routeIt = useServerFn(voiceRoute);
+  const outage = useAiOutage();
 
   const recRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -61,7 +63,7 @@ export function VoiceAssistant() {
               .catch(() => {});
           }
         } catch (e) {
-          toast.error(e instanceof Error ? e.message : "Falha");
+          handleAiError(e, toast);
         } finally { setState("idle"); }
       };
       rec.start();
@@ -117,8 +119,9 @@ export function VoiceAssistant() {
                 <motion.button
                   type="button"
                   onClick={state === "recording" ? stop : start}
-                  disabled={state === "processing"}
-                  className="relative flex h-24 w-24 items-center justify-center rounded-full"
+                  disabled={state === "processing" || (outage && state !== "recording")}
+                  title={outage ? "IA sem crédito no momento" : undefined}
+                  className="relative flex h-24 w-24 items-center justify-center rounded-full disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{
                     background: state === "recording" ? "#ef4444" : "var(--text-1)",
                     color: state === "recording" ? "#fff" : "var(--bg-1)",
@@ -138,7 +141,8 @@ export function VoiceAssistant() {
                     : <Mic size={28} />}
                 </motion.button>
                 <p className="mt-4 text-sm" style={{ color: "var(--n-500)" }}>
-                  {state === "recording" ? "Ouvindo... toque para parar"
+                  {outage ? "IA sem crédito no momento — avise o admin."
+                    : state === "recording" ? "Ouvindo... toque para parar"
                     : state === "processing" ? "Processando..."
                     : "Toque e diga o que precisa"}
                 </p>
