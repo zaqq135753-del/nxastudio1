@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-const TEXT_MODEL = "google/gemini-2.5-flash";
-const VISION_MODEL = "google/gemini-2.5-pro";
+const TEXT_MODEL = "openai/gpt-5-mini";
+const VISION_MODEL = "openai/gpt-5";
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 type ChatMessage = {
