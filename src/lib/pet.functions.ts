@@ -407,3 +407,50 @@ export const listPlans = createServerFn({ method: "POST" })
     const { data: rows } = await q.order("created_at", { ascending: false }).limit(20);
     return rows ?? [];
   });
+
+/* =============== Symptom Triage =============== */
+export type TriageResult = {
+  urgency: "emergency" | "urgent" | "monitor" | "routine";
+  urgency_label: string;
+  reasoning: string;
+  next_steps: string[];
+  home_care: string[];
+  when_to_vet: string;
+};
+
+const URGENCY_LABEL: Record<TriageResult["urgency"], string> = {
+  emergency: "🚨 Emergência — ao vet AGORA",
+  urgent: "⚠️ Urgente — hoje/24h",
+  monitor: "👀 Monitorar 24-48h",
+  routine: "✅ Rotina — pode agendar",
+};
+
+export const symptomTriage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { pet_id?: string; species: string; age?: string; symptoms: string[]; notes?: string }) => d)
+  .handler(async ({ data }): Promise<TriageResult> => {
+    const prompt = `Espécie: ${data.species}. Idade: ${data.age ?? "n/i"}.
+Sintomas: ${data.symptoms.join("; ")}.
+Notas: ${data.notes ?? "—"}.
+
+Responda APENAS JSON com triagem:
+{
+  "urgency": "emergency|urgent|monitor|routine",
+  "reasoning": "por que esse nível (1-2 frases, tom calmo e claro)",
+  "next_steps": ["passo 1", "passo 2", "passo 3"],
+  "home_care": ["cuidado em casa 1"],
+  "when_to_vet": "sinais para procurar o vet imediatamente"
+}
+Regras: sangramento intenso, dispneia, convulsão, distensão abdominal, envenenamento suspeito, trauma grave, olho fechado com secreção → emergency. Vômito/diarreia >24h, apatia forte, mancar sem apoiar → urgent.`;
+
+    const raw = await callGateway({
+      model: TEXT_MODEL, max_tokens: 1200,
+      messages: [
+        { role: "system", content: "Você é uma IA de triagem veterinária. Nunca substitui o vet, mas orienta rapidamente. Responda APENAS JSON válido." },
+        { role: "user", content: prompt },
+      ],
+    });
+    const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
+    const parsed = JSON.parse(cleaned) as Omit<TriageResult, "urgency_label">;
+    return { ...parsed, urgency_label: URGENCY_LABEL[parsed.urgency] ?? URGENCY_LABEL.monitor };
+  });
