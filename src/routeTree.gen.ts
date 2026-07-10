@@ -9,30 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PlannerRouteImport } from './routes/planner'
-import { Route as NutriRouteImport } from './routes/nutri'
-import { Route as GeladeiraRouteImport } from './routes/geladeira'
-import { Route as FotoRouteImport } from './routes/foto'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPlannerRouteImport } from './routes/_authenticated/planner'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedNutriRouteImport } from './routes/_authenticated/nutri'
+import { Route as AuthenticatedGeladeiraRouteImport } from './routes/_authenticated/geladeira'
+import { Route as AuthenticatedFotoRouteImport } from './routes/_authenticated/foto'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 
-const PlannerRoute = PlannerRouteImport.update({
-  id: '/planner',
-  path: '/planner',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NutriRoute = NutriRouteImport.update({
-  id: '/nutri',
-  path: '/nutri',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GeladeiraRoute = GeladeiraRouteImport.update({
-  id: '/geladeira',
-  path: '/geladeira',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FotoRoute = FotoRouteImport.update({
-  id: '/foto',
-  path: '/foto',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,73 +33,123 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPlannerRoute = AuthenticatedPlannerRouteImport.update({
+  id: '/planner',
+  path: '/planner',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNutriRoute = AuthenticatedNutriRouteImport.update({
+  id: '/nutri',
+  path: '/nutri',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGeladeiraRoute = AuthenticatedGeladeiraRouteImport.update({
+  id: '/geladeira',
+  path: '/geladeira',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFotoRoute = AuthenticatedFotoRouteImport.update({
+  id: '/foto',
+  path: '/foto',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/auth': typeof AuthRoute
+  '/app': typeof AuthenticatedAppRoute
+  '/foto': typeof AuthenticatedFotoRoute
+  '/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/nutri': typeof AuthenticatedNutriRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/auth': typeof AuthRoute
+  '/app': typeof AuthenticatedAppRoute
+  '/foto': typeof AuthenticatedFotoRoute
+  '/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/nutri': typeof AuthenticatedNutriRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/app': typeof AuthenticatedAppRoute
+  '/_authenticated/foto': typeof AuthenticatedFotoRoute
+  '/_authenticated/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/_authenticated/nutri': typeof AuthenticatedNutriRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/app'
+    | '/foto'
+    | '/geladeira'
+    | '/nutri'
+    | '/onboarding'
+    | '/planner'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
-  id: '__root__' | '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
+  to:
+    | '/'
+    | '/auth'
+    | '/app'
+    | '/foto'
+    | '/geladeira'
+    | '/nutri'
+    | '/onboarding'
+    | '/planner'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/app'
+    | '/_authenticated/foto'
+    | '/_authenticated/geladeira'
+    | '/_authenticated/nutri'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/planner'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FotoRoute: typeof FotoRoute
-  GeladeiraRoute: typeof GeladeiraRoute
-  NutriRoute: typeof NutriRoute
-  PlannerRoute: typeof PlannerRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/planner': {
-      id: '/planner'
-      path: '/planner'
-      fullPath: '/planner'
-      preLoaderRoute: typeof PlannerRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/nutri': {
-      id: '/nutri'
-      path: '/nutri'
-      fullPath: '/nutri'
-      preLoaderRoute: typeof NutriRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/geladeira': {
-      id: '/geladeira'
-      path: '/geladeira'
-      fullPath: '/geladeira'
-      preLoaderRoute: typeof GeladeiraRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/foto': {
-      id: '/foto'
-      path: '/foto'
-      fullPath: '/foto'
-      preLoaderRoute: typeof FotoRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -116,15 +159,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/planner': {
+      id: '/_authenticated/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof AuthenticatedPlannerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nutri': {
+      id: '/_authenticated/nutri'
+      path: '/nutri'
+      fullPath: '/nutri'
+      preLoaderRoute: typeof AuthenticatedNutriRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/geladeira': {
+      id: '/_authenticated/geladeira'
+      path: '/geladeira'
+      fullPath: '/geladeira'
+      preLoaderRoute: typeof AuthenticatedGeladeiraRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/foto': {
+      id: '/_authenticated/foto'
+      path: '/foto'
+      fullPath: '/foto'
+      preLoaderRoute: typeof AuthenticatedFotoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+  AuthenticatedFotoRoute: typeof AuthenticatedFotoRoute
+  AuthenticatedGeladeiraRoute: typeof AuthenticatedGeladeiraRoute
+  AuthenticatedNutriRoute: typeof AuthenticatedNutriRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedPlannerRoute: typeof AuthenticatedPlannerRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRoute,
+  AuthenticatedFotoRoute: AuthenticatedFotoRoute,
+  AuthenticatedGeladeiraRoute: AuthenticatedGeladeiraRoute,
+  AuthenticatedNutriRoute: AuthenticatedNutriRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedPlannerRoute: AuthenticatedPlannerRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FotoRoute: FotoRoute,
-  GeladeiraRoute: GeladeiraRoute,
-  NutriRoute: NutriRoute,
-  PlannerRoute: PlannerRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

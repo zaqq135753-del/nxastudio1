@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { AppShell, ScreenHeader } from "../components/layout/AppShell";
-import { nutriChat } from "../lib/ai.functions";
+import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
+import { nutriChat } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
 
-export const Route = createFileRoute("/nutri")({
+export const Route = createFileRoute("/_authenticated/nutri")({
   component: NutriPage,
 });
 
