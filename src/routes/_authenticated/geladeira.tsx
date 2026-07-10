@@ -6,7 +6,7 @@ import { generateRecipe, type FridgeRecipe } from "../lib/ai.functions";
 import { toast } from "sonner";
 import { Sparkles, Plus, X, RotateCw, BarChart3 } from "lucide-react";
 
-export const Route = createFileRoute("/geladeira")({
+export const Route = createFileRoute("/_authenticated/geladeira")({
   component: GeladeiraPage,
 });
 

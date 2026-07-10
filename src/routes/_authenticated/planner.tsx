@@ -6,7 +6,7 @@ import { generateMealPlan, type MealPlan } from "../lib/ai.functions";
 import { toast } from "sonner";
 import { Sparkles, ChevronDown } from "lucide-react";
 
-export const Route = createFileRoute("/planner")({
+export const Route = createFileRoute("/_authenticated/planner")({
   component: PlannerPage,
 });
 

@@ -9,106 +9,84 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PlannerRouteImport } from './routes/planner'
-import { Route as NutriRouteImport } from './routes/nutri'
-import { Route as GeladeiraRouteImport } from './routes/geladeira'
-import { Route as FotoRouteImport } from './routes/foto'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPlannerRouteImport } from './routes/_authenticated/planner'
+import { Route as AuthenticatedNutriRouteImport } from './routes/_authenticated/nutri'
+import { Route as AuthenticatedGeladeiraRouteImport } from './routes/_authenticated/geladeira'
+import { Route as AuthenticatedFotoRouteImport } from './routes/_authenticated/foto'
 
-const PlannerRoute = PlannerRouteImport.update({
-  id: '/planner',
-  path: '/planner',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NutriRoute = NutriRouteImport.update({
-  id: '/nutri',
-  path: '/nutri',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GeladeiraRoute = GeladeiraRouteImport.update({
-  id: '/geladeira',
-  path: '/geladeira',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FotoRoute = FotoRouteImport.update({
-  id: '/foto',
-  path: '/foto',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPlannerRoute = AuthenticatedPlannerRouteImport.update({
+  id: '/_authenticated/planner',
+  path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedNutriRoute = AuthenticatedNutriRouteImport.update({
+  id: '/_authenticated/nutri',
+  path: '/nutri',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedGeladeiraRoute = AuthenticatedGeladeiraRouteImport.update({
+  id: '/_authenticated/geladeira',
+  path: '/geladeira',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFotoRoute = AuthenticatedFotoRouteImport.update({
+  id: '/_authenticated/foto',
+  path: '/foto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/foto': typeof AuthenticatedFotoRoute
+  '/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/nutri': typeof AuthenticatedNutriRoute
+  '/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/foto': typeof AuthenticatedFotoRoute
+  '/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/nutri': typeof AuthenticatedNutriRoute
+  '/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/foto': typeof FotoRoute
-  '/geladeira': typeof GeladeiraRoute
-  '/nutri': typeof NutriRoute
-  '/planner': typeof PlannerRoute
+  '/_authenticated/foto': typeof AuthenticatedFotoRoute
+  '/_authenticated/geladeira': typeof AuthenticatedGeladeiraRoute
+  '/_authenticated/nutri': typeof AuthenticatedNutriRoute
+  '/_authenticated/planner': typeof AuthenticatedPlannerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
-  id: '__root__' | '/' | '/foto' | '/geladeira' | '/nutri' | '/planner'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated/foto'
+    | '/_authenticated/geladeira'
+    | '/_authenticated/nutri'
+    | '/_authenticated/planner'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FotoRoute: typeof FotoRoute
-  GeladeiraRoute: typeof GeladeiraRoute
-  NutriRoute: typeof NutriRoute
-  PlannerRoute: typeof PlannerRoute
+  AuthenticatedFotoRoute: typeof AuthenticatedFotoRoute
+  AuthenticatedGeladeiraRoute: typeof AuthenticatedGeladeiraRoute
+  AuthenticatedNutriRoute: typeof AuthenticatedNutriRoute
+  AuthenticatedPlannerRoute: typeof AuthenticatedPlannerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/planner': {
-      id: '/planner'
-      path: '/planner'
-      fullPath: '/planner'
-      preLoaderRoute: typeof PlannerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nutri': {
-      id: '/nutri'
-      path: '/nutri'
-      fullPath: '/nutri'
-      preLoaderRoute: typeof NutriRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/geladeira': {
-      id: '/geladeira'
-      path: '/geladeira'
-      fullPath: '/geladeira'
-      preLoaderRoute: typeof GeladeiraRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/foto': {
-      id: '/foto'
-      path: '/foto'
-      fullPath: '/foto'
-      preLoaderRoute: typeof FotoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -116,15 +94,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/planner': {
+      id: '/_authenticated/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof AuthenticatedPlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/nutri': {
+      id: '/_authenticated/nutri'
+      path: '/nutri'
+      fullPath: '/nutri'
+      preLoaderRoute: typeof AuthenticatedNutriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/geladeira': {
+      id: '/_authenticated/geladeira'
+      path: '/geladeira'
+      fullPath: '/geladeira'
+      preLoaderRoute: typeof AuthenticatedGeladeiraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/foto': {
+      id: '/_authenticated/foto'
+      path: '/foto'
+      fullPath: '/foto'
+      preLoaderRoute: typeof AuthenticatedFotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FotoRoute: FotoRoute,
-  GeladeiraRoute: GeladeiraRoute,
-  NutriRoute: NutriRoute,
-  PlannerRoute: PlannerRoute,
+  AuthenticatedFotoRoute: AuthenticatedFotoRoute,
+  AuthenticatedGeladeiraRoute: AuthenticatedGeladeiraRoute,
+  AuthenticatedNutriRoute: AuthenticatedNutriRoute,
+  AuthenticatedPlannerRoute: AuthenticatedPlannerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
