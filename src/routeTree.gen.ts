@@ -26,6 +26,7 @@ import { Route as AuthenticatedAppsPetiaIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedAppsGranaiaIndexRouteImport } from './routes/_authenticated/apps/granaia/index'
 import { Route as AuthenticatedAppsGlowiaIndexRouteImport } from './routes/_authenticated/apps/glowia/index'
 import { Route as AuthenticatedAppsFluencyiaIndexRouteImport } from './routes/_authenticated/apps/fluencyia/index'
+import { Route as AuthenticatedAppsFitiaIndexRouteImport } from './routes/_authenticated/apps/fitia/index'
 import { Route as AuthenticatedAppsSocialiaHashtagsRouteImport } from './routes/_authenticated/apps/socialia/hashtags'
 import { Route as AuthenticatedAppsSocialiaGeradorRouteImport } from './routes/_authenticated/apps/socialia/gerador'
 import { Route as AuthenticatedAppsSocialiaCalendarioRouteImport } from './routes/_authenticated/apps/socialia/calendario'
@@ -50,6 +51,9 @@ import { Route as AuthenticatedAppsGlowiaAnaliseRouteImport } from './routes/_au
 import { Route as AuthenticatedAppsFluencyiaVocabularioRouteImport } from './routes/_authenticated/apps/fluencyia/vocabulario'
 import { Route as AuthenticatedAppsFluencyiaPerfilRouteImport } from './routes/_authenticated/apps/fluencyia/perfil'
 import { Route as AuthenticatedAppsFluencyiaConversarRouteImport } from './routes/_authenticated/apps/fluencyia/conversar'
+import { Route as AuthenticatedAppsFitiaTreinoRouteImport } from './routes/_authenticated/apps/fitia/treino'
+import { Route as AuthenticatedAppsFitiaProgressoRouteImport } from './routes/_authenticated/apps/fitia/progresso'
+import { Route as AuthenticatedAppsFitiaChatRouteImport } from './routes/_authenticated/apps/fitia/chat'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -147,6 +151,12 @@ const AuthenticatedAppsFluencyiaIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAppsFluencyiaRouteRoute,
+  } as any)
+const AuthenticatedAppsFitiaIndexRoute =
+  AuthenticatedAppsFitiaIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
   } as any)
 const AuthenticatedAppsSocialiaHashtagsRoute =
   AuthenticatedAppsSocialiaHashtagsRouteImport.update({
@@ -292,18 +302,39 @@ const AuthenticatedAppsFluencyiaConversarRoute =
     path: '/conversar',
     getParentRoute: () => AuthenticatedAppsFluencyiaRouteRoute,
   } as any)
+const AuthenticatedAppsFitiaTreinoRoute =
+  AuthenticatedAppsFitiaTreinoRouteImport.update({
+    id: '/treino',
+    path: '/treino',
+    getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
+const AuthenticatedAppsFitiaProgressoRoute =
+  AuthenticatedAppsFitiaProgressoRouteImport.update({
+    id: '/progresso',
+    path: '/progresso',
+    getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
+const AuthenticatedAppsFitiaChatRoute =
+  AuthenticatedAppsFitiaChatRouteImport.update({
+    id: '/chat',
+    path: '/chat',
+    getParentRoute: () => AuthenticatedAppsFitiaRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
-  '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRoute
+  '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   '/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   '/apps/granaia': typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
   '/apps/petia': typeof AuthenticatedAppsPetiaRouteRouteWithChildren
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
+  '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
+  '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
@@ -328,6 +359,7 @@ export interface FileRoutesByFullPath {
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
   '/apps/granaia/': typeof AuthenticatedAppsGranaiaIndexRoute
@@ -339,7 +371,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/hub': typeof AuthenticatedHubRoute
-  '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRoute
+  '/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
+  '/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
@@ -364,6 +398,7 @@ export interface FileRoutesByTo {
   '/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/apps/fitia': typeof AuthenticatedAppsFitiaIndexRoute
   '/apps/fluencyia': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/apps/glowia': typeof AuthenticatedAppsGlowiaIndexRoute
   '/apps/granaia': typeof AuthenticatedAppsGranaiaIndexRoute
@@ -377,13 +412,16 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/hub': typeof AuthenticatedHubRoute
-  '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRoute
+  '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   '/_authenticated/apps/fluencyia': typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   '/_authenticated/apps/glowia': typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   '/_authenticated/apps/granaia': typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
   '/_authenticated/apps/petia': typeof AuthenticatedAppsPetiaRouteRouteWithChildren
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
+  '/_authenticated/apps/fitia/chat': typeof AuthenticatedAppsFitiaChatRoute
+  '/_authenticated/apps/fitia/progresso': typeof AuthenticatedAppsFitiaProgressoRoute
+  '/_authenticated/apps/fitia/treino': typeof AuthenticatedAppsFitiaTreinoRoute
   '/_authenticated/apps/fluencyia/conversar': typeof AuthenticatedAppsFluencyiaConversarRoute
   '/_authenticated/apps/fluencyia/perfil': typeof AuthenticatedAppsFluencyiaPerfilRoute
   '/_authenticated/apps/fluencyia/vocabulario': typeof AuthenticatedAppsFluencyiaVocabularioRoute
@@ -408,6 +446,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/socialia/calendario': typeof AuthenticatedAppsSocialiaCalendarioRoute
   '/_authenticated/apps/socialia/gerador': typeof AuthenticatedAppsSocialiaGeradorRoute
   '/_authenticated/apps/socialia/hashtags': typeof AuthenticatedAppsSocialiaHashtagsRoute
+  '/_authenticated/apps/fitia/': typeof AuthenticatedAppsFitiaIndexRoute
   '/_authenticated/apps/fluencyia/': typeof AuthenticatedAppsFluencyiaIndexRoute
   '/_authenticated/apps/glowia/': typeof AuthenticatedAppsGlowiaIndexRoute
   '/_authenticated/apps/granaia/': typeof AuthenticatedAppsGranaiaIndexRoute
@@ -428,6 +467,9 @@ export interface FileRouteTypes {
     | '/apps/petia'
     | '/apps/saboria'
     | '/apps/socialia'
+    | '/apps/fitia/chat'
+    | '/apps/fitia/progresso'
+    | '/apps/fitia/treino'
     | '/apps/fluencyia/conversar'
     | '/apps/fluencyia/perfil'
     | '/apps/fluencyia/vocabulario'
@@ -452,6 +494,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
     | '/apps/socialia/hashtags'
+    | '/apps/fitia/'
     | '/apps/fluencyia/'
     | '/apps/glowia/'
     | '/apps/granaia/'
@@ -463,7 +506,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/hub'
-    | '/apps/fitia'
+    | '/apps/fitia/chat'
+    | '/apps/fitia/progresso'
+    | '/apps/fitia/treino'
     | '/apps/fluencyia/conversar'
     | '/apps/fluencyia/perfil'
     | '/apps/fluencyia/vocabulario'
@@ -488,6 +533,7 @@ export interface FileRouteTypes {
     | '/apps/socialia/calendario'
     | '/apps/socialia/gerador'
     | '/apps/socialia/hashtags'
+    | '/apps/fitia'
     | '/apps/fluencyia'
     | '/apps/glowia'
     | '/apps/granaia'
@@ -507,6 +553,9 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/petia'
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
+    | '/_authenticated/apps/fitia/chat'
+    | '/_authenticated/apps/fitia/progresso'
+    | '/_authenticated/apps/fitia/treino'
     | '/_authenticated/apps/fluencyia/conversar'
     | '/_authenticated/apps/fluencyia/perfil'
     | '/_authenticated/apps/fluencyia/vocabulario'
@@ -531,6 +580,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/socialia/calendario'
     | '/_authenticated/apps/socialia/gerador'
     | '/_authenticated/apps/socialia/hashtags'
+    | '/_authenticated/apps/fitia/'
     | '/_authenticated/apps/fluencyia/'
     | '/_authenticated/apps/glowia/'
     | '/_authenticated/apps/granaia/'
@@ -665,6 +715,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/fluencyia/'
       preLoaderRoute: typeof AuthenticatedAppsFluencyiaIndexRouteImport
       parentRoute: typeof AuthenticatedAppsFluencyiaRouteRoute
+    }
+    '/_authenticated/apps/fitia/': {
+      id: '/_authenticated/apps/fitia/'
+      path: '/'
+      fullPath: '/apps/fitia/'
+      preLoaderRoute: typeof AuthenticatedAppsFitiaIndexRouteImport
+      parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
     }
     '/_authenticated/apps/socialia/hashtags': {
       id: '/_authenticated/apps/socialia/hashtags'
@@ -834,8 +891,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsFluencyiaConversarRouteImport
       parentRoute: typeof AuthenticatedAppsFluencyiaRouteRoute
     }
+    '/_authenticated/apps/fitia/treino': {
+      id: '/_authenticated/apps/fitia/treino'
+      path: '/treino'
+      fullPath: '/apps/fitia/treino'
+      preLoaderRoute: typeof AuthenticatedAppsFitiaTreinoRouteImport
+      parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
+    '/_authenticated/apps/fitia/progresso': {
+      id: '/_authenticated/apps/fitia/progresso'
+      path: '/progresso'
+      fullPath: '/apps/fitia/progresso'
+      preLoaderRoute: typeof AuthenticatedAppsFitiaProgressoRouteImport
+      parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
+    '/_authenticated/apps/fitia/chat': {
+      id: '/_authenticated/apps/fitia/chat'
+      path: '/chat'
+      fullPath: '/apps/fitia/chat'
+      preLoaderRoute: typeof AuthenticatedAppsFitiaChatRouteImport
+      parentRoute: typeof AuthenticatedAppsFitiaRouteRoute
+    }
   }
 }
+
+interface AuthenticatedAppsFitiaRouteRouteChildren {
+  AuthenticatedAppsFitiaChatRoute: typeof AuthenticatedAppsFitiaChatRoute
+  AuthenticatedAppsFitiaProgressoRoute: typeof AuthenticatedAppsFitiaProgressoRoute
+  AuthenticatedAppsFitiaTreinoRoute: typeof AuthenticatedAppsFitiaTreinoRoute
+  AuthenticatedAppsFitiaIndexRoute: typeof AuthenticatedAppsFitiaIndexRoute
+}
+
+const AuthenticatedAppsFitiaRouteRouteChildren: AuthenticatedAppsFitiaRouteRouteChildren =
+  {
+    AuthenticatedAppsFitiaChatRoute: AuthenticatedAppsFitiaChatRoute,
+    AuthenticatedAppsFitiaProgressoRoute: AuthenticatedAppsFitiaProgressoRoute,
+    AuthenticatedAppsFitiaTreinoRoute: AuthenticatedAppsFitiaTreinoRoute,
+    AuthenticatedAppsFitiaIndexRoute: AuthenticatedAppsFitiaIndexRoute,
+  }
+
+const AuthenticatedAppsFitiaRouteRouteWithChildren =
+  AuthenticatedAppsFitiaRouteRoute._addFileChildren(
+    AuthenticatedAppsFitiaRouteRouteChildren,
+  )
 
 interface AuthenticatedAppsFluencyiaRouteRouteChildren {
   AuthenticatedAppsFluencyiaConversarRoute: typeof AuthenticatedAppsFluencyiaConversarRoute
@@ -983,7 +1081,7 @@ const AuthenticatedAppsSocialiaRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubRoute: typeof AuthenticatedHubRoute
-  AuthenticatedAppsFitiaRouteRoute: typeof AuthenticatedAppsFitiaRouteRoute
+  AuthenticatedAppsFitiaRouteRoute: typeof AuthenticatedAppsFitiaRouteRouteWithChildren
   AuthenticatedAppsFluencyiaRouteRoute: typeof AuthenticatedAppsFluencyiaRouteRouteWithChildren
   AuthenticatedAppsGlowiaRouteRoute: typeof AuthenticatedAppsGlowiaRouteRouteWithChildren
   AuthenticatedAppsGranaiaRouteRoute: typeof AuthenticatedAppsGranaiaRouteRouteWithChildren
@@ -994,7 +1092,8 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHubRoute: AuthenticatedHubRoute,
-  AuthenticatedAppsFitiaRouteRoute: AuthenticatedAppsFitiaRouteRoute,
+  AuthenticatedAppsFitiaRouteRoute:
+    AuthenticatedAppsFitiaRouteRouteWithChildren,
   AuthenticatedAppsFluencyiaRouteRoute:
     AuthenticatedAppsFluencyiaRouteRouteWithChildren,
   AuthenticatedAppsGlowiaRouteRoute:
