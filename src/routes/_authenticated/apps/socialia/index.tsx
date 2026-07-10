@@ -62,7 +62,7 @@ function SocialHome() {
 
   return (
     <AppShell appSlug="socialia">
-      <ScreenHeader title="SocialIA" subtitle="Seu social media com IA. Legenda, calendário e ideias em segundos." />
+      <ScreenHeader title="NXA Social" subtitle="Seu social media com IA. Legenda, calendário e ideias em segundos." />
 
       <section className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Legendas" value={stats.captions} />

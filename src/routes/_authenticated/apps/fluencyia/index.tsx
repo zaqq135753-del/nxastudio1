@@ -36,7 +36,7 @@ function FluencyHome() {
 
   return (
     <AppShell appSlug="fluencyia">
-      <ScreenHeader title="FluencyIA" subtitle={`Seu tutor de ${lang}. Nível atual: ${level}.`} />
+      <ScreenHeader title="NXA Lingua" subtitle={`Seu tutor de ${lang}. Nível atual: ${level}.`} />
 
       <section className="mb-6 grid grid-cols-3 gap-3">
         <Stat label="Palavras" value={stats.vocab} />

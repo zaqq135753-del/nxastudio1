@@ -44,7 +44,7 @@ function GranaHome() {
 
   return (
     <AppShell appSlug="granaia">
-      <ScreenHeader title="💰 GranaIA" subtitle="Seu consultor financeiro pessoal com IA." />
+      <ScreenHeader title="💰 NXA Money" subtitle="Seu consultor financeiro pessoal com IA." />
 
       <div className="surface p-5 mb-6 fade-up">
         <div className="text-xs uppercase tracking-wide" style={{ color: "var(--n-500)" }}>Saldo do mês</div>
