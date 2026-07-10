@@ -11,7 +11,7 @@ export type FeedPost = {
   title: string;
   body: string | null;
   media_url: string | null;
-  meta: Record<string, unknown>;
+  meta: Record<string, string | number | boolean | null>;
   likes_count: number;
   created_at: string;
   author_name?: string | null;
@@ -65,15 +65,15 @@ export const listFeed = createServerFn({ method: "GET" })
 
     const userIds = [...new Set(list.map(p => p.user_id))];
     const [{ data: profs }, { data: mine }] = await Promise.all([
-      sb.from("profiles").select("id,full_name,avatar_url").in("id", userIds),
+      sb.from("profiles").select("id,display_name,avatar_url").in("id", userIds),
       sb.from("feed_likes").select("post_id").eq("user_id", context.userId).in("post_id", list.map(p => p.id)),
     ]);
     const pMap = new Map((profs ?? []).map(p => [p.id, p]));
     const liked = new Set((mine ?? []).map(l => l.post_id));
     return list.map(p => ({
       ...p,
-      author_name: (pMap.get(p.user_id)?.full_name as string) ?? null,
-      author_avatar: (pMap.get(p.user_id)?.avatar_url as string) ?? null,
+      author_name: pMap.get(p.user_id)?.display_name ?? null,
+      author_avatar: pMap.get(p.user_id)?.avatar_url ?? null,
       liked_by_me: liked.has(p.id),
     }));
   });
