@@ -57,21 +57,16 @@
   --n-700: #2d2d2b;
   --n-900: #131311;
 
-  /* Category colors — iOS-like */
-  --c-orange: #ff8a3d;   /* SaborIA brand / Home */
-  --c-orange-soft: #fff1e6;
-  --c-pink:   #ff5a7a;   /* Foto */
-  --c-pink-soft: #ffe6ec;
-  --c-green:  #34c07a;   /* Planner */
-  --c-green-soft: #e4f7ec;
-  --c-blue:   #2e90fa;   /* Nutri */
-  --c-blue-soft: #e5f1ff;
-  --c-purple: #8b5cf6;   /* Geladeira */
-  --c-purple-soft: #efe9ff;
+  /* Monochrome — soft black & white palette */
+  --c-orange: var(--n-900);   --c-orange-soft: var(--n-100);
+  --c-pink:   var(--n-900);   --c-pink-soft:   var(--n-100);
+  --c-green:  var(--n-900);   --c-green-soft:  var(--n-100);
+  --c-blue:   var(--n-900);   --c-blue-soft:   var(--n-100);
+  --c-purple: var(--n-900);   --c-purple-soft: var(--n-100);
 
-  --brand: var(--c-orange);
+  --brand: var(--n-900);
 
-  /* Legacy compat — old files still reference these */
+  /* Legacy compat */
   --ink-950: var(--n-900);
   --ink-900: var(--n-700);
   --ink-800: var(--n-100);
@@ -83,12 +78,12 @@
   --cream-300: var(--n-500);
   --cream-400: var(--n-500);
   --cream-500: var(--n-400);
-  --saffron:   var(--c-orange);
-  --saffron-2: #ffa570;
-  --tomato:    #ff4d4f;
-  --matcha:    var(--c-green);
-  --plum:      var(--c-purple);
-  --brand-glow: rgba(255, 138, 61, 0.14);
+  --saffron:   var(--n-900);
+  --saffron-2: var(--n-700);
+  --tomato:    var(--n-900);
+  --matcha:    var(--n-700);
+  --plum:      var(--n-700);
+  --brand-glow: rgba(19, 19, 17, 0.06);
 
   --line-1: rgba(19, 19, 17, 0.06);
   --line-2: rgba(19, 19, 17, 0.10);
@@ -99,22 +94,22 @@
   --card-foreground: var(--n-900);
   --popover: var(--n-0);
   --popover-foreground: var(--n-900);
-  --primary: var(--c-orange);
-  --primary-foreground: #ffffff;
+  --primary: var(--n-900);
+  --primary-foreground: var(--n-0);
   --secondary: var(--n-100);
   --secondary-foreground: var(--n-900);
   --muted: var(--n-100);
   --muted-foreground: var(--n-500);
   --accent: var(--n-150);
   --accent-foreground: var(--n-900);
-  --destructive: var(--tomato);
+  --destructive: #7a1f1f;
   --destructive-foreground: #ffffff;
   --border: var(--line-1);
   --input: var(--n-100);
-  --ring: var(--c-orange);
+  --ring: var(--n-700);
 
-  --shadow-card: 0 1px 2px rgba(19,19,17,0.04), 0 8px 24px -12px rgba(19,19,17,0.08);
-  --shadow-elev: 0 4px 12px rgba(19,19,17,0.06), 0 24px 48px -20px rgba(19,19,17,0.14);
+  --shadow-card: 0 1px 2px rgba(19,19,17,0.03), 0 6px 20px -12px rgba(19,19,17,0.08);
+  --shadow-elev: 0 4px 12px rgba(19,19,17,0.05), 0 24px 48px -22px rgba(19,19,17,0.14);
 }
 
 @layer base {
