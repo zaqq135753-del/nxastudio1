@@ -6,6 +6,7 @@ import { APPS, SUITE } from "@/apps/registry";
 import { getMyEntitlements, isEntitled, type Entitlement } from "@/lib/entitlements.functions";
 import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { BriefingCard } from "@/components/BriefingCard";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -142,6 +143,9 @@ function Hub() {
             </Link>
           )}
         </div>
+
+        {/* Proactive briefing */}
+        <section className="mb-10"><BriefingCard /></section>
 
         {/* My apps grid */}
         <section className="mb-14">
