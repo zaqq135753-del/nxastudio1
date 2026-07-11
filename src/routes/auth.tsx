@@ -68,6 +68,19 @@ function AuthPage() {
     setSent(true);
   }
 
+  async function signInPassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !password) return;
+    setPwLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setPwLoading(false);
+    if (error) return toast.error(error.message);
+    await afterAuth();
+  }
+
   async function signInGoogle() {
     setGoogleLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
