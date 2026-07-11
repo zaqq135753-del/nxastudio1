@@ -258,8 +258,9 @@ function Hub() {
             </div>
             <div className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {missionsToday.map(({ app, mission, isPrime }) => (
-                <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} />
+                <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} appSlug={app.slug} />
               ))}
+
             </div>
           </section>
         )}
