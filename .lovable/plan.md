@@ -1,75 +1,78 @@
-# NXA Suite → Redesign + Modelo Base/Prime por app
+# Fix imediato + Redesign NXA em Ondas
 
-Escopo grande. Vou entregar em 4 ondas para caber em revisões incrementais, sem quebrar a lógica atual dos apps.
+## Fix aplicado agora (não precisa aprovação)
+`src/lib/ai-shared.ts`: para modelos gpt-5/o1/o3/gpt-4.1 dobramos o budget de tokens (min 4000) porque reasoning tokens consomem parte, e removemos `response_format: json_object` (não suportado por gpt-5 reasoning). Isso mata o 400 e as respostas vazias do Chef, Grana, etc.
 
-## Onda 1 — Fundamentos comerciais (Base + Prime por app)
+Se ainda faltar teto, subo para 6000/8000 por chamada específica.
 
-**Registry**
-- `src/apps/registry.ts`: adicionar `pricing: { base: { price, features[] }, prime: { price, features[] } }` para os 10 apps, com as copies e features do briefing.
-- Nova função `hasPrime(slug)` além do `hasEntitlement(slug)`.
+---
 
-**Entitlements**
-- Migration: coluna `tier text default 'base' check (tier in ('base','prime'))` em `app_entitlements`.
-- `claimTrial(slug, tier)` aceita tier; trial padrão continua Base 7 dias.
-- Helper `useEntitlement(slug)` retorna `{ status: 'active'|'trial'|'locked'|'available', tier: 'base'|'prime'|null, trialEndsAt }`.
+## Redesign — 6 ondas
 
-**Gate global de recursos Prime**
-- `<LockedFeature slug feature>`: envolve qualquer botão/área Prime; se não Prime abre `<UpsellModal>`.
-- `PrimeBadge`, `TrialBanner` prontos para reutilização.
+Escopo enorme (10 apps, dashboard, landings, gates, novas features). Divido para caber em revisões. Cada onda é independente e testável.
 
-## Onda 2 — Redesign visual (design system)
+### Onda A — Configuração central + copy comercial
+- `src/apps/config.ts`: registro único por app com `pain`, `heroCTA`, `missions`, `shortcuts`, `baseFeatures`, `primeFeatures`, `primeAutopilot`, `mediaExports`, `memoryFacts`, `emptyStates`, `notifications`, `bottomNav[]`, tema.
+- Migra `registry.ts` + `pricing.ts` + `landings.ts` para consumir esse config (backwards compatible).
+- Substitui todas as strings técnicas ("A IA retornou resposta inválida", "0 sessões", etc.) por copy amigável centralizada em `src/lib/copy.ts`.
 
-**Tokens (`src/styles.css`)**
-- Paleta nova (fora do roxo genérico): base neutra quente + acento único por tema (Light: âmbar profundo; Paper: tinta+ocre; Dark: verde-oliva elétrico ou cobre — escolho um coerente com "Culinary Editorial" que já existe).
-- Tipografia: manter Inter body + display forte (ex.: Fraunces ou Instrument Serif para editorial premium).
-- Tokens de superfície: `--surface-1/2/3`, `--glass`, `--ring-prime` (gradiente sutil só para elementos Prime), sombras longas suaves.
-- Remover overlays escuros pesados dos tiles atuais; usar mais respiro.
+### Onda B — Design system refinado
+- `src/styles.css`: refino dos 3 temas (Light premium, Paper editorial, Dark profundo — sem preto puro), tokens `--surface-*`, `--ring-prime`, sombras longas, mais respiro.
+- Tipografia: display serif (Instrument Serif / Fraunces) + Inter body.
+- Novos primitivos: `AppHero`, `DailyMissionCard`, `AICommandBar`, `SmartShortcutCard`, `AppStats`, `EmptyState`, `NotificationCard`, `MemoryPanel`, `MediaExportPanel`, `BottomNav` contextual.
+- Remove overlays escuros pesados dos tiles.
 
-**Componentes**
-- `AppCard` reescrito: nome, subtítulo, imagem, `StatusPill` (Ativo/Trial/Prime/Bloqueado/Disponível), CTA contextual, indicador de valor ("3 sugestões hoje").
-- `PricingCard` (Base + Prime lado a lado) e `FeatureComparison` (tabela ✓/✓).
-- `UpsellModal`, `PrimeBadge`, `TrialBanner`, `LockedFeature` estilizados.
+### Onda C — Dashboard = centro de comando
+Refaz `src/routes/_authenticated/hub.tsx`:
+1. Saudação + status trial/assinatura.
+2. Hero "O que você quer resolver agora?" + `AICommandBar` global com 5 sugestões rotativas.
+3. **Próxima melhor ação** (agrega streaks/lembretes/agente).
+4. **Seus apps ativos** — cards orientados por dor + indicador de valor real ("3 sugestões hoje").
+5. **Descubra outros apps** — cards com "Começar teste grátis".
+6. **Sua jornada** — XP/streak/badges compacto.
+7. Cluster header: mic global, sino, memória, afiliados.
 
-## Onda 3 — Dashboard como centro de comando
+### Onda D — Tela inicial padrão dos 10 apps
+Reescreve cada `apps/<slug>/index.tsx` no template:
+- Header com selo Prime + botão "Ligar com IA".
+- `AppHero` (missão do dia + CTA principal específico do app).
+- `AICommandBar` contextual ("Me ajuda agora").
+- `SmartShortcutCard`s por missão (não por função).
+- `AppStats` com estados vazios amigáveis (nunca "0 X").
+- Bloco `PrimeUpsellCard` contextual.
+- `BottomNav` com item central específico (Cozinhar / Criar / Cuidar / etc.).
 
-`src/routes/hub.tsx` reorganizado em seções:
-1. Saudação personalizada + status trial/assinatura.
-2. **Continue de onde parou** (app mais usado + próxima ação real puxada dos dados do app).
-3. **Seus apps ativos** — cards com indicador de valor real.
-4. **Próximas ações** (agregado de streaks/lembretes/agente).
-5. **Descubra outros apps** — cards com CTA "Começar teste grátis".
-6. **Sua jornada** — XP, streak, badges (compacto).
-- Header: mic global + sino + memória + afiliados agrupados num cluster limpo.
+Aplico em ordem: Chef → Social → Grana → Fit → Pet → Style → Glow → Língua → Cosmos → Travel.
 
-## Onda 4 — Landings + Checkout por app
+### Onda E — Prime gating + Autopilot + Mídia + Memória
+- Amplia `PrimeGate` já criado para cobrir todos os recursos Prime listados no briefing por app (não só as 6 rotas atuais).
+- `PrimeUpsellModal` refinado com 3–5 benefícios específicos do app.
+- `LockedFeatureCard` com blur/lock elegante.
+- Painel "Memória deste app" visível em cada app (lê `user_memories` filtrado por slug).
+- Aba Mídia por app usando `mediaExports` do config, com PDF/PPTX/TTS gated como Prime.
+- Stubs de Autopilot Prime (agenda cron simbólica por app) — só UI + botão "Ativar autopilot".
 
-**Landing** (`src/routes/assinar.$slug.tsx` refeita)
-- Hero, frase de impacto, CTA "Começar teste grátis" + "Ver recursos Prime".
-- "O que esse app faz" (bullets do registry).
-- `PricingCard` Base + `PricingCard` Prime.
+### Onda F — Landings individuais + checkout
+Reescreve `src/routes/assinar.$slug.tsx` como landing editorial completa por app:
+- Hero orientado por dor + CTA "Começar teste grátis" / "Ver Prime".
+- Bloco "O que você resolve".
+- `PricingCard` Base + Prime lado a lado.
 - `FeatureComparison` Base vs Prime.
-- Exemplos visuais (screenshots reais do app dentro da plataforma).
-- FAQ curta (3–4 perguntas por app, geradas por template).
-- CTA final fixo no rodapé em mobile.
+- Exemplos visuais / mockups do app.
+- FAQ (3–4 por app via template).
+- CTA fixo no rodapé mobile.
+- Fluxo: trial base → `UpsellModal` Prime → app.
 
-**Fluxo de upgrade**
-- `/assinar/$slug` → clicou "Assinar" → aciona `claimTrial(slug,'base')` → `<UpsellModal>` "Adicionar [App] Prime?" → "Adicionar Prime" (`claimTrial(slug,'prime')`) ou "Continuar sem Prime" → redireciona pro app.
+---
 
-**Gates aplicados por app**
-- SaborIA: Planner semanal, Geladeira foto, Scanner despensa, PDF cardápio → Prime.
-- SocialIA: Calendário editorial, análise de @, packs, export PDF/PPTX → Prime.
-- (mesma lógica nos outros 8, seguindo o briefing).
-- Botões `RealtimeCallButton`, `MediaTab`, `MemoryPanel` avançado → `<LockedFeature>` quando Base.
+## Fora de escopo
+- Pagamento real (Stripe/Paddle): trial 7d continua.
+- Novas features de IA que exigem infra pesada (análise de vídeo Fit, sinastria astral profunda) — entram como stubs marcados Prime.
+- Não mexo em `client.ts`/`types.ts`/auth auto-gerados.
 
-**Copies de erro amigáveis**
-- Substituir "A IA retornou uma resposta inválida" e similares por: "Ainda estou preparando suas sugestões." / "Não consegui gerar agora. Tente de novo."
-
-## Fora de escopo (intencional)
-- Pagamento real (Stripe/Paddle): trial 7d continua como está; quando você quiser cobrar de verdade eu ligo depois.
-- Nova lógica de IA nos apps — só camada comercial + visual.
-- Não vou tocar arquivos auto-gerados nem alterar auth existente.
-
-## Ordem de execução sugerida
-Faço **Onda 1 + Onda 2** juntas primeiro (fundação), depois você valida o visual, e sigo com **Onda 3 + Onda 4**. Se preferir tudo de uma vez, sigo direto.
-
-Responde só: **"1+2"**, **"3+4"**, **"tudo"** ou ajustes.
+## Como quer que eu prossiga?
+Responde:
+- **"A+B"** — fundação (config + design system), 1 revisão visual antes de continuar.
+- **"A→C"** — fundação + dashboard novo.
+- **"tudo em sequência"** — vou fazendo A, B, C, D, E, F sem parar entre elas.
+- **"só D pra <app>"** — foco em 1 app específico primeiro para você validar o padrão.

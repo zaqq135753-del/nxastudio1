@@ -89,8 +89,9 @@ export function parseJson<T>(raw: string): T {
     try { return JSON.parse(attempt) as T; } catch { /* try next */ }
   }
   console.error("[parseJson] inválido:", raw.slice(0, 600));
-  throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
+  throw new Error("Ainda estou preparando suas sugestões. Toque em atualizar em alguns segundos.");
 }
+
 
 /* ============ Semantic memory helpers (best-effort) ============
  * Uso: em qualquer .functions.ts com requireSupabaseAuth, chame
