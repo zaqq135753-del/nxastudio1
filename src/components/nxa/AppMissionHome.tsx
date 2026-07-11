@@ -56,7 +56,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
       <AppHero
         app={cfg}
         status={heroStatus}
-        trialDaysLeft={st.kind === "trial" ? st.daysLeft : undefined}
+        trialDaysLeft={trialDaysLeft}
         action={showVoice ? <div className="flex justify-start"><RealtimeCallButton slug={slug} /></div> : undefined}
       />
 
