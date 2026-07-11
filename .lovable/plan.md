@@ -1,78 +1,73 @@
-# Fix imediato + Redesign NXA em Ondas
+# Evolução visual NXA Suite — "AI lifestyle premium"
 
-## Fix aplicado agora (não precisa aprovação)
-`src/lib/ai-shared.ts`: para modelos gpt-5/o1/o3/gpt-4.1 dobramos o budget de tokens (min 4000) porque reasoning tokens consomem parte, e removemos `response_format: json_object` (não suportado por gpt-5 reasoning). Isso mata o 400 e as respostas vazias do Chef, Grana, etc.
+Objetivo: dar mais vida, identidade por app e microinterações à plataforma, mantendo o polish premium e todas as rotas/lógica atuais.
 
-Se ainda faltar teto, subo para 6000/8000 por chamada específica.
+## Onda 1 — Fundação de estilo (tokens + motion)
 
----
+Editar `src/styles.css` para adicionar a camada de identidade:
 
-## Redesign — 6 ondas
+- **Paleta por app** como CSS vars: `--app-chef-a/b/c`, `--app-social-*`, `--app-pet-*`, `--app-fluency-*`, `--app-glow-*`, `--app-grana-*`, `--app-fit-*`, `--app-style-*`, `--app-cosmos-*`, `--app-travel-*` (cores da sec. 3 do brief).
+- **Gradientes utilitários** por app (`--grad-chef`, etc.) + `--ring-prime` (dourado/champagne) + `--glow-app-*`.
+- **Utilitários novos** via `@utility`: `.card-glow`, `.card-gradient-border`, `.hover-lift-pro`, `.press`, `.shimmer-premium`, `.pulse-ai`, `.mesh-hero`, `.aurora-motion`, `.stagger-in`.
+- **Keyframes**: `float-orb`, `pulse-ai`, `shimmer`, `sound-wave`, `confetti-pop`.
+- Respeitar `prefers-reduced-motion` (bloco global).
 
-Escopo enorme (10 apps, dashboard, landings, gates, novas features). Divido para caber em revisões. Cada onda é independente e testável.
+## Onda 2 — Config visual por app
 
-### Onda A — Configuração central + copy comercial
-- `src/apps/config.ts`: registro único por app com `pain`, `heroCTA`, `missions`, `shortcuts`, `baseFeatures`, `primeFeatures`, `primeAutopilot`, `mediaExports`, `memoryFacts`, `emptyStates`, `notifications`, `bottomNav[]`, tema.
-- Migra `registry.ts` + `pricing.ts` + `landings.ts` para consumir esse config (backwards compatible).
-- Substitui todas as strings técnicas ("A IA retornou resposta inválida", "0 sessões", etc.) por copy amigável centralizada em `src/lib/copy.ts`.
+Estender `src/apps/config.ts` (sem quebrar consumidores) com:
 
-### Onda B — Design system refinado
-- `src/styles.css`: refino dos 3 temas (Light premium, Paper editorial, Dark profundo — sem preto puro), tokens `--surface-*`, `--ring-prime`, sombras longas, mais respiro.
-- Tipografia: display serif (Instrument Serif / Fraunces) + Inter body.
-- Novos primitivos: `AppHero`, `DailyMissionCard`, `AICommandBar`, `SmartShortcutCard`, `AppStats`, `EmptyState`, `NotificationCard`, `MemoryPanel`, `MediaExportPanel`, `BottomNav` contextual.
-- Remove overlays escuros pesados dos tiles.
+- `emoji`, `emojiSet: string[4]`, `accent: { from,to,ring,glow }`, `mission: { emoji, title, subtitle, cta, route }`, `sectionTitles` (Comece por aqui / Ações rápidas / Seu progresso / Modo Prime / Histórico).
 
-### Onda C — Dashboard = centro de comando
-Refaz `src/routes/_authenticated/hub.tsx`:
-1. Saudação + status trial/assinatura.
-2. Hero "O que você quer resolver agora?" + `AICommandBar` global com 5 sugestões rotativas.
-3. **Próxima melhor ação** (agrega streaks/lembretes/agente).
-4. **Seus apps ativos** — cards orientados por dor + indicador de valor real ("3 sugestões hoje").
-5. **Descubra outros apps** — cards com "Começar teste grátis".
-6. **Sua jornada** — XP/streak/badges compacto.
-7. Cluster header: mic global, sino, memória, afiliados.
+Todos campos opcionais — código atual continua funcionando.
 
-### Onda D — Tela inicial padrão dos 10 apps
-Reescreve cada `apps/<slug>/index.tsx` no template:
-- Header com selo Prime + botão "Ligar com IA".
-- `AppHero` (missão do dia + CTA principal específico do app).
-- `AICommandBar` contextual ("Me ajuda agora").
-- `SmartShortcutCard`s por missão (não por função).
-- `AppStats` com estados vazios amigáveis (nunca "0 X").
-- Bloco `PrimeUpsellCard` contextual.
-- `BottomNav` com item central específico (Cozinhar / Criar / Cuidar / etc.).
+## Onda 3 — Novos componentes visuais
 
-Aplico em ordem: Chef → Social → Grana → Fit → Pet → Style → Glow → Língua → Cosmos → Travel.
+Criar em `src/components/nxa/`:
 
-### Onda E — Prime gating + Autopilot + Mídia + Memória
-- Amplia `PrimeGate` já criado para cobrir todos os recursos Prime listados no briefing por app (não só as 6 rotas atuais).
-- `PrimeUpsellModal` refinado com 3–5 benefícios específicos do app.
-- `LockedFeatureCard` com blur/lock elegante.
-- Painel "Memória deste app" visível em cada app (lê `user_memories` filtrado por slug).
-- Aba Mídia por app usando `mediaExports` do config, com PDF/PPTX/TTS gated como Prime.
-- Stubs de Autopilot Prime (agenda cron simbólica por app) — só UI + botão "Ativar autopilot".
+- `GradientBorderCard.tsx` — wrapper reutilizável (borda gradient + glow).
+- `AnimatedAppCard.tsx` — card de app com bolha do ícone, hover lift, seta animada, badge, cover com zoom.
+- `DailyMissionCard.tsx` — hero de "Missão de hoje" por app (emoji grande, título dor-first, CTA).
+- `AICommandBar.tsx` (refinar existente) — glow ao focar, sugestões com emoji.
+- `SectionHeader.tsx` — kicker uppercase + título editorial + ação opcional.
+- `EmptyStateCard.tsx` (refinar) — emoji do nicho + CTA vivo.
+- `PrimeBadge.tsx` / `LockedPrimeCard.tsx` / `PrimeUpsellCard.tsx` (refinar) — borda dourada, ✨, shimmer.
+- `StreakBadge.tsx` — 🔥 + contador animado.
+- `XPProgressBar.tsx` — barra animada com brilho.
+- `FloatingMicButton.tsx` / `VoiceCallButton.tsx` (refinar) — pulse ring, ondas sonoras, estados demo/live.
 
-### Onda F — Landings individuais + checkout
-Reescreve `src/routes/assinar.$slug.tsx` como landing editorial completa por app:
-- Hero orientado por dor + CTA "Começar teste grátis" / "Ver Prime".
-- Bloco "O que você resolve".
-- `PricingCard` Base + Prime lado a lado.
-- `FeatureComparison` Base vs Prime.
-- Exemplos visuais / mockups do app.
-- FAQ (3–4 por app via template).
-- CTA fixo no rodapé mobile.
-- Fluxo: trial base → `UpsellModal` Prime → app.
+Componentes existentes (`MissionCard`, `AppMissionHome`, `AppHero`, etc.) recebem props opcionais para consumir o novo look sem quebrar chamadas.
 
----
+## Onda 4 — Aplicação nas telas principais
 
-## Fora de escopo
-- Pagamento real (Stripe/Paddle): trial 7d continua.
-- Novas features de IA que exigem infra pesada (análise de vídeo Fit, sinastria astral profunda) — entram como stubs marcados Prime.
-- Não mexo em `client.ts`/`types.ts`/auth auto-gerados.
+- **`/hub`**: aurora de fundo animada, hero com saudação + ✨, `AICommandBar` refinada com sugestões emoji ("🍳 Resolver jantar", "📱 Criar post", "💰 Posso comprar?", "💪 Treinar agora", "✈️ Planejar viagem"), grid de apps trocado por `AnimatedAppCard` (stagger-in), seções com `SectionHeader`.
+- **Home de cada app** (`AppMissionHome`): topo com `DailyMissionCard` colorido pelo app, atalhos com emoji, seções "Ações rápidas / Seu progresso / Modo Prime / Histórico".
+- **Landing pública `/app/$slug`**: hero puxa `accent` do app (gradiente e ring), CTAs com glow, cards de plano com borda premium (Prime).
+- **`/admin`**: mesma linguagem (chips, borda gradient em stats), sem tocar na lógica.
 
-## Como quer que eu prossiga?
-Responde:
-- **"A+B"** — fundação (config + design system), 1 revisão visual antes de continuar.
-- **"A→C"** — fundação + dashboard novo.
-- **"tudo em sequência"** — vou fazendo A, B, C, D, E, F sem parar entre elas.
-- **"só D pra <app>"** — foco em 1 app específico primeiro para você validar o padrão.
+## Onda 5 — Acabamento
+
+- Skeletons com shimmer premium.
+- Toast de conquista com `confetti-pop` sutil.
+- Reduced-motion: desliga float-orb, pulse-ai, stagger.
+- Mobile: cards com altura confortável, CTAs sempre visíveis, mic não cobre botão principal.
+
+## Escopo negativo (para preservar estabilidade)
+
+- Nenhuma migração de banco.
+- Nenhuma mudança de rota, contratos de server functions ou entitlements.
+- Nenhum breaking change nos componentes atuais — só adição de props opcionais + novos componentes.
+- Não trocar fontes globais (mantém `--font-display` / body atuais).
+
+## Como será entregue
+
+Uma onda por resposta, começando pela Onda 1 assim que você aprovar. Cada onda passa por typecheck antes de fechar.
+
+```text
+Onda 1  Tokens + motion (styles.css)
+Onda 2  Config por app (config.ts)
+Onda 3  Componentes visuais novos
+Onda 4  Aplicar em /hub, apps, landing, admin
+Onda 5  Polish: skeleton, confetti, reduced-motion
+```
+
+Quer que eu comece pela Onda 1?
