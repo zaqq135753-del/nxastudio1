@@ -30,10 +30,10 @@ export function AppHero({ app, status, trialDaysLeft, action }: Props) {
         <div className="min-w-0">
           <div className="edition-tag mb-2">{app.name}</div>
           <h1 className="truncate text-[26px] font-black tracking-tight sm:text-[32px]">
-            {app.hero.title}
+            {app.heroTitle}
           </h1>
           <p className="mt-1.5 text-[15px] leading-snug" style={{ color: "var(--muted-foreground)" }}>
-            {app.hero.promise}
+            {app.heroSubtitle}
           </p>
         </div>
         {status && (

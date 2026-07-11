@@ -9,34 +9,42 @@ type Props = {
 };
 
 /**
- * Card centrado na missão do usuário ("Descobrir o que cozinhar agora"),
- * não no nome da feature. Locked → mostra cadeado Prime.
+ * Card centrado na missão do usuário, não no nome da feature.
+ * Locked → mostra cadeado Prime.
  */
 export function MissionCard({ mission, isPrime = false, onClick }: Props) {
-  const locked = mission.tier === "prime" && !isPrime;
+  const locked = mission.prime && !isPrime;
+  const Icon = mission.icon;
   const commonInner = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <div className="tile-icon-wrap">{mission.emoji}</div>
+        <div className="tile-icon-wrap"><Icon size={18} /></div>
         <div className="flex items-center gap-1.5">
-          {mission.tier === "prime" && (
+          {mission.prime && (
             <span className="chip chip-neutral inline-flex items-center gap-1 text-[10px]">
               <Sparkles size={10} /> Prime
             </span>
           )}
-          {locked ? <Lock size={14} style={{ color: "var(--n-500)" }} /> : <ArrowRight size={14} className="tile-arrow" />}
+          {locked
+            ? <Lock size={14} style={{ color: "var(--n-500)" }} />
+            : <ArrowRight size={14} className="tile-arrow" />}
         </div>
       </div>
       <div className="mt-3">
-        <div className="tile-title">{mission.title}</div>
-        <div className="tile-desc mt-0.5">{mission.outcome}</div>
+        <div className="tile-title">{mission.label}</div>
+        <div className="tile-desc mt-0.5">{mission.desc}</div>
       </div>
     </>
   );
 
   if (onClick || locked) {
     return (
-      <button onClick={onClick} className="tile-hero text-left w-full" data-locked={locked || undefined}>
+      <button
+        type="button"
+        onClick={onClick}
+        className="tile-hero text-left w-full"
+        data-locked={locked || undefined}
+      >
         {commonInner}
       </button>
     );
