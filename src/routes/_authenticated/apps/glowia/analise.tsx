@@ -9,7 +9,7 @@ import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/glowia/analise")({
   component: () => (
-    <AppShell title="Análise de pele">
+    <AppShell>
       <PrimeGate slug="glowia" feature="Análise de pele com IA">
         <AnalisePage />
       </PrimeGate>

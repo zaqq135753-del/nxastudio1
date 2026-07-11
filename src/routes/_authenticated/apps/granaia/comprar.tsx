@@ -11,7 +11,7 @@ import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/granaia/comprar")({
   component: () => (
-    <AppShell title="Posso comprar?">
+    <AppShell>
       <PrimeGate slug="granaia" feature="Consultor de compras">
         <Page />
       </PrimeGate>

@@ -9,7 +9,7 @@ import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/planner")({
   component: () => (
-    <AppShell title="Planner semanal">
+    <AppShell>
       <PrimeGate slug="saboria" feature="Planner semanal 7 dias">
         <PlannerPage />
       </PrimeGate>
