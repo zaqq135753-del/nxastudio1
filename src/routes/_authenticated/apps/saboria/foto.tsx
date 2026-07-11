@@ -5,9 +5,16 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { analyzePhoto, type PhotoResult } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Search, X, Camera } from "lucide-react";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/foto")({
-  component: FotoPage,
+  component: () => (
+    <AppShell>
+      <PrimeGate slug="saboria" feature="Foto → Receita">
+        <FotoPage />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 const CUISINES = ["🌍 Qualquer", "🇧🇷 Brasileira", "🇮🇹 Italiana", "🇯🇵 Japonesa", "🇲🇽 Mexicana"];
