@@ -5,9 +5,16 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { analyzeSkin, type SkinDiagnosis } from "@/lib/glow.functions";
 import { Camera, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/glowia/analise")({
-  component: AnalisePage,
+  component: () => (
+    <AppShell title="Análise de pele">
+      <PrimeGate slug="glowia" feature="Análise de pele com IA">
+        <AnalisePage />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 function AnalisePage() {

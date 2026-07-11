@@ -5,9 +5,16 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { generateMealPlan, type MealPlan } from "@/lib/ai.functions";
 import { toast } from "sonner";
 import { Sparkles, ChevronDown } from "lucide-react";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/planner")({
-  component: PlannerPage,
+  component: () => (
+    <AppShell title="Planner semanal">
+      <PrimeGate slug="saboria" feature="Planner semanal 7 dias">
+        <PlannerPage />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 const GOALS = [

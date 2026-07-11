@@ -5,9 +5,16 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { scanReceipt, importReceiptItems, type ScannedReceipt } from "@/lib/grana.functions";
 import { Camera, Upload, Receipt, Check } from "lucide-react";
 import { toast } from "sonner";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/granaia/scanner")({
-  component: Scanner,
+  component: () => (
+    <AppShell title="Scanner de notas">
+      <PrimeGate slug="granaia" feature="Scanner de nota fiscal">
+        <Scanner />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 function Scanner() {

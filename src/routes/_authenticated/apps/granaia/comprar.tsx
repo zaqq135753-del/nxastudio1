@@ -7,9 +7,16 @@ import { canIBuy, type PurchaseAdvice } from "@/lib/grana.functions";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Check, Clock, X, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/granaia/comprar")({
-  component: Page,
+  component: () => (
+    <AppShell title="Posso comprar?">
+      <PrimeGate slug="granaia" feature="Consultor de compras">
+        <Page />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 const VERDICT = {

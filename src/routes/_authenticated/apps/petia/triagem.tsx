@@ -5,9 +5,16 @@ import { AppShell, ScreenHeader, TypingIndicator } from "@/components/layout/App
 import { symptomTriage, listPets, type TriageResult } from "@/lib/pet.functions";
 import { AlertTriangle, Stethoscope, X } from "lucide-react";
 import { toast } from "sonner";
+import { PrimeGate } from "@/components/commerce/PrimeGate";
 
 export const Route = createFileRoute("/_authenticated/apps/petia/triagem")({
-  component: Triagem,
+  component: () => (
+    <AppShell title="Triagem de sintomas">
+      <PrimeGate slug="petia" feature="Triagem de sintomas">
+        <Triagem />
+      </PrimeGate>
+    </AppShell>
+  ),
 });
 
 const COMMON = ["vômito", "diarreia", "apatia", "sem apetite", "mancando", "coçando muito", "tosse", "espirros", "olho vermelho", "sangramento", "convulsão", "dificuldade pra respirar"];
