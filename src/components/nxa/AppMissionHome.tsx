@@ -27,11 +27,14 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
   const prime = isPrime(slug);
 
   const heroStatus: "trial" | "prime" | "base" | "locked" | "available" =
-    st.kind === "trial" ? "trial"
-    : st.kind === "prime" ? "prime"
-    : st.kind === "base" ? "base"
-    : st.kind === "locked" ? "locked"
+    st.status === "trial" ? "trial"
+    : st.status === "active" && st.tier === "prime" ? "prime"
+    : st.status === "active" ? "base"
+    : st.status === "locked" ? "locked"
     : "available";
+  const trialDaysLeft = st.status === "trial" && st.trialEndsAt
+    ? Math.max(0, Math.ceil((new Date(st.trialEndsAt).getTime() - Date.now()) / 86400000))
+    : undefined;
 
   function askAgent(prompt: string) {
     sessionStorage.setItem("nxa:agent:seed", prompt);
