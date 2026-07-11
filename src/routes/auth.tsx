@@ -176,6 +176,33 @@ function AuthPage() {
             </form>
           )}
 
+          <div className="my-5 flex items-center gap-3 text-xs" style={{ color: "var(--cream-500)" }}>
+            <div className="h-px flex-1" style={{ background: "var(--line-1)" }} />
+            OU COM SENHA (ADMIN)
+            <div className="h-px flex-1" style={{ background: "var(--line-1)" }} />
+          </div>
+          <form onSubmit={signInPassword} className="space-y-3">
+            <input
+              type="email"
+              placeholder="admin1@nxa.app"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+              autoComplete="email"
+            />
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field"
+              autoComplete="current-password"
+            />
+            <button type="submit" disabled={pwLoading} className="btn-ghost w-full">
+              {pwLoading ? "Entrando…" : "Entrar com senha"}
+            </button>
+          </form>
+
           <p className="mt-8 text-center text-[11px]" style={{ color: "var(--cream-500)" }}>
             Ao continuar, você concorda com os Termos e a Política de Privacidade.
           </p>
