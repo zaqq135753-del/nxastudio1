@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssinarSlugRouteImport } from './routes/assinar.$slug'
+import { Route as AppSlugRouteImport } from './routes/app.$slug'
 import { Route as AuthenticatedPlanosRouteImport } from './routes/_authenticated/planos'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedMemoriaRouteImport } from './routes/_authenticated/memoria'
@@ -105,6 +106,11 @@ const IndexRoute = IndexRouteImport.update({
 const AssinarSlugRoute = AssinarSlugRouteImport.update({
   id: '/assinar/$slug',
   path: '/assinar/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppSlugRoute = AppSlugRouteImport.update({
+  id: '/app/$slug',
+  path: '/app/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedPlanosRoute = AuthenticatedPlanosRouteImport.update({
@@ -555,6 +561,7 @@ export interface FileRoutesByFullPath {
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/planos': typeof AuthenticatedPlanosRoute
+  '/app/$slug': typeof AppSlugRoute
   '/assinar/$slug': typeof AssinarSlugRoute
   '/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
@@ -634,6 +641,7 @@ export interface FileRoutesByTo {
   '/memoria': typeof AuthenticatedMemoriaRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/planos': typeof AuthenticatedPlanosRoute
+  '/app/$slug': typeof AppSlugRoute
   '/assinar/$slug': typeof AssinarSlugRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -705,6 +713,7 @@ export interface FileRoutesById {
   '/_authenticated/memoria': typeof AuthenticatedMemoriaRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/planos': typeof AuthenticatedPlanosRoute
+  '/app/$slug': typeof AppSlugRoute
   '/assinar/$slug': typeof AssinarSlugRoute
   '/_authenticated/apps/cosmosia': typeof AuthenticatedAppsCosmosiaRouteRouteWithChildren
   '/_authenticated/apps/fitia': typeof AuthenticatedAppsFitiaRouteRouteWithChildren
@@ -786,6 +795,7 @@ export interface FileRouteTypes {
     | '/memoria'
     | '/onboarding'
     | '/planos'
+    | '/app/$slug'
     | '/assinar/$slug'
     | '/apps/cosmosia'
     | '/apps/fitia'
@@ -865,6 +875,7 @@ export interface FileRouteTypes {
     | '/memoria'
     | '/onboarding'
     | '/planos'
+    | '/app/$slug'
     | '/assinar/$slug'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
@@ -935,6 +946,7 @@ export interface FileRouteTypes {
     | '/_authenticated/memoria'
     | '/_authenticated/onboarding'
     | '/_authenticated/planos'
+    | '/app/$slug'
     | '/assinar/$slug'
     | '/_authenticated/apps/cosmosia'
     | '/_authenticated/apps/fitia'
@@ -1009,6 +1021,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AppSlugRoute: typeof AppSlugRoute
   AssinarSlugRoute: typeof AssinarSlugRoute
   ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
@@ -1041,6 +1054,13 @@ declare module '@tanstack/react-router' {
       path: '/assinar/$slug'
       fullPath: '/assinar/$slug'
       preLoaderRoute: typeof AssinarSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/$slug': {
+      id: '/app/$slug'
+      path: '/app/$slug'
+      fullPath: '/app/$slug'
+      preLoaderRoute: typeof AppSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/planos': {
@@ -1866,6 +1886,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AppSlugRoute: AppSlugRoute,
   AssinarSlugRoute: AssinarSlugRoute,
   ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
