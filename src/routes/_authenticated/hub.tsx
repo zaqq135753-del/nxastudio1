@@ -6,8 +6,8 @@ import { APPS, SUITE } from "@/apps/registry";
 import { getAppConfig } from "@/apps/config";
 import { getMyEntitlements, isEntitled, isPrime as entIsPrime, type Entitlement } from "@/lib/entitlements.functions";
 import { amIAdmin } from "@/lib/admin.functions";
-import { ArrowUpRight, Lock, Sparkles, LogOut, Command, Bell, Shield } from "lucide-react";
-import { PrimeBadge } from "@/components/commerce/PrimeBadge";
+import { ArrowUpRight, Sparkles, LogOut, Command, Bell, Shield } from "lucide-react";
+
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
