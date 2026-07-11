@@ -81,9 +81,14 @@ function Landing() {
                   {soon ? (
                     <span className="text-xs" style={{ color: "var(--n-500)" }}>Avisamos você</span>
                   ) : (
-                    <Link to="/assinar/$slug" params={{ slug: a.slug }} className="font-medium underline underline-offset-4">
-                      Assinar este app
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link to="/app/$slug" params={{ slug: a.slug }} className="text-xs underline underline-offset-4" style={{ color: "var(--n-500)" }}>
+                        Saiba mais
+                      </Link>
+                      <Link to="/assinar/$slug" params={{ slug: a.slug }} className="font-medium underline underline-offset-4">
+                        Assinar
+                      </Link>
+                    </div>
                   )}
                 </div>
               </div>
