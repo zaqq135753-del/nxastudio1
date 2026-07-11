@@ -34,16 +34,18 @@ export async function callGateway(body: {
   }
 
   // GPT-5 family (and o1/o3/gpt-4.1): use max_completion_tokens and no custom
-  // temperature. Applies whether we hit OpenAI directly or route via Gateway.
+  // temperature. Reasoning tokens consumem parte do budget → damos folga (min 4000).
   const modelId = (payload.model as string) ?? "";
   const isNewModel = /(^|\/)(gpt-5|o1|o3|gpt-4\.1)/.test(modelId);
   if (isNewModel) {
-    if (payload.max_tokens !== undefined) {
-      payload.max_completion_tokens = payload.max_tokens;
-      delete payload.max_tokens;
-    }
+    const requested = typeof payload.max_tokens === "number" ? payload.max_tokens : 2000;
+    payload.max_completion_tokens = Math.max(requested * 2, 4000);
+    delete payload.max_tokens;
     delete payload.temperature;
+    // response_format json_object não é suportado por gpt-5 reasoning → removemos.
+    if (payload.response_format) delete payload.response_format;
   }
+
 
   const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
   if (!res.ok) {
