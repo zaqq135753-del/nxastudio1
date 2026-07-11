@@ -30,6 +30,15 @@ function AgentePage() {
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [turns, loading]);
 
+  // Seed vindo do Command Center (hub AICommandBar)
+  useEffect(() => {
+    const seed = sessionStorage.getItem("nxa:agent:seed");
+    if (seed) {
+      sessionStorage.removeItem("nxa:agent:seed");
+      setInput(seed);
+    }
+  }, []);
+
   async function submit() {
     if (!input.trim() || loading) return;
     const msg = input.trim();
