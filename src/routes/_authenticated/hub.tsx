@@ -1,13 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { APPS, SUITE } from "@/apps/registry";
 import { getAppConfig } from "@/apps/config";
 import { getMyEntitlements, isEntitled, isPrime as entIsPrime, type Entitlement } from "@/lib/entitlements.functions";
 import { amIAdmin } from "@/lib/admin.functions";
-import { ArrowUpRight, Lock, Sparkles, LogOut, Command, Bell, Shield } from "lucide-react";
-import { PrimeBadge } from "@/components/commerce/PrimeBadge";
+import { ArrowUpRight, Sparkles, LogOut, Command, Bell, Shield } from "lucide-react";
+
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -19,6 +19,9 @@ import { PaywallBanner } from "@/components/PaywallBanner";
 import { StreaksBadges } from "@/components/StreaksBadges";
 import { AICommandBar } from "@/components/nxa/AICommandBar";
 import { MissionCard } from "@/components/nxa/MissionCard";
+import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
+import { SectionHeader } from "@/components/nxa/SectionHeader";
+
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -178,13 +181,15 @@ function Hub() {
             <AICommandBar
               placeholder="Ex.: monta meu jantar de hoje…"
               suggestions={[
-                "Monta meu jantar com o que tenho",
-                "Posso comprar um tênis de R$ 300?",
-                "Criar post pra hoje",
-                "Treino rápido de 20 min",
+                "🍳 Resolver jantar",
+                "📱 Criar post pra hoje",
+                "💰 Posso comprar?",
+                "💪 Treinar agora",
+                "✈️ Planejar viagem",
               ]}
               onSubmit={(t) => askAgent(t)}
             />
+
           </div>
         </section>
 
@@ -253,8 +258,9 @@ function Hub() {
             </div>
             <div className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {missionsToday.map(({ app, mission, isPrime }) => (
-                <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} />
+                <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} appSlug={app.slug} />
               ))}
+
             </div>
           </section>
         )}
@@ -262,15 +268,15 @@ function Hub() {
         {/* Proactive briefing */}
         <section className="mb-10"><BriefingCard /></section>
 
-        {/* My apps grid (compacto) */}
         <section className="mb-14">
-          <div className="mb-4 flex items-end justify-between">
-            <div className="edition-tag">Seus apps</div>
-            <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{mine.length} de {APPS.length}</span>
-          </div>
+          <SectionHeader
+            kicker="Seus apps"
+            title="Continue de onde parou"
+            action={<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{mine.length} de {APPS.length}</span>}
+          />
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-40" />)}
+              {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-44" />)}
             </div>
           ) : mine.length === 0 ? (
             <div className="glass-card p-6 text-sm" style={{ color: "var(--muted-foreground)" }}>
@@ -282,41 +288,15 @@ function Hub() {
                 const prime = entIsPrime(ents, a.slug);
                 const cfg = getAppConfig(a.slug);
                 return (
-                <Link key={a.slug} to={a.route}
-                  className="press group relative block h-40 overflow-hidden rounded-3xl border"
-                  style={{
-                    borderColor: "var(--line-1)",
-                    ["--tile-img" as string]: `url(${COVERS[a.slug]})`,
-                  } as CSSProperties}>
-                  <div
-                    className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
-                    style={{
-                      backgroundImage: `var(--tile-img)`,
-                      backgroundSize: "cover", backgroundPosition: "center",
-                    }}
+                  <AnimatedAppCard
+                    key={a.slug}
+                    slug={a.slug}
+                    name={a.name}
+                    to={a.route}
+                    cover={COVERS[a.slug]}
+                    hook={cfg?.cardHook ?? a.tagline}
+                    isPrime={prime}
                   />
-                  <div className="absolute inset-0" style={{
-                    background: "linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.85) 100%)",
-                  }} />
-                  <div className="relative flex h-full flex-col justify-between p-4 text-white">
-                    <div className="flex items-start justify-between">
-                      <div className="grid h-9 w-9 place-items-center rounded-2xl bg-white/15 backdrop-blur">
-                        <a.icon size={16} />
-                      </div>
-                      {prime ? <PrimeBadge /> : (
-                        <span className="rounded-full bg-white/15 backdrop-blur px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider">
-                          Base
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
-                      <div className="text-[12px] text-white/75 mt-0.5 line-clamp-1">
-                        {cfg?.cardHook ?? a.tagline}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
                 );
               })}
             </div>
@@ -326,68 +306,33 @@ function Hub() {
         {/* Discover / upsell */}
         {discover.length > 0 && (
           <section>
-            <div className="mb-4 flex items-end justify-between">
-              <div>
-                <div className="edition-tag">Adicione mais apps NXA</div>
-                <p className="mt-1 text-sm" style={{ color: "var(--muted-foreground)" }}>
-                  7 dias grátis, depois {SUITE.pricePerApp}.
-                </p>
-              </div>
-              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
-                {discover.length} disponíve{discover.length === 1 ? "l" : "is"}
-              </span>
-            </div>
+            <SectionHeader
+              kicker="Adicione mais apps"
+              title="Amplie sua NXA"
+              action={<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>7 dias grátis · depois {SUITE.pricePerApp}</span>}
+            />
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {discover.map((a) => {
                 const soon = a.status === "soon";
                 const cfg = getAppConfig(a.slug);
                 return (
-                  <div key={a.slug}
-                    className="hover-lift relative block h-52 overflow-hidden rounded-3xl border"
-                    style={{ borderColor: "var(--line-1)" }}>
-                    <div className="absolute inset-0"
-                      style={{
-                        backgroundImage: `url(${COVERS[a.slug]})`,
-                        backgroundSize: "cover", backgroundPosition: "center",
-                        filter: "grayscale(0.5) brightness(0.6)",
-                      }}
-                    />
-                    <div className="absolute inset-0" style={{
-                      background: "linear-gradient(180deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.9) 100%)",
-                    }} />
-                    <div className="relative flex h-full flex-col justify-between p-5 text-white">
-                      <div className="flex items-start justify-between">
-                        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 backdrop-blur">
-                          <a.icon size={18} />
-                        </div>
-                        <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider inline-flex items-center gap-1">
-                          {soon ? "Em breve" : <><Lock size={10} /> Não assinado</>}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
-                        <div className="text-[13px] text-white/75 mt-0.5 line-clamp-2">
-                          {cfg?.cardHook ?? a.description}
-                        </div>
-                        <div className="mt-3 flex items-center justify-between">
-                          <span className="text-[11px] text-white/70">{SUITE.pricePerApp}</span>
-                          {soon ? (
-                            <span className="text-[11px] text-white/60">Avisamos você</span>
-                          ) : (
-                            <Link to="/assinar/$slug" params={{ slug: a.slug }}
-                              className="press inline-flex items-center gap-1 rounded-full bg-white text-black px-3 py-1.5 text-[11px] font-semibold">
-                              Assinar <ArrowUpRight size={11} />
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <AnimatedAppCard
+                    key={a.slug}
+                    slug={a.slug}
+                    name={a.name}
+                    to={a.route}
+                    cover={COVERS[a.slug]}
+                    hook={cfg?.cardHook ?? a.description}
+                    status={soon ? "soon" : "locked"}
+                    price={soon ? undefined : SUITE.pricePerApp}
+                    onClick={soon ? () => {} : () => navigate({ to: "/assinar/$slug", params: { slug: a.slug } })}
+                  />
                 );
               })}
             </div>
           </section>
         )}
+
       </main>
       <VoiceAssistant />
     </div>

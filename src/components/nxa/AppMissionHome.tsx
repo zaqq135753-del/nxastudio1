@@ -5,9 +5,12 @@ import { AICommandBar } from "./AICommandBar";
 import { MissionCard } from "./MissionCard";
 import { AutopilotCard } from "./AutopilotCard";
 import { MediaMemoryPanel } from "./MediaMemoryPanel";
+import { DailyMissionCard } from "./DailyMissionCard";
+import { SectionHeader } from "./SectionHeader";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { getAppConfig } from "@/apps/config";
+import { getAppVisual, appThemeClass } from "@/apps/visual";
 import { Bell } from "lucide-react";
 
 type Props = {
@@ -17,12 +20,12 @@ type Props = {
 };
 
 /**
- * Template padrão da home de cada app (Onda D).
- * Consome src/apps/config.ts + useEntitlements para renderizar hero,
- * command bar, notificação inteligente e missões com gating Prime.
+ * Template padrão da home de cada app (Onda D + evolução visual).
+ * Aplica tema por nicho (app-<theme>), missão diária colorida e seções editoriais.
  */
 export function AppMissionHome({ slug, showVoice = false }: Props) {
   const cfg = getAppConfig(slug);
+  const visual = getAppVisual(slug);
   const navigate = useNavigate();
   const { status, isPrime } = useEntitlements();
   const st = status(slug);
@@ -53,60 +56,80 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
     );
   }
 
+  const sec = visual?.sectionTitles;
+
   return (
     <AppShell appSlug={slug}>
-      <AppHero
-        app={cfg}
-        status={heroStatus}
-        trialDaysLeft={trialDaysLeft}
-        action={showVoice ? <div className="flex justify-start"><RealtimeCallButton slug={slug} /></div> : undefined}
-      />
-
-      <section className="mb-6">
-        <AICommandBar
-          placeholder={cfg.helpMePrompt}
-          suggestions={cfg.suggestions}
-          onSubmit={askAgent}
+      <div className={appThemeClass(slug)}>
+        <AppHero
+          app={cfg}
+          status={heroStatus}
+          trialDaysLeft={trialDaysLeft}
+          action={showVoice ? <div className="flex justify-start"><RealtimeCallButton slug={slug} /></div> : undefined}
         />
-      </section>
 
-      {cfg.smartNotification && (
-        <section className="mb-6 fade-up">
-          <div className="surface flex items-start gap-3 p-4">
-            <div className="tile-icon-wrap shrink-0"><Bell size={16} /></div>
-            <div className="min-w-0 flex-1">
-              <div className="edition-tag mb-1">Próxima ação</div>
-              <div className="text-[15px] leading-snug">{cfg.smartNotification}</div>
+        {visual && (
+          <section className="mb-6">
+            <DailyMissionCard slug={slug} />
+          </section>
+        )}
+
+        <section className="mb-6">
+          <AICommandBar
+            placeholder={cfg.helpMePrompt}
+            suggestions={cfg.suggestions}
+            onSubmit={askAgent}
+          />
+        </section>
+
+        {cfg.smartNotification && (
+          <section className="mb-8 fade-up">
+            <div className="surface flex items-start gap-3 p-4">
+              <div className="tile-icon-wrap shrink-0"><Bell size={16} /></div>
+              <div className="min-w-0 flex-1">
+                <div className="edition-tag mb-1">Próxima ação</div>
+                <div className="text-[15px] leading-snug">{cfg.smartNotification}</div>
+              </div>
             </div>
+          </section>
+        )}
+
+        <section className="mb-10">
+          <SectionHeader
+            kicker={sec?.quick ?? "Ações rápidas"}
+            title="O que você quer fazer hoje?"
+          />
+          <div className="stagger grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {cfg.missions.map((m) => (
+              <MissionCard
+                key={m.id}
+                mission={m}
+                isPrime={prime}
+                appSlug={slug}
+                onClick={m.prime && !prime
+                  ? () => navigate({ to: "/assinar/$slug", params: { slug } })
+                  : undefined}
+              />
+            ))}
           </div>
         </section>
-      )}
 
-      <section className="mb-8">
-        <div className="edition-tag mb-3">Missões pra hoje</div>
-        <div className="stagger grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {cfg.missions.map((m) => (
-            <MissionCard
-              key={m.id}
-              mission={m}
-              isPrime={prime}
-              onClick={m.prime && !prime
-                ? () => navigate({ to: "/assinar/$slug", params: { slug } })
-                : undefined}
-            />
-          ))}
-        </div>
-      </section>
+        <section className="mb-10">
+          <SectionHeader
+            kicker={sec?.prime ?? "Modo Prime"}
+            title="Automatize o que você faz toda semana"
+          />
+          <AutopilotCard app={cfg} isPrime={prime} />
+        </section>
 
-      <section className="mb-8">
-        <div className="edition-tag mb-3">Automação</div>
-        <AutopilotCard app={cfg} isPrime={prime} />
-      </section>
-
-      <section className="mb-8">
-        <div className="edition-tag mb-3">Sua base pessoal</div>
-        <MediaMemoryPanel app={cfg} isPrime={prime} />
-      </section>
+        <section className="mb-10">
+          <SectionHeader
+            kicker={sec?.history ?? "Sua base pessoal"}
+            title="Memória e mídia"
+          />
+          <MediaMemoryPanel app={cfg} isPrime={prime} />
+        </section>
+      </div>
     </AppShell>
   );
 }
