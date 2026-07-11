@@ -181,13 +181,15 @@ function Hub() {
             <AICommandBar
               placeholder="Ex.: monta meu jantar de hoje…"
               suggestions={[
-                "Monta meu jantar com o que tenho",
-                "Posso comprar um tênis de R$ 300?",
-                "Criar post pra hoje",
-                "Treino rápido de 20 min",
+                "🍳 Resolver jantar",
+                "📱 Criar post pra hoje",
+                "💰 Posso comprar?",
+                "💪 Treinar agora",
+                "✈️ Planejar viagem",
               ]}
               onSubmit={(t) => askAgent(t)}
             />
+
           </div>
         </section>
 
