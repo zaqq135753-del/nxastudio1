@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { APPS, SUITE } from "@/apps/registry";
+import { getAppConfig } from "@/apps/config";
 import { getMyEntitlements, isEntitled, isPrime as entIsPrime, type Entitlement } from "@/lib/entitlements.functions";
-import { ArrowUpRight, Lock, Sparkles, LogOut, Command } from "lucide-react";
+import { ArrowUpRight, Lock, Sparkles, LogOut, Command, Bell } from "lucide-react";
 import { PrimeBadge } from "@/components/commerce/PrimeBadge";
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
@@ -15,6 +16,8 @@ import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
 import { hasOnboarded } from "@/lib/onboarding.functions";
 import { PaywallBanner } from "@/components/PaywallBanner";
 import { StreaksBadges } from "@/components/StreaksBadges";
+import { AICommandBar } from "@/components/nxa/AICommandBar";
+import { MissionCard } from "@/components/nxa/MissionCard";
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
@@ -74,7 +77,36 @@ function Hub() {
 
   const mine = APPS.filter((a) => a.status === "live" && isEntitled(ents, a.slug));
   const discover = APPS.filter((a) => !mine.includes(a));
-  const featured = mine[0] ?? null;
+
+  // "Missões de hoje": primeira missão não-Prime (ou primeira) de cada app ativo
+  const missionsToday = useMemo(() => {
+    return mine
+      .map((a) => {
+        const cfg = getAppConfig(a.slug);
+        if (!cfg) return null;
+        const prime = entIsPrime(ents, a.slug);
+        const mission = cfg.missions.find((m) => !m.prime) ?? cfg.missions[0];
+        return mission ? { app: a, cfg, mission, isPrime: prime } : null;
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+      .slice(0, 6);
+  }, [mine, ents]);
+
+  // Próximas ações inteligentes
+  const nextActions = useMemo(() => {
+    return mine
+      .map((a) => {
+        const cfg = getAppConfig(a.slug);
+        return cfg ? { app: a, cfg } : null;
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+      .slice(0, 3);
+  }, [mine]);
+
+  function askAgent(prompt: string) {
+    sessionStorage.setItem("nxa:agent:seed", prompt);
+    navigate({ to: "/agente" });
+  }
 
   return (
     <div className="min-h-screen bg-aurora relative overflow-hidden">
@@ -120,46 +152,30 @@ function Hub() {
       </header>
 
       <main className="relative mx-auto max-w-[1100px] px-5 pt-24 pb-20 z-10">
-        {/* Hero */}
-        <div className="fade-up mb-10 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
-          <div>
-            <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
-            <h1 className="text-[38px] sm:text-[64px] font-bold tracking-tight leading-[1.02]">
-              {greeting()}{name ? "," : "."}
-              {name && <> <span className="text-gradient">{name}</span>.</>}
-            </h1>
-            <p className="mt-4 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
-              Uma suíte de {APPS.length} apps de IA. Um assinatura, um login, tudo conectado no seu ritmo.
-            </p>
-          </div>
+        {/* Command Center Hero */}
+        <section className="fade-up mb-8">
+          <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
+          <h1 className="text-[36px] sm:text-[56px] font-bold tracking-tight leading-[1.02]">
+            {greeting()}{name ? "," : "."}
+            {name && <> <span className="text-gradient">{name}</span>.</>}
+          </h1>
+          <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
+            O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
+          </p>
 
-          {/* Featured spotlight */}
-          {featured && (
-            <Link to={featured.route}
-              className="press group relative block h-56 overflow-hidden rounded-3xl border"
-              style={{
-                borderColor: "var(--line-1)",
-                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.85) 100%), url(${COVERS[featured.slug]})`,
-                backgroundSize: "cover", backgroundPosition: "center",
-                boxShadow: "var(--shadow-elev)",
-              }}>
-              <div className="absolute inset-0 flex flex-col justify-between p-5 text-white">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider">
-                    Em destaque
-                  </span>
-                  <div className="grid h-9 w-9 place-items-center rounded-full bg-white/15 backdrop-blur transition-transform group-hover:scale-110">
-                    <ArrowUpRight size={16} />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold tracking-tight">{featured.name}</div>
-                  <div className="mt-0.5 text-sm text-white/75">{featured.tagline}</div>
-                </div>
-              </div>
-            </Link>
-          )}
-        </div>
+          <div className="mt-5 max-w-2xl">
+            <AICommandBar
+              placeholder="Ex.: monta meu jantar de hoje…"
+              suggestions={[
+                "Monta meu jantar com o que tenho",
+                "Posso comprar um tênis de R$ 300?",
+                "Criar post pra hoje",
+                "Treino rápido de 20 min",
+              ]}
+              onSubmit={(t) => askAgent(t)}
+            />
+          </div>
+        </section>
 
         {/* Onboarding CTA */}
         {!onboarded && !loading && (
@@ -182,16 +198,60 @@ function Hub() {
         {/* Paywall / trial */}
         <div className="mb-6"><PaywallBanner /></div>
 
+        {/* Próximas ações inteligentes (por app ativo) */}
+        {nextActions.length > 0 && (
+          <section className="mb-8">
+            <div className="mb-3 edition-tag">Próximas ações</div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {nextActions.map(({ app, cfg }) => (
+                <Link key={app.slug} to={app.route}
+                  className="press surface p-4 flex items-start gap-3 hover-lift">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl"
+                    style={{ background: "var(--n-100)" }}>
+                    <Bell size={16} style={{ color: "var(--n-500)" }} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[11px] uppercase tracking-wider" style={{ color: "var(--n-500)" }}>
+                      {cfg.shortName}
+                    </div>
+                    <div className="text-sm font-medium leading-snug line-clamp-2">
+                      {cfg.smartNotification}
+                    </div>
+                  </div>
+                  <ArrowUpRight size={14} className="mt-1 shrink-0" style={{ color: "var(--n-500)" }} />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Widget "Hoje" — próximo passo por app ativo */}
         <TodayWidget ents={ents} />
 
         {/* Streaks & badges */}
         <div className="mb-6"><StreaksBadges /></div>
 
+        {/* Missões de hoje */}
+        {missionsToday.length > 0 && (
+          <section className="mb-12">
+            <div className="mb-4 flex items-end justify-between">
+              <div className="edition-tag">Missões pra hoje</div>
+              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
+                1 clique · sem enrolação
+              </span>
+            </div>
+            <div className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {missionsToday.map(({ app, mission, isPrime }) => (
+                <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Proactive briefing */}
         <section className="mb-10"><BriefingCard /></section>
 
-        {/* My apps grid */}
+        {/* My apps grid (compacto) */}
         <section className="mb-14">
           <div className="mb-4 flex items-end justify-between">
             <div className="edition-tag">Seus apps</div>
@@ -199,7 +259,7 @@ function Hub() {
           </div>
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-52" />)}
+              {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-40" />)}
             </div>
           ) : mine.length === 0 ? (
             <div className="glass-card p-6 text-sm" style={{ color: "var(--muted-foreground)" }}>
@@ -209,9 +269,10 @@ function Hub() {
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {mine.map((a) => {
                 const prime = entIsPrime(ents, a.slug);
+                const cfg = getAppConfig(a.slug);
                 return (
                 <Link key={a.slug} to={a.route}
-                  className="press group relative block h-52 overflow-hidden rounded-3xl border"
+                  className="press group relative block h-40 overflow-hidden rounded-3xl border"
                   style={{
                     borderColor: "var(--line-1)",
                     ["--tile-img" as string]: `url(${COVERS[a.slug]})`,
@@ -226,33 +287,22 @@ function Hub() {
                   <div className="absolute inset-0" style={{
                     background: "linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.85) 100%)",
                   }} />
-                  <div className="relative flex h-full flex-col justify-between p-5 text-white">
+                  <div className="relative flex h-full flex-col justify-between p-4 text-white">
                     <div className="flex items-start justify-between">
-                      <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 backdrop-blur">
-                        <a.icon size={18} />
+                      <div className="grid h-9 w-9 place-items-center rounded-2xl bg-white/15 backdrop-blur">
+                        <a.icon size={16} />
                       </div>
-                      {prime ? (
-                        <PrimeBadge />
-                      ) : (
-                        <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider">
+                      {prime ? <PrimeBadge /> : (
+                        <span className="rounded-full bg-white/15 backdrop-blur px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider">
                           Base
                         </span>
                       )}
                     </div>
                     <div>
-                      <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
-                      <div className="text-[13px] text-white/75 mt-0.5 line-clamp-1">{a.tagline}</div>
-                      {!prime && (
-                        <Link
-                          to="/assinar/$slug"
-                          params={{ slug: a.slug }}
-                          onClick={(e) => e.stopPropagation()}
-                          className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-white/90 hover:text-white"
-                        >
-                          <Sparkles size={11} /> Ativar Prime
-                          <ArrowUpRight size={11} />
-                        </Link>
-                      )}
+                      <div className="text-[17px] font-semibold tracking-tight">{a.name}</div>
+                      <div className="text-[12px] text-white/75 mt-0.5 line-clamp-1">
+                        {cfg?.cardHook ?? a.tagline}
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -269,14 +319,17 @@ function Hub() {
               <div>
                 <div className="edition-tag">Adicione mais apps NXA</div>
                 <p className="mt-1 text-sm" style={{ color: "var(--muted-foreground)" }}>
-                  Já tem sua conta. Ative outro app em 1 clique — 7 dias grátis, depois {SUITE.pricePerApp}.
+                  7 dias grátis, depois {SUITE.pricePerApp}.
                 </p>
               </div>
-              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{discover.length} disponíve{discover.length === 1 ? "l" : "is"}</span>
+              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
+                {discover.length} disponíve{discover.length === 1 ? "l" : "is"}
+              </span>
             </div>
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {discover.map((a) => {
                 const soon = a.status === "soon";
+                const cfg = getAppConfig(a.slug);
                 return (
                   <div key={a.slug}
                     className="hover-lift relative block h-52 overflow-hidden rounded-3xl border"
@@ -302,7 +355,9 @@ function Hub() {
                       </div>
                       <div>
                         <div className="text-[19px] font-semibold tracking-tight">{a.name}</div>
-                        <div className="text-[13px] text-white/75 mt-0.5 line-clamp-2">{a.description}</div>
+                        <div className="text-[13px] text-white/75 mt-0.5 line-clamp-2">
+                          {cfg?.cardHook ?? a.description}
+                        </div>
                         <div className="mt-3 flex items-center justify-between">
                           <span className="text-[11px] text-white/70">{SUITE.pricePerApp}</span>
                           {soon ? (
