@@ -31,6 +31,21 @@ export type Entitlement = {
 export const getMyEntitlements = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    // Admins get full access (prime + active) on every app.
+    const { data: adminRow } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (adminRow) {
+      return VALID_SLUGS.map((slug) => ({
+        app_slug: slug,
+        status: "active",
+        expires_at: null,
+        tier: "prime",
+      })) as Entitlement[];
+    }
     const { data, error } = await context.supabase
       .from("app_entitlements")
       .select("app_slug, status, expires_at, tier")

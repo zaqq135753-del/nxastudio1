@@ -18,6 +18,8 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pwLoading, setPwLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -64,6 +66,19 @@ function AuthPage() {
     setSending(false);
     if (error) return toast.error(error.message);
     setSent(true);
+  }
+
+  async function signInPassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !password) return;
+    setPwLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setPwLoading(false);
+    if (error) return toast.error(error.message);
+    await afterAuth();
   }
 
   async function signInGoogle() {
@@ -160,6 +175,33 @@ function AuthPage() {
               </button>
             </form>
           )}
+
+          <div className="my-5 flex items-center gap-3 text-xs" style={{ color: "var(--cream-500)" }}>
+            <div className="h-px flex-1" style={{ background: "var(--line-1)" }} />
+            OU COM SENHA (ADMIN)
+            <div className="h-px flex-1" style={{ background: "var(--line-1)" }} />
+          </div>
+          <form onSubmit={signInPassword} className="space-y-3">
+            <input
+              type="email"
+              placeholder="admin1@nxa.app"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+              autoComplete="email"
+            />
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field"
+              autoComplete="current-password"
+            />
+            <button type="submit" disabled={pwLoading} className="btn-ghost w-full">
+              {pwLoading ? "Entrando…" : "Entrar com senha"}
+            </button>
+          </form>
 
           <p className="mt-8 text-center text-[11px]" style={{ color: "var(--cream-500)" }}>
             Ao continuar, você concorda com os Termos e a Política de Privacidade.

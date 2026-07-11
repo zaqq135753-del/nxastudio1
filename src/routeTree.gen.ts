@@ -21,6 +21,7 @@ import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hu
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
 import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated/agente'
 import { Route as AuthenticatedAfiliadosRouteImport } from './routes/_authenticated/afiliados'
+import { Route as ApiPublicSeedAdminsRouteImport } from './routes/api/public/seed-admins'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
 import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
@@ -147,6 +148,11 @@ const AuthenticatedAfiliadosRoute = AuthenticatedAfiliadosRouteImport.update({
   id: '/afiliados',
   path: '/afiliados',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicSeedAdminsRoute = ApiPublicSeedAdminsRouteImport.update({
+  id: '/api/public/seed-admins',
+  path: '/api/public/seed-admins',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppsStyleiaRouteRoute =
   AuthenticatedAppsStyleiaRouteRouteImport.update({
@@ -573,6 +579,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
@@ -643,6 +650,7 @@ export interface FileRoutesByTo {
   '/planos': typeof AuthenticatedPlanosRoute
   '/app/$slug': typeof AppSlugRoute
   '/assinar/$slug': typeof AssinarSlugRoute
+  '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
@@ -725,6 +733,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/_authenticated/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/_authenticated/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
   '/_authenticated/apps/cosmosia/mapa': typeof AuthenticatedAppsCosmosiaMapaRoute
@@ -807,6 +816,7 @@ export interface FileRouteTypes {
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/styleia'
+    | '/api/public/seed-admins'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
@@ -877,6 +887,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/app/$slug'
     | '/assinar/$slug'
+    | '/api/public/seed-admins'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
     | '/apps/cosmosia/mapa'
@@ -958,6 +969,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/styleia'
+    | '/api/public/seed-admins'
     | '/_authenticated/apps/$slug/midia'
     | '/_authenticated/apps/cosmosia/compatibilidade'
     | '/_authenticated/apps/cosmosia/mapa'
@@ -1023,6 +1035,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   AppSlugRoute: typeof AppSlugRoute
   AssinarSlugRoute: typeof AssinarSlugRoute
+  ApiPublicSeedAdminsRoute: typeof ApiPublicSeedAdminsRoute
   ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
 
@@ -1111,6 +1124,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/afiliados'
       preLoaderRoute: typeof AuthenticatedAfiliadosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/seed-admins': {
+      id: '/api/public/seed-admins'
+      path: '/api/public/seed-admins'
+      fullPath: '/api/public/seed-admins'
+      preLoaderRoute: typeof ApiPublicSeedAdminsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/apps/styleia': {
       id: '/_authenticated/apps/styleia'
@@ -1888,6 +1908,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   AppSlugRoute: AppSlugRoute,
   AssinarSlugRoute: AssinarSlugRoute,
+  ApiPublicSeedAdminsRoute: ApiPublicSeedAdminsRoute,
   ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
 export const routeTree = rootRouteImport
