@@ -50,8 +50,10 @@ function Hub() {
   const [ents, setEnts] = useState<Entitlement[]>([]);
   const [loading, setLoading] = useState(true);
   const [onboarded, setOnboarded] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const load = useServerFn(getMyEntitlements);
   const checkOnb = useServerFn(hasOnboarded);
+  const checkAdmin = useServerFn(amIAdmin);
 
   useEffect(() => {
     (async () => {
