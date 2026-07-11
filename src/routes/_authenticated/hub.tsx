@@ -68,8 +68,9 @@ function Hub() {
       }
       try { setEnts(await load()); } finally { setLoading(false); }
       try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
+      try { const { isAdmin } = await checkAdmin(); setIsAdmin(isAdmin); } catch { /* noop */ }
     })();
-  }, [load, checkOnb]);
+  }, [load, checkOnb, checkAdmin]);
 
   async function signOut() {
     await qc.cancelQueries();
