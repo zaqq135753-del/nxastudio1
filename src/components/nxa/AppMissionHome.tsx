@@ -3,6 +3,8 @@ import { AppShell } from "@/components/layout/AppShell";
 import { AppHero } from "./AppHero";
 import { AICommandBar } from "./AICommandBar";
 import { MissionCard } from "./MissionCard";
+import { AutopilotCard } from "./AutopilotCard";
+import { MediaMemoryPanel } from "./MediaMemoryPanel";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { getAppConfig } from "@/apps/config";
@@ -94,6 +96,16 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
             />
           ))}
         </div>
+      </section>
+
+      <section className="mb-8">
+        <div className="edition-tag mb-3">Automação</div>
+        <AutopilotCard app={cfg} isPrime={prime} />
+      </section>
+
+      <section className="mb-8">
+        <div className="edition-tag mb-3">Sua base pessoal</div>
+        <MediaMemoryPanel app={cfg} isPrime={prime} />
       </section>
     </AppShell>
   );
