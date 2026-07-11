@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { APPS, SUITE } from "@/apps/registry";
 import { getAppConfig } from "@/apps/config";
 import { getMyEntitlements, isEntitled, isPrime as entIsPrime, type Entitlement } from "@/lib/entitlements.functions";
-import { ArrowUpRight, Lock, Sparkles, LogOut, Command, Bell } from "lucide-react";
+import { amIAdmin } from "@/lib/admin.functions";
+import { ArrowUpRight, Lock, Sparkles, LogOut, Command, Bell, Shield } from "lucide-react";
 import { PrimeBadge } from "@/components/commerce/PrimeBadge";
 import { useQueryClient } from "@tanstack/react-query";
 import { BriefingCard } from "@/components/BriefingCard";
@@ -49,8 +50,10 @@ function Hub() {
   const [ents, setEnts] = useState<Entitlement[]>([]);
   const [loading, setLoading] = useState(true);
   const [onboarded, setOnboarded] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const load = useServerFn(getMyEntitlements);
   const checkOnb = useServerFn(hasOnboarded);
+  const checkAdmin = useServerFn(amIAdmin);
 
   useEffect(() => {
     (async () => {
@@ -65,8 +68,9 @@ function Hub() {
       }
       try { setEnts(await load()); } finally { setLoading(false); }
       try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
+      try { const { isAdmin } = await checkAdmin(); setIsAdmin(isAdmin); } catch { /* noop */ }
     })();
-  }, [load, checkOnb]);
+  }, [load, checkOnb, checkAdmin]);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -136,6 +140,13 @@ function Hub() {
               style={{ color: "var(--muted-foreground)" }}>
               🎁 Afiliados
             </Link>
+            {isAdmin && (
+              <Link to="/admin" title="Admin"
+                className="press inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold"
+                style={{ background: "var(--text-1)", color: "var(--bg-1)" }}>
+                <Shield size={13} /> Admin
+              </Link>
+            )}
             <NotificationBell />
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"

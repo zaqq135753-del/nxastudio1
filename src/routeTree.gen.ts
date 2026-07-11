@@ -21,6 +21,7 @@ import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hu
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
 import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated/agente'
 import { Route as AuthenticatedAfiliadosRouteImport } from './routes/_authenticated/afiliados'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicSeedAdminsRouteImport } from './routes/api/public/seed-admins'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
@@ -147,6 +148,11 @@ const AuthenticatedAgenteRoute = AuthenticatedAgenteRouteImport.update({
 const AuthenticatedAfiliadosRoute = AuthenticatedAfiliadosRouteImport.update({
   id: '/afiliados',
   path: '/afiliados',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiPublicSeedAdminsRoute = ApiPublicSeedAdminsRouteImport.update({
@@ -560,6 +566,7 @@ const AuthenticatedAppsSlugMidiaRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/afiliados': typeof AuthenticatedAfiliadosRoute
   '/agente': typeof AuthenticatedAgenteRoute
   '/feed': typeof AuthenticatedFeedRoute
@@ -641,6 +648,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/afiliados': typeof AuthenticatedAfiliadosRoute
   '/agente': typeof AuthenticatedAgenteRoute
   '/feed': typeof AuthenticatedFeedRoute
@@ -714,6 +722,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/afiliados': typeof AuthenticatedAfiliadosRoute
   '/_authenticated/agente': typeof AuthenticatedAgenteRoute
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
@@ -797,6 +806,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/admin'
     | '/afiliados'
     | '/agente'
     | '/feed'
@@ -878,6 +888,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/admin'
     | '/afiliados'
     | '/agente'
     | '/feed'
@@ -950,6 +961,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/admin'
     | '/_authenticated/afiliados'
     | '/_authenticated/agente'
     | '/_authenticated/feed'
@@ -1123,6 +1135,13 @@ declare module '@tanstack/react-router' {
       path: '/afiliados'
       fullPath: '/afiliados'
       preLoaderRoute: typeof AuthenticatedAfiliadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/seed-admins': {
@@ -1848,6 +1867,7 @@ const AuthenticatedAppsStyleiaRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAfiliadosRoute: typeof AuthenticatedAfiliadosRoute
   AuthenticatedAgenteRoute: typeof AuthenticatedAgenteRoute
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
@@ -1869,6 +1889,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAfiliadosRoute: AuthenticatedAfiliadosRoute,
   AuthenticatedAgenteRoute: AuthenticatedAgenteRoute,
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
