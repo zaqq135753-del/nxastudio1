@@ -19,6 +19,9 @@ import { PaywallBanner } from "@/components/PaywallBanner";
 import { StreaksBadges } from "@/components/StreaksBadges";
 import { AICommandBar } from "@/components/nxa/AICommandBar";
 import { MissionCard } from "@/components/nxa/MissionCard";
+import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
+import { SectionHeader } from "@/components/nxa/SectionHeader";
+
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
 import fitiaCover from "@/assets/cover-fitia.jpg";
