@@ -480,3 +480,28 @@ export const generateMorningBrief = createServerFn({ method: "POST" })
     });
     return parseJson<MorningBrief>(raw);
   });
+
+/* ================= Onda N — Weekly Review ================= */
+export type WeeklyReview = {
+  headline: string;
+  summary: string;
+  wins: string[];
+  focus: string;
+  nextGoal: string;
+};
+
+export const generateWeeklyReview = createServerFn({ method: "POST" })
+  .inputValidator((d: { name?: string; totalXp: number; actionCount: number; topReasons: string[]; apps: string[] }) => d)
+  .handler(async ({ data }): Promise<WeeklyReview> => {
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Você é NXA, coach semanal. Revise a semana do usuário com honestidade e carinho. Retorne APENAS JSON: {"headline":"até 6 palavras","summary":"até 30 palavras resumindo a semana","wins":["até 3 conquistas, cada uma até 8 palavras"],"focus":"até 14 palavras: um foco pra próxima semana","nextGoal":"até 10 palavras: meta concreta e alcançável"}. Tom caloroso, específico, sem clichê.` },
+        { role: "user", content: `Nome: ${data.name || "amigo"}. XP na semana: ${data.totalXp}. Ações registradas: ${data.actionCount}. Principais atividades: ${data.topReasons.slice(0, 6).join(" · ") || "semana leve"}. Apps ativos: ${data.apps.join(", ") || "nenhum"}.` },
+      ],
+      temperature: 0.8,
+      max_tokens: 360,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<WeeklyReview>(raw);
+  });

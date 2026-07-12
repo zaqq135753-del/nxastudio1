@@ -28,6 +28,7 @@ import { FocusHeatmap } from "@/components/nxa/FocusHeatmap";
 import { DailyInsight } from "@/components/nxa/DailyInsight";
 import { SunsetCard } from "@/components/nxa/SunsetCard";
 import { MorningBriefCard } from "@/components/nxa/MorningBriefCard";
+import { WeeklyReviewCard } from "@/components/nxa/WeeklyReviewCard";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
 
@@ -211,6 +212,11 @@ function Hub() {
         <DailyInsight />
 
         <MorningBriefCard
+          name={name}
+          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+        />
+
+        <WeeklyReviewCard
           name={name}
           apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
         />
