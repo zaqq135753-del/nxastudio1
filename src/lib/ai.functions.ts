@@ -34,7 +34,7 @@ async function callGateway(body: {
 
   const url = useOpenAI ? OPENAI_URL : GATEWAY_URL;
   const headers: Record<string, string> = { "Content-Type": "application/json" };
-  const payload = { ...body };
+  const payload: Record<string, unknown> = { ...body };
 
   if (useOpenAI) {
     headers["Authorization"] = `Bearer ${openaiKey}`;
@@ -43,6 +43,19 @@ async function callGateway(body: {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("LOVABLE_API_KEY não configurada");
     headers["Lovable-API-Key"] = key;
+  }
+
+  // GPT-5/reasoning models rejeitam `max_tokens`, `temperature` customizada e
+  // `response_format: json_object` no Chat Completions. Normalizamos aqui para
+  // impedir que qualquer feature da suíte volte a quebrar após o publish.
+  const modelId = String(payload.model ?? "");
+  const usesCompletionTokens = /(^|\/)(gpt-5|o1|o3|gpt-4\.1)/.test(modelId);
+  if (usesCompletionTokens) {
+    const requested = typeof payload.max_tokens === "number" ? payload.max_tokens : 2000;
+    payload.max_completion_tokens = Math.max(requested * 2, 4000);
+    delete payload.max_tokens;
+    delete payload.temperature;
+    delete payload.response_format;
   }
 
   const res = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
