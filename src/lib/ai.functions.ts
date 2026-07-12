@@ -419,3 +419,22 @@ Se não houver comida: {"items":[],"note":"Não identifiquei alimentos."}`;
     });
     return parseJson<PantryScanResult>(raw);
   });
+
+/* ================= Onda I — Insight do dia ================= */
+export type DailyInsight = { headline: string; body: string; emoji: string };
+
+export const generateDailyInsight = createServerFn({ method: "POST" })
+  .inputValidator((d: { period: string; recent?: string[] }) => d)
+  .handler(async ({ data }): Promise<DailyInsight> => {
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Você é NXA, um coach de lifestyle premium. Gere UM insight curto (headline até 6 palavras, body até 22 palavras) contextual à hora do dia e às ações recentes do usuário. Tom caloroso, direto, sem clichê. Responda APENAS JSON: {"headline":"...","body":"...","emoji":"✨"}` },
+        { role: "user", content: `Período: ${data.period}. Ações recentes: ${(data.recent ?? []).slice(0, 5).join(" · ") || "nenhuma ainda"}.` },
+      ],
+      temperature: 0.85,
+      max_tokens: 200,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<DailyInsight>(raw);
+  });
