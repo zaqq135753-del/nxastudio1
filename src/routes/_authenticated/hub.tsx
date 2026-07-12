@@ -248,6 +248,9 @@ function Hub() {
         {/* Paywall / trial */}
         <div className="mb-6"><PaywallBanner /></div>
 
+        {/* Onda O — nudges silenciosos e contextuais */}
+        <SmartNudges ents={ents} />
+
         {/* Foco de hoje — sempre visível, sem collapse */}
         <div className="mb-2">
           <TodayWidget ents={ents} />
