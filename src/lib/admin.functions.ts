@@ -134,6 +134,7 @@ export const adminToggleAdmin = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
+    await assertSuperAdmin(context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     if (data.make_admin) {
       await supabaseAdmin
@@ -146,6 +147,19 @@ export const adminToggleAdmin = createServerFn({ method: "POST" })
         .eq("user_id", data.user_id)
         .eq("role", "admin");
     }
+    return { ok: true };
+  });
+
+export const adminDeleteUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ user_id: z.string().uuid() }).parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    await assertSuperAdmin(context.userId);
+    if (data.user_id === context.userId) throw new Error("Você não pode deletar a si mesmo");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(data.user_id);
+    if (error) throw error;
     return { ok: true };
   });
 
