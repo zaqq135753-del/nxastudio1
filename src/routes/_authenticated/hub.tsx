@@ -376,3 +376,13 @@ function greeting() {
   if (h < 18) return "Boa tarde";
   return "Boa noite";
 }
+
+function todClass() {
+  const h = new Date().getHours();
+  if (h < 6) return "tod-night";
+  if (h < 9) return "tod-dawn";
+  if (h < 12) return "tod-morning";
+  if (h < 17) return "tod-noon";
+  if (h < 20) return "tod-evening";
+  return "tod-night";
+}
