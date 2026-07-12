@@ -1,65 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { callGateway, parseJson, TEXT_MODEL, type ChatMessage } from "./ai-shared";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const TEXT_MODEL = "openai/gpt-5-mini";
-
-type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
-
-async function callGateway(body: {
-  model: string;
-  messages: ChatMessage[];
-  temperature?: number;
-  max_tokens?: number;
-}): Promise<string> {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("LOVABLE_API_KEY não configurada");
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Lovable-API-Key": key },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const txt = await res.text();
-    if (res.status === 429) throw new Error("Muitas requisições. Tente novamente em instantes.");
-    if (res.status === 402) throw new Error("Créditos de IA esgotados.");
-    throw new Error(`Erro da IA: ${res.status} ${txt.slice(0, 200)}`);
-  }
-  const j = await res.json();
-  return j.choices?.[0]?.message?.content ?? "";
-}
-
-function balance(s: string): string {
-  let inStr = false, esc = false;
-  const stack: string[] = [];
-  for (const c of s) {
-    if (esc) { esc = false; continue; }
-    if (c === "\\") { esc = true; continue; }
-    if (c === '"') { inStr = !inStr; continue; }
-    if (inStr) continue;
-    if (c === "{" || c === "[") stack.push(c);
-    else if (c === "}" || c === "]") stack.pop();
-  }
-  let out = s;
-  if (inStr) out += '"';
-  while (stack.length) out += stack.pop() === "{" ? "}" : "]";
-  return out;
-}
-
-function parseJson<T>(raw: string): T {
-  const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  const start = cleaned.indexOf("{");
-  const end = cleaned.lastIndexOf("}");
-  const slice = start >= 0 && end > start ? cleaned.slice(start, end + 1) : cleaned;
-  const sanitized = slice
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
-    .replace(/,\s*([}\]])/g, "$1");
-  for (const attempt of [slice, sanitized, balance(sanitized)]) {
-    try { return JSON.parse(attempt) as T; } catch { /* try next */ }
-  }
-  console.error("[socialia parseJson] inválido:", raw.slice(0, 600));
-  throw new Error("A IA retornou uma resposta inválida. Tente novamente.");
-}
 
 // ---------- Types ----------
 export type CaptionResult = {
