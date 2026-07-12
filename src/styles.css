@@ -946,4 +946,34 @@
   .streak-flame .flame, .text-gradient, .xp-bar > span { animation: none !important; }
 }
 
+/* ---------- Cursor glow + tilt para AnimatedAppCard (Onda A) ---------- */
+.card-cursor {
+  position: relative;
+  transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
+  will-change: transform;
+}
+.card-cursor::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, white 22%, transparent),
+    transparent 60%
+  );
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+.card-cursor:hover::before { opacity: 1; }
+.card-cursor:hover { transform: perspective(1000px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-cursor::before { display: none; }
+  .card-cursor:hover { transform: translateY(-2px) !important; }
+}
+
+
 
