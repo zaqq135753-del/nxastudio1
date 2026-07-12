@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { callGateway, parseJson, TEXT_MODEL, type ChatMessage } from "./ai-shared";
+import { callGateway, parseJson, TEXT_MODEL } from "./ai-shared";
 
 
 // ---------- Types ----------
