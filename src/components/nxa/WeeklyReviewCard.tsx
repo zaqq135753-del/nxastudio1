@@ -8,6 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { generateWeeklyReview, type WeeklyReview } from "@/lib/ai.functions";
 import { readActivity } from "@/lib/reward";
 import { CalendarCheck, Trophy, Target, ArrowUpRight } from "lucide-react";
+import { ShareableCard } from "@/components/ShareableCard";
 
 const KEY = "nxa:weekly:v1";
 
