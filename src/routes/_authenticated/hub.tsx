@@ -27,6 +27,7 @@ import { ActivityFeed } from "@/components/nxa/ActivityFeed";
 import { FocusHeatmap } from "@/components/nxa/FocusHeatmap";
 import { DailyInsight } from "@/components/nxa/DailyInsight";
 import { SunsetCard } from "@/components/nxa/SunsetCard";
+import { MorningBriefCard } from "@/components/nxa/MorningBriefCard";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
 
