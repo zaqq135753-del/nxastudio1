@@ -67,15 +67,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Receitas geradas com IA a partir do que você tem em casa, planos semanais personalizados e uma nutricionista virtual 24h. Aprende seu paladar em 3 minutos.",
+          "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só.",
       },
       { name: "theme-color", content: "#fafaf9" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { property: "og:title", content: "NXA Chef — O chef pessoal com IA" },
-      { property: "og:description", content: "Receitas, planos e nutri IA que aprendem seu paladar." },
+      { property: "og:title", content: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
+      { property: "og:description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
+      { name: "twitter:description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f3d6b238-3de8-4725-8c4f-3ba74bbf003c/id-preview-475e4f1e--1c6de223-05b4-477d-a9de-0e749dcabd37.lovable.app-1783885684060.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f3d6b238-3de8-4725-8c4f-3ba74bbf003c/id-preview-475e4f1e--1c6de223-05b4-477d-a9de-0e749dcabd37.lovable.app-1783885684060.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

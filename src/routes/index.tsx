@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
       { title: `${SUITE.name} — ${SUITE.tagline}` },
       { name: "description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
       { property: "og:title", content: `${SUITE.name} — ${SUITE.tagline}` },
-      { property: "og:description", content: "Vários apps de IA. Uma conta. Preço único por app." },
+      { property: "og:description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
