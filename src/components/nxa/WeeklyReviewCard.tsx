@@ -8,6 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { generateWeeklyReview, type WeeklyReview } from "@/lib/ai.functions";
 import { readActivity } from "@/lib/reward";
 import { CalendarCheck, Trophy, Target, ArrowUpRight } from "lucide-react";
+import { ShareableCard } from "@/components/ShareableCard";
 
 const KEY = "nxa:weekly:v1";
 
@@ -111,6 +112,7 @@ export function WeeklyReviewCard({ name, apps }: { name?: string; apps: string[]
 
       {review && (
         <div className="mt-3">
+          <ShareableCard filename={`nxa-semana-${weekKey()}.svg`} title="Minha semana na NXA">
           <div className="text-2xl font-semibold leading-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
             {review.headline}
           </div>
@@ -143,6 +145,7 @@ export function WeeklyReviewCard({ name, apps }: { name?: string; apps: string[]
               <div className="mt-1 text-sm" style={{ color: "var(--n-800)" }}>{review.nextGoal}</div>
             </div>
           </div>
+          </ShareableCard>
         </div>
       )}
     </div>
