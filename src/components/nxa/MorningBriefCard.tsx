@@ -112,18 +112,18 @@ export function MorningBriefCard({
 
           <ul className="mt-4 space-y-2">
             {brief.missions.slice(0, 3).map((m, i) => {
-              const inner = (
-                <div className="press flex items-center gap-3 rounded-2xl border p-3 transition hover:bg-[var(--n-100)]"
-                  style={{ borderColor: "var(--line-1)" }}>
-                  <span className="text-xl">{m.emoji}</span>
-                  <span className="text-sm" style={{ color: "var(--n-800)" }}>{m.title}</span>
-                </div>
-              );
+              const canGo = !!m.app && apps.includes(m.app);
               return (
                 <li key={i}>
-                  {m.app && apps.includes(m.app)
-                    ? <Link to="/apps/$slug" params={{ slug: m.app }}>{inner}</Link>
-                    : inner}
+                  <button
+                    type="button"
+                    onClick={() => canGo && navigate({ to: `/apps/${m.app}` as any })}
+                    className="press flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition hover:bg-[var(--n-100)]"
+                    style={{ borderColor: "var(--line-1)", cursor: canGo ? "pointer" : "default" }}
+                  >
+                    <span className="text-xl">{m.emoji}</span>
+                    <span className="text-sm" style={{ color: "var(--n-800)" }}>{m.title}</span>
+                  </button>
                 </li>
               );
             })}
