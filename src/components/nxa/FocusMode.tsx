@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import { reward } from "@/lib/reward";
 import { haptic } from "@/lib/feedback";
+import { playAmbient, stopAmbient, type AmbientKind } from "@/lib/ambient";
 
 type Mode = "breath" | "pomodoro";
 type BreathPhase = "in" | "hold" | "out";
@@ -20,6 +21,7 @@ const BREATH_SEQ: { phase: BreathPhase; secs: number; label: string }[] = [
 export function FocusMode() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("breath");
+  const [amb, setAmb] = useState<AmbientKind>("off");
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -33,6 +35,10 @@ export function FocusMode() {
       window.removeEventListener("keydown", onKey);
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) { stopAmbient(); setAmb("off"); }
+  }, [open]);
 
   if (!open) return null;
 
@@ -68,6 +74,35 @@ export function FocusMode() {
       </div>
 
       {mode === "breath" ? <BreathPanel /> : <PomodoroPanel />}
+
+      <AmbientBar value={amb} onChange={(k) => { setAmb(k); playAmbient(k); }} />
+    </div>
+  );
+}
+
+function AmbientBar({ value, onChange }: { value: AmbientKind; onChange: (k: AmbientKind) => void }) {
+  const opts: { k: AmbientKind; label: string; icon: string }[] = [
+    { k: "off", label: "Silêncio", icon: "🤫" },
+    { k: "rain", label: "Chuva", icon: "🌧️" },
+    { k: "forest", label: "Floresta", icon: "🌳" },
+    { k: "lofi", label: "Lo-fi", icon: "🎧" },
+  ];
+  return (
+    <div className="mt-10 flex gap-1 rounded-full p-1" style={{ background: "var(--cream-100)" }}>
+      {opts.map((o) => (
+        <button
+          key={o.k}
+          onClick={() => onChange(o.k)}
+          className="rounded-full px-3 py-1.5 text-xs transition"
+          style={{
+            background: value === o.k ? "var(--cream-50)" : "transparent",
+            color: value === o.k ? "var(--cream-700)" : "var(--cream-500)",
+            boxShadow: value === o.k ? "0 1px 2px rgba(0,0,0,0.06)" : "none",
+          }}
+        >
+          <span className="mr-1">{o.icon}</span>{o.label}
+        </button>
+      ))}
     </div>
   );
 }
