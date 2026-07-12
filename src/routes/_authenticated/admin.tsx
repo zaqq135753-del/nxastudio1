@@ -8,11 +8,12 @@ import {
   adminGrantApp,
   adminRevokeApp,
   adminToggleAdmin,
+  adminDeleteUser,
   adminStats,
   type AdminUserRow,
 } from "@/lib/admin.functions";
 import { APPS } from "@/apps/registry";
-import { ArrowLeft, Shield, Trash2, Plus, Crown } from "lucide-react";
+import { ArrowLeft, Shield, Trash2, Plus, Crown, UserX } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
