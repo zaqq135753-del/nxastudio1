@@ -1177,3 +1177,28 @@
 @media (prefers-reduced-motion: reduce) {
   .nxa-activity-row { animation: none; opacity: 1; transform: none; }
 }
+
+/* Onda I — Insight do dia */
+.nxa-insight { border-radius: 22px; }
+.nxa-insight__glow {
+  position: absolute; inset: -40%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--c-orange) 22%, transparent), transparent 70%);
+  filter: blur(30px);
+  animation: nxa-insight-drift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.nxa-insight__icon {
+  display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 999px;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--c-orange) 30%, transparent), color-mix(in oklab, var(--c-pink, var(--c-orange)) 24%, transparent));
+  color: var(--n-900);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--n-900) 10%, transparent);
+  flex: none;
+}
+@keyframes nxa-insight-drift {
+  from { transform: translate3d(-6%, -4%, 0) scale(1); }
+  to   { transform: translate3d(6%, 4%, 0) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxa-insight__glow { animation: none; }
+}
