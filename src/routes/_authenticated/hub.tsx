@@ -197,6 +197,10 @@ function Hub() {
           </div>
         </section>
 
+        <DailyStory />
+
+
+
         {/* Onboarding CTA */}
         {!onboarded && !loading && (
           <Link to="/onboarding"
