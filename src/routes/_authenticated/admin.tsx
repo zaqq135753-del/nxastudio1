@@ -34,18 +34,22 @@ function AdminPage() {
   const [stats, setStats] = useState<Awaited<ReturnType<typeof adminStats>> | null>(null);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const listFn = useServerFn(adminListUsers);
   const statsFn = useServerFn(adminStats);
   const grantFn = useServerFn(adminGrantApp);
   const revokeFn = useServerFn(adminRevokeApp);
   const toggleFn = useServerFn(adminToggleAdmin);
+  const deleteFn = useServerFn(adminDeleteUser);
+  const meFn = useServerFn(amIAdmin);
 
   async function reload() {
     setLoading(true);
     try {
-      const [r, s] = await Promise.all([listFn(), statsFn()]);
+      const [r, s, me] = await Promise.all([listFn(), statsFn(), meFn()]);
       setRows(r);
       setStats(s);
+      setIsSuperAdmin(!!me.isSuperAdmin);
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
