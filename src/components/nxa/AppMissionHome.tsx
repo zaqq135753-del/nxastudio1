@@ -6,6 +6,7 @@ import { MissionCard } from "./MissionCard";
 import { AutopilotCard } from "./AutopilotCard";
 import { MediaMemoryPanel } from "./MediaMemoryPanel";
 import { DailyMissionCard } from "./DailyMissionCard";
+import { AppDataSummary } from "./AppDataSummary";
 import { SectionHeader } from "./SectionHeader";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { useEntitlements } from "@/hooks/useEntitlements";
@@ -73,6 +74,8 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
             <DailyMissionCard slug={slug} />
           </section>
         )}
+
+        <AppDataSummary slug={slug} />
 
         <section className="mb-6">
           <AICommandBar
