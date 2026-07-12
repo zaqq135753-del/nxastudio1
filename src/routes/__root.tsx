@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
+import { CommandPalette } from "@/components/nxa/CommandPalette";
 
 function NotFoundComponent() {
   return (
