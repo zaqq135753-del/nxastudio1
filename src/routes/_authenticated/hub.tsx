@@ -22,6 +22,7 @@ import { MissionCard } from "@/components/nxa/MissionCard";
 import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
 import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
+import { DailyStory } from "@/components/nxa/DailyStory";
 
 
 
