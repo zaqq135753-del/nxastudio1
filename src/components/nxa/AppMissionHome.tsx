@@ -75,6 +75,8 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
           </section>
         )}
 
+        <AppDataSummary slug={slug} />
+
         <section className="mb-6">
           <AICommandBar
             appSlug={slug}
