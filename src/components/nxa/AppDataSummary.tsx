@@ -211,7 +211,7 @@ function PetSummary() {
 
 function SaborSummary() {
   const fn = useServerFn(listSavedRecipes);
-  const q = useQuery({ queryKey: ["summary", "saboria"], queryFn: () => fn({ data: {} } as any), staleTime: 60_000 });
+  const q = useQuery({ queryKey: ["summary", "saboria"], queryFn: () => fn(), staleTime: 60_000 });
   if (q.isLoading) return <Skeleton />;
   const rows = (q.data ?? []) as Array<{ is_favorite?: boolean }>;
   const favs = rows.filter((r) => r.is_favorite).length;
