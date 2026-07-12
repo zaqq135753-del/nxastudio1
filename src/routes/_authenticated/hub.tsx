@@ -20,7 +20,8 @@ import { StreaksBadges } from "@/components/StreaksBadges";
 import { AICommandBar } from "@/components/nxa/AICommandBar";
 import { MissionCard } from "@/components/nxa/MissionCard";
 import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
-import { SectionHeader } from "@/components/nxa/SectionHeader";
+import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
+
 
 
 import saboriaCover from "@/assets/cover-saboria.jpg";
@@ -214,10 +215,20 @@ function Hub() {
         {/* Paywall / trial */}
         <div className="mb-6"><PaywallBanner /></div>
 
+        {/* Foco de hoje — sempre visível, sem collapse */}
+        <div className="mb-2">
+          <TodayWidget ents={ents} />
+        </div>
+
         {/* Próximas ações inteligentes (por app ativo) */}
         {nextActions.length > 0 && (
-          <section className="mb-8">
-            <div className="mb-3 edition-tag">Próximas ações</div>
+          <CollapsibleSection
+            id="next-actions"
+            kicker="Sugerido pra você"
+            title="Próximas ações"
+            count={nextActions.length}
+            defaultOpen
+          >
             <div className="grid gap-3 sm:grid-cols-3">
               {nextActions.map(({ app, cfg }) => (
                 <Link key={app.slug} to={app.route}
@@ -238,42 +249,35 @@ function Hub() {
                 </Link>
               ))}
             </div>
-          </section>
+          </CollapsibleSection>
         )}
-
-        {/* Widget "Hoje" — próximo passo por app ativo */}
-        <TodayWidget ents={ents} />
-
-        {/* Streaks & badges */}
-        <div className="mb-6"><StreaksBadges /></div>
 
         {/* Missões de hoje */}
         {missionsToday.length > 0 && (
-          <section className="mb-12">
-            <div className="mb-4 flex items-end justify-between">
-              <div className="edition-tag">Missões pra hoje</div>
-              <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
-                1 clique · sem enrolação
-              </span>
-            </div>
+          <CollapsibleSection
+            id="missions-today"
+            kicker="1 clique · sem enrolação"
+            title="Missões pra hoje"
+            count={missionsToday.length}
+            defaultOpen
+          >
             <div className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {missionsToday.map(({ app, mission, isPrime }) => (
                 <MissionCard key={app.slug + mission.id} mission={mission} isPrime={isPrime} appSlug={app.slug} />
               ))}
-
             </div>
-          </section>
+          </CollapsibleSection>
         )}
 
-        {/* Proactive briefing */}
-        <section className="mb-10"><BriefingCard /></section>
-
-        <section className="mb-14">
-          <SectionHeader
-            kicker="Seus apps"
-            title="Continue de onde parou"
-            action={<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{mine.length} de {APPS.length}</span>}
-          />
+        {/* Seus apps */}
+        <CollapsibleSection
+          id="your-apps"
+          kicker="Seus apps"
+          title="Continue de onde parou"
+          count={mine.length}
+          defaultOpen
+          action={<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{mine.length} de {APPS.length}</span>}
+        >
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[0,1,2,3,4,5].map(i => <div key={i} className="animate-shimmer-bg rounded-3xl h-44" />)}
@@ -301,16 +305,38 @@ function Hub() {
               })}
             </div>
           )}
-        </section>
+        </CollapsibleSection>
 
-        {/* Discover / upsell */}
+        {/* Concierge IA — recolhido por padrão */}
+        <CollapsibleSection
+          id="briefing"
+          kicker="Concierge IA"
+          title="Briefing proativo"
+          defaultOpen={false}
+        >
+          <BriefingCard />
+        </CollapsibleSection>
+
+        {/* Streaks & badges — recolhido por padrão */}
+        <CollapsibleSection
+          id="streaks"
+          kicker="Progresso"
+          title="Streaks & conquistas"
+          defaultOpen={false}
+        >
+          <StreaksBadges />
+        </CollapsibleSection>
+
+        {/* Discover / upsell — recolhido por padrão */}
         {discover.length > 0 && (
-          <section>
-            <SectionHeader
-              kicker="Adicione mais apps"
-              title="Amplie sua NXA"
-              action={<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>7 dias grátis · depois {SUITE.pricePerApp}</span>}
-            />
+          <CollapsibleSection
+            id="discover"
+            kicker="Adicione mais apps"
+            title="Amplie sua NXA"
+            count={discover.length}
+            defaultOpen={false}
+            action={<span className="hidden sm:inline text-xs" style={{ color: "var(--muted-foreground)" }}>7 dias grátis · {SUITE.pricePerApp}</span>}
+          >
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {discover.map((a) => {
                 const soon = a.status === "soon";
@@ -330,8 +356,9 @@ function Hub() {
                 );
               })}
             </div>
-          </section>
+          </CollapsibleSection>
         )}
+
 
       </main>
       <VoiceAssistant />

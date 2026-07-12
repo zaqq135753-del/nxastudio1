@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import type { CSSProperties } from "react";
+import { useRef, type CSSProperties, type MouseEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { getAppVisual, appThemeClass } from "@/apps/visual";
 import { PrimeBadge } from "@/components/commerce/PrimeBadge";
@@ -25,7 +25,8 @@ const STATUS_LABEL: Record<NonNullable<Props["status"]>, string> = {
 
 /**
  * Card de app com identidade por nicho: borda com gradiente do app,
- * bolha de emoji, cover com zoom no hover, badge e seta animada.
+ * bolha de emoji, cover com zoom no hover, badge, seta animada,
+ * cursor-glow e tilt 3D sutil (Onda A).
  */
 export function AnimatedAppCard({
   slug, name, to, cover, hook, isPrime, status = "active", onClick, price,
@@ -33,10 +34,37 @@ export function AnimatedAppCard({
   const v = getAppVisual(slug);
   const themeClass = appThemeClass(slug);
   const statusLabel = status !== "active" ? STATUS_LABEL[status] : "";
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  function handleMove(e: MouseEvent) {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const px = (x / rect.width) * 100;
+    const py = (y / rect.height) * 100;
+    // tilt: ±5deg
+    const rx = ((x / rect.width) - 0.5) * 8;
+    const ry = -((y / rect.height) - 0.5) * 6;
+    el.style.setProperty("--mx", `${px}%`);
+    el.style.setProperty("--my", `${py}%`);
+    el.style.setProperty("--rx", `${rx}deg`);
+    el.style.setProperty("--ry", `${ry}deg`);
+  }
+  function handleLeave() {
+    const el = ref.current;
+    if (!el) return;
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+  }
 
   const body = (
     <div
-      className={`${themeClass} group relative flex h-44 flex-col justify-between overflow-hidden rounded-[23px] p-4 text-white`}
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      className={`${themeClass} card-cursor group relative flex h-44 flex-col justify-between overflow-hidden rounded-[23px] p-4 text-white`}
       style={{ ["--tile-img" as string]: cover ? `url(${cover})` : undefined } as CSSProperties}
     >
       {cover && (
@@ -95,3 +123,4 @@ export function AnimatedAppCard({
     </Link>
   );
 }
+
