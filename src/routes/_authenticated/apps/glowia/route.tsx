@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/glowia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "glowia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "glowia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "glowia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "glowia" } });
     }
   },
   component: () => <Outlet />,

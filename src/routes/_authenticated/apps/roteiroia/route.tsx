@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/roteiroia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "roteiroia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "roteiroia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "roteiroia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "roteiroia" } });
     }
   },
   component: () => <Outlet />,

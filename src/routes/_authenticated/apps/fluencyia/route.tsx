@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/fluencyia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "fluencyia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "fluencyia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "fluencyia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "fluencyia" } });
     }
   },
   component: () => <Outlet />,

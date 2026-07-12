@@ -6,11 +6,11 @@ export const Route = createFileRoute("/_authenticated/apps/socialia")({
     try {
       const ents = await getMyEntitlements();
       if (!isEntitled(ents, "socialia")) {
-        throw redirect({ to: "/hub" });
+        throw redirect({ to: "/assinar/$slug", params: { slug: "socialia" } });
       }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "socialia" } });
     }
   },
   component: () => <Outlet />,
