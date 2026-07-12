@@ -119,14 +119,14 @@ function BreathPanel() {
               if (nc >= 4 && !rewardedRef.current) {
                 rewardedRef.current = true;
                 void reward(20, "Ritual de respiração 4-7-8", "wellness");
-                haptic("success");
+                haptic([12,40,12]);
               }
               return nc;
             });
           }
           return next;
         });
-        haptic("light");
+        haptic(8);
         return BREATH_SEQ[(step + 1) % BREATH_SEQ.length].secs;
       });
     }, 1000);
@@ -172,7 +172,7 @@ function BreathPanel() {
               rewardedRef.current = false;
             }
             setRunning((v) => !v);
-            haptic("medium");
+            haptic(20);
           }}
           className="btn-primary mt-4"
         >
@@ -200,7 +200,7 @@ function PomodoroPanel() {
           if (!rewardedRef.current) {
             rewardedRef.current = true;
             void reward(40, "Pomodoro de foco concluído", "wellness");
-            haptic("success");
+            haptic([12,40,12]);
           }
           return 0;
         }
@@ -229,7 +229,7 @@ function PomodoroPanel() {
         <button
           onClick={() => {
             setRunning((v) => !v);
-            haptic("medium");
+            haptic(20);
           }}
           className="btn-primary"
         >
