@@ -24,6 +24,7 @@ import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
 import { DailyStory } from "@/components/nxa/DailyStory";
 import { ActivityFeed } from "@/components/nxa/ActivityFeed";
+import { FocusHeatmap } from "@/components/nxa/FocusHeatmap";
 import { DailyInsight } from "@/components/nxa/DailyInsight";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
@@ -348,7 +349,10 @@ function Hub() {
           title="Suas conquistas recentes"
           defaultOpen={false}
         >
-          <ActivityFeed />
+          <div className="grid gap-4 md:grid-cols-2">
+            <ActivityFeed />
+            <FocusHeatmap />
+          </div>
         </CollapsibleSection>
 
         {/* Discover / upsell — recolhido por padrão */}
