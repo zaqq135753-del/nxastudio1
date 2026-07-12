@@ -152,6 +152,7 @@ function Hub() {
                 <Shield size={13} /> Admin
               </Link>
             )}
+            <SoundToggle />
             <NotificationBell />
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
