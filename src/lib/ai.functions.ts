@@ -457,3 +457,26 @@ export const generateSunsetRecap = createServerFn({ method: "POST" })
     });
     return parseJson<SunsetRecap>(raw);
   });
+
+/* ================= Onda M — Morning Brief ================= */
+export type MorningBrief = {
+  greeting: string;
+  intention: string;
+  missions: { emoji: string; title: string; app?: string }[];
+};
+
+export const generateMorningBrief = createServerFn({ method: "POST" })
+  .inputValidator((d: { name?: string; apps: string[]; streak?: number; recent?: string[] }) => d)
+  .handler(async ({ data }): Promise<MorningBrief> => {
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Você é NXA, coach matinal. Abra o dia com leveza. Retorne APENAS JSON: {"greeting":"até 6 palavras, saudação personalizada","intention":"até 18 palavras, uma intenção pro dia","missions":[{"emoji":"🌱","title":"até 8 palavras","app":"slug opcional"}]} com 3 missions curtas conectadas aos apps disponíveis. Tom caloroso, direto, sem clichê.` },
+        { role: "user", content: `Nome: ${data.name || "amigo"}. Streak: ${data.streak ?? 0} dias. Apps disponíveis: ${data.apps.join(", ") || "nenhum"}. Ações recentes: ${(data.recent ?? []).slice(0, 5).join(" · ") || "nenhuma"}.` },
+      ],
+      temperature: 0.85,
+      max_tokens: 320,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<MorningBrief>(raw);
+  });
