@@ -84,6 +84,14 @@ function AdminPage() {
       reload();
     } catch (e) { toast.error((e as Error).message); }
   }
+  async function deleteUser(user_id: string, email: string | null) {
+    if (!confirm(`Deletar ${email ?? user_id}? Esta ação é permanente.`)) return;
+    try {
+      await deleteFn({ data: { user_id } });
+      toast.success("Usuário deletado");
+      reload();
+    } catch (e) { toast.error((e as Error).message); }
+  }
 
   return (
     <div className="min-h-screen bg-aurora">
