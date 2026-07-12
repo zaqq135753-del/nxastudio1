@@ -6,6 +6,7 @@ import { MissionCard } from "./MissionCard";
 import { AutopilotCard } from "./AutopilotCard";
 import { MediaMemoryPanel } from "./MediaMemoryPanel";
 import { DailyMissionCard } from "./DailyMissionCard";
+import { AppDataSummary } from "./AppDataSummary";
 import { SectionHeader } from "./SectionHeader";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
 import { useEntitlements } from "@/hooks/useEntitlements";
