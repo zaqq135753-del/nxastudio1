@@ -8,6 +8,7 @@ import {
 } from "@/lib/social.functions";
 import { Copy, Sparkles, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { reward } from "@/lib/reward";
 
 export const Route = createFileRoute("/_authenticated/apps/socialia/gerador")({
   component: Gerador,
@@ -57,7 +58,7 @@ function CaptionForm() {
     e.preventDefault();
     if (!form.description.trim()) return toast.error("Descreva o post.");
     setLoading(true);
-    try { setResult(await gen({ data: form })); }
+    try { const r = await gen({ data: form }); setResult(r); void reward(10, "Legenda gerada", "socialia"); }
     catch (err) { toast.error(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading(false); }
   }
