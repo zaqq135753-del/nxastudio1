@@ -975,5 +975,29 @@
   .card-cursor:hover { transform: translateY(-2px) !important; }
 }
 
+/* ---------- Onda B: Serif display + confetti ---------- */
+.text-serif {
+  font-family: "Instrument Serif", "Times New Roman", ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.text-serif-italic { font-style: italic; }
 
+/* Confetti canvas overlay */
+.nxa-confetti {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+}
+
+@keyframes nxa-confetti-fall {
+  0%   { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--dx,0), 110vh, 0) rotate(var(--rot,720deg)); opacity: 0; }
+}
+.nxa-confetti span {
+  position: absolute; top: 0; width: 8px; height: 14px; border-radius: 2px;
+  animation: nxa-confetti-fall linear forwards;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxa-confetti { display: none; }
+}
 

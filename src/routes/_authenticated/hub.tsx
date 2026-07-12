@@ -170,9 +170,9 @@ function Hub() {
         {/* Command Center Hero */}
         <section className="fade-up mb-8">
           <div className="ai-badge mb-4"><Sparkles size={12} /> {SUITE.tagline}</div>
-          <h1 className="text-[36px] sm:text-[56px] font-bold tracking-tight leading-[1.02]">
-            {greeting()}{name ? "," : "."}
-            {name && <> <span className="text-gradient">{name}</span>.</>}
+          <h1 className="text-[40px] sm:text-[64px] tracking-tight leading-[1.0]">
+            <span className="font-semibold">{greeting()}{name ? "," : "."}</span>
+            {name && <> <span className="text-serif text-serif-italic text-gradient">{name}</span><span className="font-semibold">.</span></>}
           </h1>
           <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
             O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.

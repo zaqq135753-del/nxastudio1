@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyStreaks, getMyBadges, type Streak, type Badge } from "@/lib/streaks.functions";
 import { Flame, Trophy, Sparkles } from "lucide-react";
+import { fireConfetti } from "@/lib/confetti";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   flame: Flame, trophy: Trophy, sparkles: Sparkles,
 };
+
+const SEEN_KEY = "nxa:badges:seen";
 
 export function StreaksBadges() {
   const [streaks, setStreaks] = useState<Streak[]>([]);
@@ -15,7 +18,15 @@ export function StreaksBadges() {
 
   useEffect(() => {
     loadS().then(setStreaks).catch(() => {});
-    loadB().then(setBadges).catch(() => {});
+    loadB().then((list) => {
+      setBadges(list);
+      try {
+        const seen: string[] = JSON.parse(localStorage.getItem(SEEN_KEY) ?? "[]");
+        const fresh = list.filter((b) => !seen.includes(b.id));
+        if (seen.length > 0 && fresh.length > 0) fireConfetti(80);
+        localStorage.setItem(SEEN_KEY, JSON.stringify(list.map((b) => b.id)));
+      } catch { /* noop */ }
+    }).catch(() => {});
   }, [loadS, loadB]);
 
   const topStreak = streaks.reduce((a, s) => Math.max(a, s.current_streak), 0);
