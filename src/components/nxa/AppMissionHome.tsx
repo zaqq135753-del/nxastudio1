@@ -76,6 +76,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
         <section className="mb-6">
           <AICommandBar
+            appSlug={slug}
             placeholder={cfg.helpMePrompt}
             suggestions={cfg.suggestions}
             onSubmit={askAgent}
