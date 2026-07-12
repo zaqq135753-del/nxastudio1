@@ -438,3 +438,22 @@ export const generateDailyInsight = createServerFn({ method: "POST" })
     });
     return parseJson<DailyInsight>(raw);
   });
+
+/* ================= Onda L — Sunset (resumo do dia) ================= */
+export type SunsetRecap = { headline: string; body: string; suggestion: string };
+
+export const generateSunsetRecap = createServerFn({ method: "POST" })
+  .inputValidator((d: { actions: string[]; xp: number }) => d)
+  .handler(async ({ data }): Promise<SunsetRecap> => {
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: `Você é NXA, coach noturno. Feche o dia do usuário com carinho. Retorne APENAS JSON: {"headline":"até 6 palavras","body":"até 30 palavras celebrando conquistas concretas","suggestion":"até 12 palavras: sugestão gentil pra amanhã ou pra dormir"}. Tom acolhedor, sem clichê, sem emoji.` },
+        { role: "user", content: `Ganhou ${data.xp} XP hoje. Ações: ${data.actions.slice(0, 8).join(" · ") || "dia leve, sem registros"}.` },
+      ],
+      temperature: 0.8,
+      max_tokens: 240,
+      response_format: { type: "json_object" },
+    });
+    return parseJson<SunsetRecap>(raw);
+  });
