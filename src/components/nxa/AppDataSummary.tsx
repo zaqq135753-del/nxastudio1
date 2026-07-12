@@ -235,7 +235,7 @@ function RoteiroSummary() {
   );
 }
 
-const REGISTRY: Record<string, () => JSX.Element> = {
+const REGISTRY: Record<string, () => ReactNode> = {
   granaia: GranaSummary,
   socialia: SocialSummary,
   styleia: StyleSummary,
