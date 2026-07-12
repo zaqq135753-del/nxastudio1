@@ -216,6 +216,11 @@ function Hub() {
           apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
         />
 
+        <WeeklyReviewCard
+          name={name}
+          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+        />
+
         <SunsetCard />
 
 
