@@ -210,7 +210,13 @@ function Hub() {
 
         <DailyInsight />
 
+        <MorningBriefCard
+          name={name}
+          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+        />
+
         <SunsetCard />
+
 
 
 
