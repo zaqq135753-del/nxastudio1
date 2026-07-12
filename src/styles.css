@@ -1047,3 +1047,11 @@
 .bg-aurora.tod-evening { background: linear-gradient(180deg, #ffe8dd 0%, var(--bg-1) 55%); }
 .bg-aurora.tod-night   { background: linear-gradient(180deg, #ecebff 0%, var(--bg-1) 55%); }
 
+
+/* ---------- Onda E: Avatar da IA pulsante ---------- */
+@keyframes nxa-avatar-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--app-a, var(--foreground)) 40%, transparent); transform: scale(1); }
+  50%      { box-shadow: 0 0 0 6px transparent; transform: scale(1.06); }
+}
+.nxa-avatar-pulse { animation: nxa-avatar-pulse 1.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .nxa-avatar-pulse { animation: none; } }
