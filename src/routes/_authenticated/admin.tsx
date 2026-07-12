@@ -154,6 +154,7 @@ function AdminPage() {
                   <th className="px-4 py-3 font-medium">Papel</th>
                   <th className="px-4 py-3 font-medium">Apps</th>
                   <th className="px-4 py-3 font-medium">Liberar app</th>
+                  {isSuperAdmin && <th className="px-4 py-3 font-medium">Ações</th>}
                 </tr>
               </thead>
               <tbody>
@@ -166,13 +167,23 @@ function AdminPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={() => toggleAdmin(u.id, !u.is_admin)}
-                        className="press inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium"
-                        style={{ borderColor: "var(--line-1)", background: u.is_admin ? "var(--text-1)" : "transparent", color: u.is_admin ? "var(--bg-1)" : "var(--text-1)" }}
-                      >
-                        {u.is_admin ? <><Crown size={11} /> Admin</> : "User"}
-                      </button>
+                      {isSuperAdmin ? (
+                        <button
+                          onClick={() => toggleAdmin(u.id, !u.is_admin)}
+                          className="press inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium"
+                          style={{ borderColor: "var(--line-1)", background: u.is_admin ? "var(--text-1)" : "transparent", color: u.is_admin ? "var(--bg-1)" : "var(--text-1)" }}
+                        >
+                          {u.is_admin ? <><Crown size={11} /> Admin</> : "User"}
+                        </button>
+                      ) : (
+                        <span
+                          className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium opacity-70"
+                          style={{ borderColor: "var(--line-1)", background: u.is_admin ? "var(--text-1)" : "transparent", color: u.is_admin ? "var(--bg-1)" : "var(--text-1)" }}
+                          title="Somente super admin pode alterar papéis"
+                        >
+                          {u.is_admin ? <><Crown size={11} /> Admin</> : "User"}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1.5">
@@ -203,10 +214,22 @@ function AdminPage() {
                         ))}
                       </select>
                     </td>
+                    {isSuperAdmin && (
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => deleteUser(u.id, u.email)}
+                          className="press inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[11px]"
+                          style={{ borderColor: "var(--line-1)", color: "var(--danger, #ef4444)" }}
+                          title="Deletar usuário"
+                        >
+                          <UserX size={12} /> Deletar
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
                 {!loading && filtered.length === 0 && (
-                  <tr><td colSpan={4} className="px-4 py-8 text-center text-sm" style={{ color: "var(--n-500)" }}>Nenhum usuário.</td></tr>
+                  <tr><td colSpan={isSuperAdmin ? 5 : 4} className="px-4 py-8 text-center text-sm" style={{ color: "var(--n-500)" }}>Nenhum usuário.</td></tr>
                 )}
               </tbody>
             </table>
