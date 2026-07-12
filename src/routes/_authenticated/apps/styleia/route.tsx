@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/styleia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "styleia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "styleia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "styleia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "styleia" } });
     }
   },
   component: () => <Outlet />,

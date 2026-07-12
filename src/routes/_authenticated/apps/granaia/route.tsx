@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/granaia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "granaia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "granaia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "granaia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "granaia" } });
     }
   },
   component: () => <Outlet />,

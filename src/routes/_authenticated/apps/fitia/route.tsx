@@ -5,10 +5,12 @@ export const Route = createFileRoute("/_authenticated/apps/fitia")({
   beforeLoad: async () => {
     try {
       const ents = await getMyEntitlements();
-      if (!isEntitled(ents, "fitia")) throw redirect({ to: "/hub" });
+      if (!isEntitled(ents, "fitia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "fitia" } });
+      }
     } catch (e) {
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "fitia" } });
     }
   },
   component: () => <Outlet />,

@@ -6,12 +6,11 @@ export const Route = createFileRoute("/_authenticated/apps/saboria")({
     try {
       const ents = await getMyEntitlements();
       if (!isEntitled(ents, "saboria")) {
-        throw redirect({ to: "/hub", search: { upsell: "saboria" } as never });
+        throw redirect({ to: "/assinar/$slug", params: { slug: "saboria" } });
       }
     } catch (e) {
-      // if redirect already thrown, rethrow
       if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
-      throw redirect({ to: "/hub" });
+      throw redirect({ to: "/assinar/$slug", params: { slug: "saboria" } });
     }
   },
   component: () => <Outlet />,
