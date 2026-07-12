@@ -5,6 +5,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { listSavedRecipes, deleteSavedRecipe, toggleFavoriteRecipe, type SavedRecipeRow } from "@/lib/recipes.functions";
 import { toast } from "sonner";
 import { Heart, Trash2, Sparkles } from "lucide-react";
+import { reward } from "@/lib/reward";
 
 export const Route = createFileRoute("/_authenticated/apps/saboria/receitas")({
   component: ReceitasPage,
@@ -44,6 +45,7 @@ function ReceitasPage() {
     try {
       await fav({ data: { id, value: !current } });
       setRows((r) => r.map((x) => x.id === id ? { ...x, is_favorite: !current } : x));
+      if (!current) void reward(5, "Receita favoritada", "saboria");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Falha");
     }
