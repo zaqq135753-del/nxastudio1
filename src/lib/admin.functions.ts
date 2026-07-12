@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
+const SUPER_ADMIN_EMAILS = new Set(["zaqq135753@gmail.com"]);
+
 async function assertAdmin(supabase: any, userId: string) {
   const { data } = await supabase
     .from("user_roles")
@@ -10,6 +12,13 @@ async function assertAdmin(supabase: any, userId: string) {
     .eq("role", "admin")
     .maybeSingle();
   if (!data) throw new Error("Forbidden: admin only");
+}
+
+async function assertSuperAdmin(userId: string) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
+  const email = data?.user?.email?.toLowerCase() ?? "";
+  if (!SUPER_ADMIN_EMAILS.has(email)) throw new Error("Forbidden: super admin only");
 }
 
 export type AdminUserRow = {
@@ -30,7 +39,8 @@ export const amIAdmin = createServerFn({ method: "GET" })
       .eq("user_id", context.userId)
       .eq("role", "admin")
       .maybeSingle();
-    return { isAdmin: !!data };
+    const email = (context.claims?.email ?? "").toString().toLowerCase();
+    return { isAdmin: !!data, isSuperAdmin: SUPER_ADMIN_EMAILS.has(email) };
   });
 
 export const adminListUsers = createServerFn({ method: "GET" })
@@ -124,6 +134,7 @@ export const adminToggleAdmin = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context.supabase, context.userId);
+    await assertSuperAdmin(context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     if (data.make_admin) {
       await supabaseAdmin
@@ -136,6 +147,19 @@ export const adminToggleAdmin = createServerFn({ method: "POST" })
         .eq("user_id", data.user_id)
         .eq("role", "admin");
     }
+    return { ok: true };
+  });
+
+export const adminDeleteUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ user_id: z.string().uuid() }).parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    await assertSuperAdmin(context.userId);
+    if (data.user_id === context.userId) throw new Error("Você não pode deletar a si mesmo");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(data.user_id);
+    if (error) throw error;
     return { ok: true };
   });
 
