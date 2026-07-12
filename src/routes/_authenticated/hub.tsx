@@ -205,6 +205,8 @@ function Hub() {
 
         <DailyStory />
 
+        <DailyInsight />
+
 
 
         {/* Onboarding CTA */}
