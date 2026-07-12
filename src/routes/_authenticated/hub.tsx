@@ -23,6 +23,7 @@ import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
 import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
 import { DailyStory } from "@/components/nxa/DailyStory";
+import { ActivityFeed } from "@/components/nxa/ActivityFeed";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
 
@@ -336,6 +337,15 @@ function Hub() {
           defaultOpen={false}
         >
           <StreaksBadges />
+        </CollapsibleSection>
+
+        <CollapsibleSection
+          id="activity"
+          kicker="Atividade"
+          title="Suas conquistas recentes"
+          defaultOpen={false}
+        >
+          <ActivityFeed />
         </CollapsibleSection>
 
         {/* Discover / upsell — recolhido por padrão */}
