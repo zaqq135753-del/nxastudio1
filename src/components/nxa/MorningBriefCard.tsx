@@ -33,6 +33,7 @@ export function MorningBriefCard({
   apps: string[];
   streak?: number;
 }) {
+  const navigate = useNavigate();
   const gen = useServerFn(generateMorningBrief);
   const [brief, setBrief] = useState<MorningBrief | null>(null);
   const [loading, setLoading] = useState(false);
