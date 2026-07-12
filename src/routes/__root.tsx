@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 import { CommandPalette } from "@/components/nxa/CommandPalette";
+import { FocusMode, FocusFAB } from "@/components/nxa/FocusMode";
 
 function NotFoundComponent() {
   return (
@@ -120,6 +121,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <PageTransitions />
       <CommandPalette />
+      <FocusMode />
+      <FocusFAB />
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );

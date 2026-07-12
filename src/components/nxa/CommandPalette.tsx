@@ -23,6 +23,7 @@ export function CommandPalette() {
     });
     const shortcuts: Item[] = [
       { id: "s:hub", label: "Hub", hint: "Command Center", icon: "🏠", to: "/hub" },
+      { id: "s:focus", label: "Modo Foco", hint: "Respiração + Pomodoro", icon: "🌿", to: "@focus" },
       { id: "s:agent", label: "Agente IA", hint: "Peça qualquer coisa", icon: "🧠", to: "/agente" },
       { id: "s:memoria", label: "Memória", hint: "O que a NXA sabe de você", icon: "📚", to: "/memoria" },
       { id: "s:feed", label: "Feed social", hint: "O que a comunidade tá fazendo", icon: "💬", to: "/feed" },
@@ -56,7 +57,7 @@ export function CommandPalette() {
       if (e.key === "ArrowUp") { e.preventDefault(); setI((n) => Math.max(n - 1, 0)); }
       if (e.key === "Enter") {
         const it = filtered[i];
-        if (it) { setOpen(false); void navigate({ to: it.to }); }
+        if (it) { setOpen(false); runItem(it, navigate); }
       }
     }
     window.addEventListener("keydown", onKey);
@@ -101,7 +102,7 @@ export function CommandPalette() {
               <li key={it.id}>
                 <button
                   onMouseEnter={() => setI(idx)}
-                  onClick={() => { setOpen(false); void navigate({ to: it.to }); }}
+                  onClick={() => { setOpen(false); runItem(it, navigate); }}
                   className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition"
                   style={{ background: active ? "var(--n-100)" : "transparent" }}
                 >
@@ -125,4 +126,12 @@ export function CommandPalette() {
       </div>
     </div>
   );
+}
+
+function runItem(it: Item, navigate: ReturnType<typeof useNavigate>) {
+  if (it.to === "@focus") {
+    window.dispatchEvent(new CustomEvent("nxa:focus:open"));
+    return;
+  }
+  void navigate({ to: it.to });
 }
