@@ -22,6 +22,7 @@ import { MissionCard } from "@/components/nxa/MissionCard";
 import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
 import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
+import { DailyStory } from "@/components/nxa/DailyStory";
 
 
 
@@ -118,7 +119,7 @@ function Hub() {
   }
 
   return (
-    <div className="min-h-screen bg-aurora relative overflow-hidden">
+    <div className={`min-h-screen bg-aurora ${todClass()} relative overflow-hidden`}>
       <div className="pointer-events-none absolute inset-0 -z-0">
         <span className="aurora-orb aurora-orb-1" />
         <span className="aurora-orb aurora-orb-2" />
@@ -195,6 +196,10 @@ function Hub() {
 
           </div>
         </section>
+
+        <DailyStory />
+
+
 
         {/* Onboarding CTA */}
         {!onboarded && !loading && (
@@ -374,4 +379,14 @@ function greeting() {
   if (h < 12) return "Bom dia";
   if (h < 18) return "Boa tarde";
   return "Boa noite";
+}
+
+function todClass() {
+  const h = new Date().getHours();
+  if (h < 6) return "tod-night";
+  if (h < 9) return "tod-dawn";
+  if (h < 12) return "tod-morning";
+  if (h < 17) return "tod-noon";
+  if (h < 20) return "tod-evening";
+  return "tod-night";
 }
