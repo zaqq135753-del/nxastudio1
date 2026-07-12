@@ -738,6 +738,7 @@
   position: relative;
   border-radius: 24px;
   padding: 1px;
+  opacity: 1; /* garante visibilidade mesmo quando dentro de .stagger (o animation shorthand abaixo sobrescreveria o fadeUp) */
   background: linear-gradient(135deg,
     color-mix(in oklab, var(--app-a, var(--aurora-1)) 60%, transparent),
     color-mix(in oklab, var(--app-b, var(--aurora-2)) 55%, transparent),
@@ -746,6 +747,10 @@
   animation: gradientShift 12s ease infinite;
   transition: box-shadow .35s ease, transform .35s cubic-bezier(.2,.7,.2,1);
 }
+/* Quando o card está numa grade .stagger, o animation shorthand acima
+   apaga o fadeUp e o item ficaria em opacity:0. Forçamos opacity:1. */
+.stagger > .card-app-border { opacity: 1; animation: gradientShift 12s ease infinite; }
+
 .card-app-border > * {
   border-radius: 23px;
   background: var(--card);
