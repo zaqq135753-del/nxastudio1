@@ -119,7 +119,7 @@ function Hub() {
   }
 
   return (
-    <div className="min-h-screen bg-aurora relative overflow-hidden">
+    <div className={`min-h-screen bg-aurora ${todClass()} relative overflow-hidden`}>
       <div className="pointer-events-none absolute inset-0 -z-0">
         <span className="aurora-orb aurora-orb-1" />
         <span className="aurora-orb aurora-orb-2" />
