@@ -21,6 +21,7 @@ import { AICommandBar } from "@/components/nxa/AICommandBar";
 import { MissionCard } from "@/components/nxa/MissionCard";
 import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
 import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
+import { SoundToggle } from "@/components/nxa/SoundToggle";
 
 
 
@@ -151,6 +152,7 @@ function Hub() {
                 <Shield size={13} /> Admin
               </Link>
             )}
+            <SoundToggle />
             <NotificationBell />
             <button onClick={signOut} title="Sair"
               className="press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"

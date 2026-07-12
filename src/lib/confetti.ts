@@ -2,11 +2,16 @@
  * Onda B — confetti leve sem dependência.
  * Uso: import { fireConfetti } from "@/lib/confetti"; fireConfetti();
  */
+import { beep, haptic } from "./feedback";
+
 const COLORS = ["#ff6b6b", "#ffd93d", "#6bcB77", "#4d96ff", "#c084fc", "#f472b6"];
 
 export function fireConfetti(count = 60, durationMs = 1600) {
   if (typeof window === "undefined") return;
   if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+  beep("success");
+  haptic([12, 40, 18]);
 
   const layer = document.createElement("div");
   layer.className = "nxa-confetti";

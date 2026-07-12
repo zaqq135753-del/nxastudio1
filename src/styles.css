@@ -1001,3 +1001,42 @@
   .nxa-confetti { display: none; }
 }
 
+/* ---------- Onda C: Ripple + shimmer temático ---------- */
+.nxa-ripple {
+  position: absolute; border-radius: 9999px; pointer-events: none;
+  background: radial-gradient(circle,
+    color-mix(in oklab, var(--app-a, currentColor) 45%, transparent) 0%,
+    transparent 70%);
+  transform: scale(0); opacity: 0.55;
+  animation: nxa-ripple-out 600ms cubic-bezier(.2,.7,.2,1) forwards;
+  will-change: transform, opacity;
+}
+@keyframes nxa-ripple-out {
+  to { transform: scale(2.2); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxa-ripple { display: none; }
+}
+
+/* Themed shimmer skeleton — usa var(--app-a) quando dentro de .theme-app-* */
+.shimmer-themed {
+  position: relative; overflow: hidden;
+  background: color-mix(in oklab, var(--app-a, var(--n-200)) 12%, var(--n-100));
+  border-radius: 20px;
+}
+.shimmer-themed::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--app-a, #fff) 25%, rgba(255,255,255,0.55)) 50%,
+    transparent 100%);
+  transform: translateX(-100%);
+  animation: nxa-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes nxa-shimmer {
+  100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-themed::after { animation: none; }
+}
+
