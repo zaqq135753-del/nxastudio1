@@ -4,7 +4,7 @@
  * personalizadas pelos apps do usuário e streak. Cache diário em localStorage.
  */
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generateMorningBrief, type MorningBrief } from "@/lib/ai.functions";
 import { readActivity } from "@/lib/reward";
