@@ -23,6 +23,8 @@ import { AnimatedAppCard } from "@/components/nxa/AnimatedAppCard";
 import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
 import { DailyStory } from "@/components/nxa/DailyStory";
+import { getMyXp } from "@/lib/gamification.functions";
+import { checkLevelUp } from "@/lib/celebrate";
 
 
 
@@ -60,6 +62,7 @@ function Hub() {
   const load = useServerFn(getMyEntitlements);
   const checkOnb = useServerFn(hasOnboarded);
   const checkAdmin = useServerFn(amIAdmin);
+  const loadXp = useServerFn(getMyXp);
 
   useEffect(() => {
     (async () => {
@@ -75,8 +78,9 @@ function Hub() {
       try { setEnts(await load()); } finally { setLoading(false); }
       try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
       try { const { isAdmin } = await checkAdmin(); setIsAdmin(isAdmin); } catch { /* noop */ }
+      try { const xp = await loadXp(); checkLevelUp(xp.level); } catch { /* noop */ }
     })();
-  }, [load, checkOnb, checkAdmin]);
+  }, [load, checkOnb, checkAdmin, loadXp]);
 
   async function signOut() {
     await qc.cancelQueries();

@@ -1055,3 +1055,95 @@
 }
 .nxa-avatar-pulse { animation: nxa-avatar-pulse 1.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .nxa-avatar-pulse { animation: none; } }
+
+/* ---------- Onda G: Micro-celebrações ---------- */
+@keyframes nxa-xp-in {
+  0%   { opacity: 0; transform: translateY(14px) scale(0.94); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes nxa-xp-out {
+  to { opacity: 0; transform: translateY(-8px) scale(0.96); }
+}
+.nxa-xp-toast {
+  position: fixed; right: 20px; bottom: 24px; z-index: 120;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 999px;
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  border: 1px solid var(--line-1);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+  font-size: 13px; font-weight: 600;
+  animation: nxa-xp-in 360ms cubic-bezier(0.2,0.7,0.2,1) both;
+}
+.nxa-xp-toast.is-out { animation: nxa-xp-out 480ms ease forwards; }
+.nxa-xp-toast__icon { font-size: 15px; }
+.nxa-xp-toast__amount { color: var(--foreground); }
+.nxa-xp-toast__reason { color: var(--muted-foreground); font-weight: 500; }
+
+@keyframes nxa-lvl-in {
+  0%   { opacity: 0; transform: scale(0.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes nxa-lvl-ring {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes nxa-lvl-num {
+  0%   { opacity: 0; transform: translateY(20px) scale(0.7); letter-spacing: 0.2em; }
+  60%  { opacity: 1; transform: translateY(-4px) scale(1.08); letter-spacing: -0.02em; }
+  100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -0.03em; }
+}
+.nxa-levelup { position: fixed; inset: 0; z-index: 130; display: grid; place-items: center; }
+.nxa-levelup.is-out { opacity: 0; transition: opacity 240ms ease; }
+.nxa-levelup__backdrop {
+  position: absolute; inset: 0;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(255,215,120,0.22), rgba(10,10,12,0.55));
+  backdrop-filter: blur(8px);
+  animation: fade-in 240ms ease both;
+}
+.nxa-levelup__card {
+  position: relative; z-index: 1;
+  width: min(360px, 88vw);
+  padding: 32px 24px 22px;
+  text-align: center;
+  border-radius: 28px;
+  background: var(--card);
+  border: 1px solid var(--line-1);
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,215,120,0.35) inset;
+  animation: nxa-lvl-in 420ms cubic-bezier(0.2,0.7,0.2,1) both;
+}
+.nxa-levelup__ring {
+  position: absolute; inset: -2px; border-radius: 30px; pointer-events: none;
+  background: conic-gradient(from 0deg, transparent 0 60%, rgba(255,200,90,0.55) 70%, transparent 85%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation: nxa-lvl-ring 3.2s linear infinite;
+}
+.nxa-levelup__kicker {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted-foreground); margin-bottom: 6px;
+}
+.nxa-levelup__num {
+  font-family: "Instrument Serif", ui-serif, Georgia, serif;
+  font-size: 88px; line-height: 1; font-weight: 400;
+  background: linear-gradient(180deg, #f5c66a 0%, #b98436 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: nxa-lvl-num 700ms cubic-bezier(0.2,0.7,0.2,1) both;
+}
+.nxa-levelup__msg {
+  margin: 8px 0 18px; font-size: 14px; color: var(--muted-foreground);
+}
+.nxa-levelup__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 22px; border-radius: 999px;
+  background: var(--foreground); color: var(--background);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: transform 120ms ease;
+}
+.nxa-levelup__btn:hover { transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxa-xp-toast, .nxa-levelup__card, .nxa-levelup__num { animation: none !important; }
+  .nxa-levelup__ring { animation: none; }
+}
