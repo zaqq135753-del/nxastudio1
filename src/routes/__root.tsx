@@ -119,6 +119,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <PageTransitions />
+      <CommandPalette />
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
