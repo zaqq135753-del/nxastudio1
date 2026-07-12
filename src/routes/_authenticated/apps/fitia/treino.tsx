@@ -5,6 +5,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { generateWorkout, completeSession, upsertFitProfile, getFitProfile, type Workout } from "@/lib/fit.functions";
 import { Sparkles, Check } from "lucide-react";
 import { toast } from "sonner";
+import { reward } from "@/lib/reward";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/apps/fitia/treino")({
@@ -57,6 +58,7 @@ function TreinoPage() {
     try {
       await complete({ data: { workout_id: workoutId, duration_min: workout.duration_min } });
       toast.success("Treino registrado!");
+      void reward(20, "Treino concluído", "fitia");
       setWorkout(null);
     } catch (e) { toast.error(e instanceof Error ? e.message : "Erro"); }
   }
