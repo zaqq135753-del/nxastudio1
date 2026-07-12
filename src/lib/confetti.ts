@@ -10,6 +10,9 @@ export function fireConfetti(count = 60, durationMs = 1600) {
   if (typeof window === "undefined") return;
   if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
+  beep("success");
+  haptic([12, 40, 18]);
+
   const layer = document.createElement("div");
   layer.className = "nxa-confetti";
   document.body.appendChild(layer);
