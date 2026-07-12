@@ -1147,3 +1147,33 @@
   .nxa-xp-toast, .nxa-levelup__card, .nxa-levelup__num { animation: none !important; }
   .nxa-levelup__ring { animation: none; }
 }
+
+/* Onda H — Activity Feed */
+.nxa-activity-row {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: nxa-activity-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: background 0.2s ease;
+}
+.nxa-activity-row:hover { background: color-mix(in oklab, var(--n-900) 4%, transparent); }
+.nxa-activity-dot {
+  display: grid; place-items: center;
+  width: 32px; height: 32px; border-radius: 999px;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--c-orange) 22%, transparent), color-mix(in oklab, var(--c-blue) 18%, transparent));
+  color: var(--n-900);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--n-900) 10%, transparent);
+  flex: none;
+}
+.nxa-activity-xp {
+  font-size: 12px; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px;
+  background: color-mix(in oklab, var(--c-green, #22c55e) 18%, transparent);
+  color: var(--n-900);
+  white-space: nowrap;
+}
+@keyframes nxa-activity-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxa-activity-row { animation: none; opacity: 1; transform: none; }
+}
