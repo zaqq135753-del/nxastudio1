@@ -9,6 +9,7 @@ import { DailyMissionCard } from "./DailyMissionCard";
 import { AppDataSummary } from "./AppDataSummary";
 import { SectionHeader } from "./SectionHeader";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
+import { AppOnboarding } from "./AppOnboarding";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { getAppConfig } from "@/apps/config";
 import { getAppVisual, appThemeClass } from "@/apps/visual";
@@ -61,6 +62,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
   return (
     <AppShell appSlug={slug}>
+      <AppOnboarding slug={slug} />
       <div className={appThemeClass(slug)}>
         <AppHero
           app={cfg}
