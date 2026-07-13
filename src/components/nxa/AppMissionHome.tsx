@@ -62,6 +62,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
   return (
     <AppShell appSlug={slug}>
+      <AppOnboarding slug={slug} />
       <div className={appThemeClass(slug)}>
         <AppHero
           app={cfg}
