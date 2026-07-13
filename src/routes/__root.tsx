@@ -63,20 +63,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
-      { title: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
+      { title: "NXA Studio — Uma conta, vários apps de IA" },
       {
         name: "description",
         content:
           "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só.",
       },
-      { name: "theme-color", content: "#fafaf9" },
+      { name: "theme-color", content: "#0b0b0c" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { property: "og:title", content: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "NXA" },
+      { name: "application-name", content: "NXA" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { property: "og:title", content: "NXA Studio — Uma conta, vários apps de IA" },
       { property: "og:description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "NXA Chef — O chef pessoal com IA que aprende seu paladar" },
+      { name: "twitter:title", content: "NXA Studio — Uma conta, vários apps de IA" },
       { name: "twitter:description", content: "Uma assinatura para vários apps de IA: NXA Chef, NXA Fit e mais. Preço único por app, uma conta só." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f3d6b238-3de8-4725-8c4f-3ba74bbf003c/id-preview-475e4f1e--1c6de223-05b4-477d-a9de-0e749dcabd37.lovable.app-1783885684060.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f3d6b238-3de8-4725-8c4f-3ba74bbf003c/id-preview-475e4f1e--1c6de223-05b4-477d-a9de-0e749dcabd37.lovable.app-1783885684060.png" },
@@ -84,6 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "1024x1024" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -91,6 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap",
       },
     ],
+
   }),
   shellComponent: RootShell,
   component: RootComponent,

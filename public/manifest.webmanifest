@@ -1,0 +1,15 @@
+{
+  "name": "NXA Studio",
+  "short_name": "NXA",
+  "description": "Uma conta, vários apps de IA.",
+  "start_url": "/hub",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b0c",
+  "theme_color": "#0b0b0c",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" }
+  ]
+}
