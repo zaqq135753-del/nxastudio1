@@ -101,6 +101,36 @@ export type Database = {
         }
         Relationships: []
       }
+      app_onboarding: {
+        Row: {
+          answers: Json
+          app_slug: string
+          completed_at: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          app_slug: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          app_slug?: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
