@@ -155,21 +155,20 @@ function AdminPage() {
 
         {/* Tabs */}
         <div className="mt-6 flex gap-1 border-b" style={{ borderColor: "var(--line-1)" }}>
-          {[
-            ["overview", "Visão geral", LayoutGrid],
-            ["users", "Usuários", Users],
-            ["apps", "Apps", LayoutGrid],
-            ["revenue", "Receita", DollarSign],
-            ["activity", "Atividade", Activity],
-          ].map(([id, label, Icon]) => (
-            <button key={id as string} onClick={() => setTab(id as Tab)}
+          {([
+            { id: "overview", label: "Visão geral", Icon: LayoutGrid },
+            { id: "users", label: "Usuários", Icon: Users },
+            { id: "apps", label: "Apps", Icon: LayoutGrid },
+            { id: "revenue", label: "Receita", Icon: DollarSign },
+            { id: "activity", label: "Atividade", Icon: Activity },
+          ] as const).map(({ id, label, Icon }) => (
+            <button key={id} onClick={() => setTab(id as Tab)}
               className="press inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition"
               style={{
                 borderColor: tab === id ? "var(--text-1)" : "transparent",
                 color: tab === id ? "var(--text-1)" : "var(--muted-foreground)",
               }}>
-              {/* @ts-expect-error dynamic icon */}
-              <Icon size={14} /> {label as string}
+              <Icon size={14} /> {label}
             </button>
           ))}
         </div>
