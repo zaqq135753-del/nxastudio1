@@ -9,6 +9,7 @@ import { DailyMissionCard } from "./DailyMissionCard";
 import { AppDataSummary } from "./AppDataSummary";
 import { SectionHeader } from "./SectionHeader";
 import { RealtimeCallButton } from "@/components/voice/RealtimeCallButton";
+import { AppOnboarding } from "./AppOnboarding";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { getAppConfig } from "@/apps/config";
 import { getAppVisual, appThemeClass } from "@/apps/visual";
