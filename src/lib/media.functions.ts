@@ -73,14 +73,20 @@ export const brandTTS = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => TtsSchema.parse(d))
   .handler(async ({ data }) => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("LOVABLE_API_KEY não configurada");
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const lovKey = process.env.LOVABLE_API_KEY;
+    const key = openaiKey ?? lovKey;
+    if (!key) throw new Error("OPENAI_API_KEY ou LOVABLE_API_KEY não configurada");
+    const useOpenAI = Boolean(openaiKey);
+    const url = useOpenAI
+      ? "https://api.openai.com/v1/audio/speech"
+      : "https://ai.gateway.lovable.dev/v1/audio/speech";
     const input = data.styleHint ? `${data.styleHint}\n\n${data.text}` : data.text;
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+    const res = await fetch(url, {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini-tts",
+        model: useOpenAI ? "gpt-4o-mini-tts" : "openai/gpt-4o-mini-tts",
         input,
         voice: data.voice,
         response_format: "mp3",
