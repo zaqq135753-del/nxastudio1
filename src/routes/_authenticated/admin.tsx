@@ -448,6 +448,9 @@ function AdminPage() {
             </div>
           </section>
         )}
+
+        {tab === "pricing" && <AdminPricingTab />}
+        {tab === "config" && <AdminConfigTab />}
       </main>
 
       {/* Grant modal */}
