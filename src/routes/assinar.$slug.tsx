@@ -234,14 +234,14 @@ function SubscribePage() {
             <PricingCard
               plan={pricing.base}
               variant="base"
-              ctaLabel="Começar teste grátis"
-              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+              ctaLabel={checkoutBase ? "Assinar Base" : "Começar teste grátis"}
+              onCta={() => { if (!goCheckout("base")) document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" }); }}
             />
             <PricingCard
               plan={pricing.prime}
               variant="prime"
               ctaLabel="Assinar com Prime"
-              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+              onCta={() => { if (!goCheckout("prime")) document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" }); }}
             />
           </div>
 
