@@ -118,12 +118,14 @@ export function AdminPricingTab() {
                   <NumberField label="R$ / mês" value={r?.base_monthly ?? null} onChange={(v) => upd(slug, { base_monthly: v })} placeholder={String(p?.base.monthly ?? "")} />
                   <TextField label="Rótulo de preço" value={r?.base_price_label ?? ""} onChange={(v) => upd(slug, { base_price_label: v || null })} placeholder={p?.base.priceLabel} />
                   <TextField label="Tagline" value={r?.base_tagline ?? ""} onChange={(v) => upd(slug, { base_tagline: v || null })} placeholder={p?.base.tagline} />
+                  <TextField label="URL do checkout (InfinitePay)" value={r?.checkout_url_base ?? ""} onChange={(v) => upd(slug, { checkout_url_base: v || null })} placeholder="https://checkout.infinitepay.io/..." />
                 </fieldset>
                 <fieldset className="rounded-lg border p-3" style={{ borderColor: "var(--line-1)" }}>
                   <legend className="px-1 text-xs font-medium">Prime (upsell)</legend>
                   <NumberField label="R$ / mês" value={r?.prime_monthly ?? null} onChange={(v) => upd(slug, { prime_monthly: v })} placeholder={String(p?.prime.monthly ?? "")} />
                   <TextField label="Rótulo de preço" value={r?.prime_price_label ?? ""} onChange={(v) => upd(slug, { prime_price_label: v || null })} placeholder={p?.prime.priceLabel} />
                   <TextField label="Tagline" value={r?.prime_tagline ?? ""} onChange={(v) => upd(slug, { prime_tagline: v || null })} placeholder={p?.prime.tagline} />
+                  <TextField label="URL do checkout (InfinitePay)" value={r?.checkout_url_prime ?? ""} onChange={(v) => upd(slug, { checkout_url_prime: v || null })} placeholder="https://checkout.infinitepay.io/..." />
                 </fieldset>
               </div>
             </div>
