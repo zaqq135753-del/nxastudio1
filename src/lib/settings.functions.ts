@@ -24,6 +24,8 @@ export type PricingOverride = {
   prime_monthly: number | null;
   prime_price_label: string | null;
   prime_tagline: string | null;
+  checkout_url_base: string | null;
+  checkout_url_prime: string | null;
   updated_at: string;
 };
 
