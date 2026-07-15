@@ -13,6 +13,7 @@ import { PricingCard } from "@/components/commerce/PricingCard";
 import { FeatureComparison } from "@/components/commerce/FeatureComparison";
 import { UpsellModal } from "@/components/commerce/UpsellModal";
 import { TrialBanner } from "@/components/commerce/TrialBanner";
+import { getPricingOverrides } from "@/lib/settings.functions";
 
 const INTENT_KEY = "nxa_intent_app";
 
