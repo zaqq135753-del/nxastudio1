@@ -88,6 +88,8 @@ export const adminUpsertPricingOverride = createServerFn({ method: "POST" })
       prime_monthly: z.number().int().min(0).nullable().optional(),
       prime_price_label: z.string().max(80).nullable().optional(),
       prime_tagline: z.string().max(240).nullable().optional(),
+      checkout_url_base: z.string().url().max(500).nullable().optional().or(z.literal("").transform(() => null)),
+      checkout_url_prime: z.string().url().max(500).nullable().optional().or(z.literal("").transform(() => null)),
     }).parse(i),
   )
   .handler(async ({ data, context }) => {
