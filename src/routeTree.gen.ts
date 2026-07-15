@@ -23,6 +23,7 @@ import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedAfiliadosRouteImport } from './routes/_authenticated/afiliados'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicSeedAdminsRouteImport } from './routes/api/public/seed-admins'
+import { Route as ApiPublicInfinitepayWebhookRouteImport } from './routes/api/public/infinitepay-webhook'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
 import { Route as AuthenticatedAppsSocialiaRouteRouteImport } from './routes/_authenticated/apps/socialia/route'
 import { Route as AuthenticatedAppsSaboriaRouteRouteImport } from './routes/_authenticated/apps/saboria/route'
@@ -160,6 +161,12 @@ const ApiPublicSeedAdminsRoute = ApiPublicSeedAdminsRouteImport.update({
   path: '/api/public/seed-admins',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicInfinitepayWebhookRoute =
+  ApiPublicInfinitepayWebhookRouteImport.update({
+    id: '/api/public/infinitepay-webhook',
+    path: '/api/public/infinitepay-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAppsStyleiaRouteRoute =
   AuthenticatedAppsStyleiaRouteRouteImport.update({
     id: '/apps/styleia',
@@ -586,6 +593,7 @@ export interface FileRoutesByFullPath {
   '/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -658,6 +666,7 @@ export interface FileRoutesByTo {
   '/planos': typeof AuthenticatedPlanosRoute
   '/app/$slug': typeof AppSlugRoute
   '/assinar/$slug': typeof AssinarSlugRoute
+  '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -742,6 +751,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/saboria': typeof AuthenticatedAppsSaboriaRouteRouteWithChildren
   '/_authenticated/apps/socialia': typeof AuthenticatedAppsSocialiaRouteRouteWithChildren
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
+  '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
   '/_authenticated/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/_authenticated/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -826,6 +836,7 @@ export interface FileRouteTypes {
     | '/apps/saboria'
     | '/apps/socialia'
     | '/apps/styleia'
+    | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
@@ -898,6 +909,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/app/$slug'
     | '/assinar/$slug'
+    | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
@@ -981,6 +993,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/saboria'
     | '/_authenticated/apps/socialia'
     | '/_authenticated/apps/styleia'
+    | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
     | '/_authenticated/apps/$slug/midia'
     | '/_authenticated/apps/cosmosia/compatibilidade'
@@ -1047,6 +1060,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   AppSlugRoute: typeof AppSlugRoute
   AssinarSlugRoute: typeof AssinarSlugRoute
+  ApiPublicInfinitepayWebhookRoute: typeof ApiPublicInfinitepayWebhookRoute
   ApiPublicSeedAdminsRoute: typeof ApiPublicSeedAdminsRoute
   ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
@@ -1149,6 +1163,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/seed-admins'
       fullPath: '/api/public/seed-admins'
       preLoaderRoute: typeof ApiPublicSeedAdminsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/infinitepay-webhook': {
+      id: '/api/public/infinitepay-webhook'
+      path: '/api/public/infinitepay-webhook'
+      fullPath: '/api/public/infinitepay-webhook'
+      preLoaderRoute: typeof ApiPublicInfinitepayWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/apps/styleia': {
@@ -1929,19 +1950,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   AppSlugRoute: AppSlugRoute,
   AssinarSlugRoute: AssinarSlugRoute,
+  ApiPublicInfinitepayWebhookRoute: ApiPublicInfinitepayWebhookRoute,
   ApiPublicSeedAdminsRoute: ApiPublicSeedAdminsRoute,
   ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
