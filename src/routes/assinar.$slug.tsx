@@ -47,6 +47,9 @@ function SubscribePage() {
   const [upsellOpen, setUpsellOpen] = useState(false);
   const [claimBusy, setClaimBusy] = useState(false);
   const claim = useServerFn(claimTrial);
+  const loadOverrides = useServerFn(getPricingOverrides);
+  const [checkoutBase, setCheckoutBase] = useState<string | null>(null);
+  const [checkoutPrime, setCheckoutPrime] = useState<string | null>(null);
   const landing = getLanding(app.slug, app);
   const pricing = getPricing(app.slug);
 
