@@ -162,6 +162,8 @@ function AdminPage() {
             { id: "apps", label: "Apps", Icon: LayoutGrid },
             { id: "revenue", label: "Receita", Icon: DollarSign },
             { id: "activity", label: "Atividade", Icon: Activity },
+            { id: "pricing", label: "Preços", Icon: Tag },
+            { id: "config", label: "Configurações", Icon: Settings },
           ] as const).map(({ id, label, Icon }) => (
             <button key={id} onClick={() => setTab(id as Tab)}
               className="press inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition"
