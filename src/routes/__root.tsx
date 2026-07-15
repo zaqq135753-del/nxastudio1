@@ -119,6 +119,16 @@ function RootComponent() {
 
   useEffect(() => {
     import("@/lib/feedback").then((m) => m.installRipple()).catch(() => {});
+    // Aplica overrides de preço do admin em cima do PRICING hardcoded.
+    Promise.all([
+      import("@/lib/settings.functions"),
+      import("@/lib/pricing-overlay"),
+    ]).then(async ([mod, overlay]) => {
+      try {
+        const rows = await mod.getPricingOverrides();
+        overlay.applyPricingOverrides(rows);
+      } catch { /* ignora — mantém defaults */ }
+    }).catch(() => {});
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       router.invalidate();
