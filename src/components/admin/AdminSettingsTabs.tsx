@@ -59,6 +59,8 @@ export function AdminPricingTab() {
         prime_monthly: r?.prime_monthly ?? null,
         prime_price_label: r?.prime_price_label ?? null,
         prime_tagline: r?.prime_tagline ?? null,
+        checkout_url_base: r?.checkout_url_base ?? null,
+        checkout_url_prime: r?.checkout_url_prime ?? null,
       }});
       toast.success("Preço salvo — vale para todos os usuários.");
       await reload();
