@@ -14,6 +14,8 @@ async function assertAdmin(supabase: any, userId: string) {
   if (!data) throw new Error("Forbidden: admin only");
 }
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+
 export type PricingOverride = {
   app_slug: string;
   base_monthly: number | null;
@@ -27,7 +29,7 @@ export type PricingOverride = {
 
 export type PlatformSetting = {
   key: string;
-  value: unknown;
+  value: JsonValue;
   description: string | null;
   updated_at: string;
 };
