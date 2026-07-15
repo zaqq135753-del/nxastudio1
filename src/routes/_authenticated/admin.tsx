@@ -23,8 +23,9 @@ import { APPS } from "@/apps/registry";
 import { PRICING } from "@/apps/pricing";
 import {
   ArrowLeft, Shield, Trash2, Crown, UserX, X, Mail, Clock, Copy,
-  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap,
+  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag,
 } from "lucide-react";
+import { AdminPricingTab, AdminConfigTab } from "@/components/admin/AdminSettingsTabs";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -40,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "overview" | "users" | "apps" | "revenue" | "activity";
+type Tab = "overview" | "users" | "apps" | "revenue" | "activity" | "pricing" | "config";
 type Filter = "all" | "admin" | "trial" | "prime" | "no_apps" | "expiring";
 
 function AdminPage() {
@@ -161,6 +162,8 @@ function AdminPage() {
             { id: "apps", label: "Apps", Icon: LayoutGrid },
             { id: "revenue", label: "Receita", Icon: DollarSign },
             { id: "activity", label: "Atividade", Icon: Activity },
+            { id: "pricing", label: "Preços", Icon: Tag },
+            { id: "config", label: "Configurações", Icon: Settings },
           ] as const).map(({ id, label, Icon }) => (
             <button key={id} onClick={() => setTab(id as Tab)}
               className="press inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition"
@@ -445,6 +448,9 @@ function AdminPage() {
             </div>
           </section>
         )}
+
+        {tab === "pricing" && <AdminPricingTab />}
+        {tab === "config" && <AdminConfigTab />}
       </main>
 
       {/* Grant modal */}
