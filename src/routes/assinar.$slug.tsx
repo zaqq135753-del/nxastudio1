@@ -78,8 +78,22 @@ function SubscribePage() {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) afterAuth();
     });
+    loadOverrides().then((list) => {
+      const o = list.find((x) => x.app_slug === app.slug);
+      setCheckoutBase(o?.checkout_url_base ?? null);
+      setCheckoutPrime(o?.checkout_url_prime ?? null);
+    }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [app.slug]);
+
+  function goCheckout(tier: "base" | "prime") {
+    const url = tier === "prime" ? checkoutPrime : checkoutBase;
+    if (url) {
+      window.location.href = url;
+      return true;
+    }
+    return false;
+  }
 
   async function sendMagicLink(e: React.FormEvent) {
     e.preventDefault();
