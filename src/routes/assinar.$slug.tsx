@@ -13,6 +13,7 @@ import { PricingCard } from "@/components/commerce/PricingCard";
 import { FeatureComparison } from "@/components/commerce/FeatureComparison";
 import { UpsellModal } from "@/components/commerce/UpsellModal";
 import { TrialBanner } from "@/components/commerce/TrialBanner";
+import { getPricingOverrides } from "@/lib/settings.functions";
 
 const INTENT_KEY = "nxa_intent_app";
 
@@ -46,6 +47,9 @@ function SubscribePage() {
   const [upsellOpen, setUpsellOpen] = useState(false);
   const [claimBusy, setClaimBusy] = useState(false);
   const claim = useServerFn(claimTrial);
+  const loadOverrides = useServerFn(getPricingOverrides);
+  const [checkoutBase, setCheckoutBase] = useState<string | null>(null);
+  const [checkoutPrime, setCheckoutPrime] = useState<string | null>(null);
   const landing = getLanding(app.slug, app);
   const pricing = getPricing(app.slug);
 
@@ -74,8 +78,22 @@ function SubscribePage() {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) afterAuth();
     });
+    loadOverrides().then((list) => {
+      const o = list.find((x) => x.app_slug === app.slug);
+      setCheckoutBase(o?.checkout_url_base ?? null);
+      setCheckoutPrime(o?.checkout_url_prime ?? null);
+    }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [app.slug]);
+
+  function goCheckout(tier: "base" | "prime") {
+    const url = tier === "prime" ? checkoutPrime : checkoutBase;
+    if (url) {
+      window.location.href = url;
+      return true;
+    }
+    return false;
+  }
 
   async function sendMagicLink(e: React.FormEvent) {
     e.preventDefault();
@@ -216,14 +234,14 @@ function SubscribePage() {
             <PricingCard
               plan={pricing.base}
               variant="base"
-              ctaLabel="Começar teste grátis"
-              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+              ctaLabel={checkoutBase ? "Assinar Base" : "Começar teste grátis"}
+              onCta={() => { if (!goCheckout("base")) document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" }); }}
             />
             <PricingCard
               plan={pricing.prime}
               variant="prime"
               ctaLabel="Assinar com Prime"
-              onCta={() => document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" })}
+              onCta={() => { if (!goCheckout("prime")) document.getElementById("assinar-form")?.scrollIntoView({ behavior: "smooth" }); }}
             />
           </div>
 

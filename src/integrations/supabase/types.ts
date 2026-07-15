@@ -137,6 +137,8 @@ export type Database = {
           base_monthly: number | null
           base_price_label: string | null
           base_tagline: string | null
+          checkout_url_base: string | null
+          checkout_url_prime: string | null
           prime_monthly: number | null
           prime_price_label: string | null
           prime_tagline: string | null
@@ -148,6 +150,8 @@ export type Database = {
           base_monthly?: number | null
           base_price_label?: string | null
           base_tagline?: string | null
+          checkout_url_base?: string | null
+          checkout_url_prime?: string | null
           prime_monthly?: number | null
           prime_price_label?: string | null
           prime_tagline?: string | null
@@ -159,6 +163,8 @@ export type Database = {
           base_monthly?: number | null
           base_price_label?: string | null
           base_tagline?: string | null
+          checkout_url_base?: string | null
+          checkout_url_prime?: string | null
           prime_monthly?: number | null
           prime_price_label?: string | null
           prime_tagline?: string | null
