@@ -131,6 +131,42 @@ export type Database = {
         }
         Relationships: []
       }
+      app_pricing_overrides: {
+        Row: {
+          app_slug: string
+          base_monthly: number | null
+          base_price_label: string | null
+          base_tagline: string | null
+          prime_monthly: number | null
+          prime_price_label: string | null
+          prime_tagline: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          app_slug: string
+          base_monthly?: number | null
+          base_price_label?: string | null
+          base_tagline?: string | null
+          prime_monthly?: number | null
+          prime_price_label?: string | null
+          prime_tagline?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          app_slug?: string
+          base_monthly?: number | null
+          base_price_label?: string | null
+          base_tagline?: string | null
+          prime_monthly?: number | null
+          prime_price_label?: string | null
+          prime_tagline?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -1014,6 +1050,30 @@ export type Database = {
           updated_at?: string
           user_id?: string
           weight?: number | null
+        }
+        Relationships: []
+      }
+      platform_settings: {
+        Row: {
+          description: string | null
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
         }
         Relationships: []
       }
