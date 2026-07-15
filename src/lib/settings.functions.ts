@@ -161,7 +161,7 @@ export const adminTableCounts = createServerFn({ method: "GET" })
     ];
     const results = await Promise.all(
       tables.map(async (t) => {
-        const { count } = await supabaseAdmin.from(t).select("*", { count: "exact", head: true });
+        const { count } = await (supabaseAdmin as any).from(t).select("*", { count: "exact", head: true });
         return { table: t, count: count ?? 0 };
       }),
     );
