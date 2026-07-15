@@ -42,7 +42,7 @@ export function AdminPricingTab() {
   function upd(slug: string, patch: Partial<PricingOverride>) {
     setRows((prev) => ({
       ...prev,
-      [slug]: { ...(prev[slug] ?? { app_slug: slug, base_monthly: null, base_price_label: null, base_tagline: null, prime_monthly: null, prime_price_label: null, prime_tagline: null, updated_at: "" }), ...patch, app_slug: slug },
+      [slug]: { ...(prev[slug] ?? { app_slug: slug, base_monthly: null, base_price_label: null, base_tagline: null, prime_monthly: null, prime_price_label: null, prime_tagline: null, checkout_url_base: null, checkout_url_prime: null, updated_at: "" }), ...patch, app_slug: slug },
     }));
     setDirty((d) => new Set(d).add(slug));
   }
