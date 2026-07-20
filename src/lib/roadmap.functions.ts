@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 
 export const getMVPRoadmap = createServerFn({ method: "GET" })
   .handler(async () => {
@@ -19,14 +18,14 @@ export const getMVPRoadmap = createServerFn({ method: "GET" })
       {
         id: "predictive-ui",
         title: "Inteligência Global (Onda III)",
-        status: "in-progress",
+        status: "completed",
         tasks: ["Sugestões Preditivas", "ROI Dashboard", "Global Analytics"]
       },
       {
         id: "mvp-launch",
         title: "Entrega Final MVP",
-        status: "todo",
-        tasks: ["Stripe Webhooks Final", "Onboarding Per-App", "Final Visual Polish"]
+        status: "in-progress",
+        tasks: ["InfinitePay Webhooks", "Onboarding Per-App Concluído", "Polimento Visual Final"]
       }
     ];
   });
