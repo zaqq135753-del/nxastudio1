@@ -263,7 +263,7 @@ function Hub() {
         <SmartNudges ents={ents} />
 
         {/* Roadmap do MVP — Próximos Passos (Apenas Super Admin) */}
-        {isAdmin && (
+        {isSuperAdmin && (
           <CollapsibleSection
             id="roadmap"
             kicker="Status da Missão"
