@@ -260,6 +260,16 @@ function Hub() {
         {/* Onda O — nudges silenciosos e contextuais */}
         <SmartNudges ents={ents} />
 
+        {/* Sugestões Preditivas — Onda III */}
+        <CollapsibleSection
+          id="predictive"
+          kicker="Automação Preditiva"
+          title="Sugestões da IA para você"
+          defaultOpen
+        >
+          <SmartSuggestions />
+        </CollapsibleSection>
+
         {/* Dash de ROI */}
         <CollapsibleSection
           id="roi"
