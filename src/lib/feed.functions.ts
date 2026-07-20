@@ -25,10 +25,8 @@ export type FeedComment = {
   user_id: string;
   content: string;
   created_at: string;
-  profiles?: {
-    display_name: string | null;
-    avatar_url: string | null;
-  } | null;
+  author_name?: string | null;
+  author_avatar?: string | null;
 };
 
 const CreateSchema = z.object({
@@ -61,7 +59,6 @@ export const createFeedPost = createServerFn({ method: "POST" })
     
     if (error) throw new Error(error.message);
     
-    // XP Rewards
     const xpReward = data.kind === 'media' ? 25 : 15;
     const { data: cur } = await sb.from("user_xp").select("total_xp").eq("user_id", context.userId).maybeSingle();
     const total = (cur?.total_xp ?? 0) + xpReward;
@@ -136,10 +133,17 @@ export const addComment = createServerFn({ method: "POST" })
       post_id: data.post_id,
       user_id: context.userId,
       content: data.content
-    }).select("*, profiles:profiles(display_name, avatar_url)").single();
+    }).select("*").single();
     
     if (error) throw new Error(error.message);
-    return comment as FeedComment;
+    
+    const { data: prof } = await sb.from("profiles").select("display_name, avatar_url").eq("id", context.userId).single();
+    
+    return {
+      ...comment,
+      author_name: prof?.display_name,
+      author_avatar: prof?.avatar_url
+    } as FeedComment;
   });
 
 export const listComments = createServerFn({ method: "GET" })
@@ -148,8 +152,20 @@ export const listComments = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
     const { data: comments } = await sb.from("feed_comments")
-      .select("*, profiles:profiles(display_name, avatar_url)")
+      .select("*")
       .eq("post_id", data.post_id)
       .order("created_at", { ascending: true });
-    return (comments ?? []) as FeedComment[];
+    
+    const list = comments ?? [];
+    if (list.length === 0) return [];
+    
+    const userIds = [...new Set(list.map(c => c.user_id))];
+    const { data: profs } = await sb.from("profiles").select("id, display_name, avatar_url").in("id", userIds);
+    const pMap = new Map((profs ?? []).map(p => [p.id, p]));
+    
+    return list.map(c => ({
+      ...c,
+      author_name: pMap.get(c.user_id)?.display_name,
+      author_avatar: pMap.get(c.user_id)?.avatar_url
+    })) as FeedComment[];
   });
