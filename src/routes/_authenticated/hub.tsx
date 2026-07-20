@@ -287,7 +287,10 @@ function Hub() {
           title="Ecossistema em Tempo Real"
           defaultOpen
         >
-          <PlatformPulse />
+          <div className="space-y-6">
+            <PlatformPulse />
+            <GlobalAnalytics />
+          </div>
         </CollapsibleSection>
 
         {/* Foco de hoje — sempre visível, sem collapse */}
