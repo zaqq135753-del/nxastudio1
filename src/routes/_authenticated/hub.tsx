@@ -430,7 +430,6 @@ function Hub() {
           </CollapsibleSection>
         )}
 
-        <CollapsibleSection
         {isSuperAdmin && (
           <CollapsibleSection
             id="activity"
