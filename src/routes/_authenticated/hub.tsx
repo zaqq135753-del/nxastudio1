@@ -36,6 +36,7 @@ import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
 import { SmartSuggestions } from "@/components/nxa/SmartSuggestions";
 import { GlobalAnalytics } from "@/components/nxa/GlobalAnalytics";
+import { RoadmapProgress } from "@/components/nxa/RoadmapProgress";
 
 
 
@@ -259,6 +260,16 @@ function Hub() {
 
         {/* Onda O — nudges silenciosos e contextuais */}
         <SmartNudges ents={ents} />
+
+        {/* Roadmap do MVP — Próximos Passos */}
+        <CollapsibleSection
+          id="roadmap"
+          kicker="Status da Missão"
+          title="Progresso para o Lançamento MVP"
+          defaultOpen
+        >
+          <RoadmapProgress />
+        </CollapsibleSection>
 
         {/* Sugestões Preditivas — Onda III */}
         <CollapsibleSection
