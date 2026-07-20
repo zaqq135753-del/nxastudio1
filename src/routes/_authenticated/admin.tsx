@@ -26,6 +26,7 @@ import {
   Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag, MessageCircle,
 } from "lucide-react";
 import { AdminPricingTab, AdminConfigTab } from "@/components/admin/AdminSettingsTabs";
+import { AdminWhatsAppTab } from "@/components/admin/AdminWhatsAppTab";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
