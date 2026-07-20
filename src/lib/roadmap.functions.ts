@@ -1,7 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 
+export type RoadmapStep = {
+  id: string;
+  title: string;
+  status: 'completed' | 'in-progress' | 'todo';
+  tasks: string[];
+};
+
 export const getMVPRoadmap = createServerFn({ method: "GET" })
-  .handler(async () => {
+  .handler(async (): Promise<RoadmapStep[]> => {
     return [
       {
         id: "core-stability",
