@@ -294,18 +294,20 @@ function Hub() {
           <ROIDashboard />
         </CollapsibleSection>
 
-        {/* Platform Pulse — Conexão Global */}
-        <CollapsibleSection
-          id="pulse"
-          kicker="Pulse NXA"
-          title="Ecossistema em Tempo Real"
-          defaultOpen
-        >
-          <div className="space-y-6">
-            <PlatformPulse />
-            <GlobalAnalytics />
-          </div>
-        </CollapsibleSection>
+        {/* Platform Pulse — Conexão Global (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="pulse"
+            kicker="Pulse NXA"
+            title="Ecossistema em Tempo Real"
+            defaultOpen
+          >
+            <div className="space-y-6">
+              <PlatformPulse />
+              <GlobalAnalytics />
+            </div>
+          </CollapsibleSection>
+        )}
 
         {/* Foco de hoje — sempre visível, sem collapse */}
         <div className="mb-2">
