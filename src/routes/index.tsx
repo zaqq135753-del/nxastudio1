@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+// diante todas essas tecnologias, como vc acha que está a estrutura toda para vendermos isso por um valor que ainda não sei qual cobrar? acha que precisamos de algo a mais ou está bom?
 import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
 import { APPS, SUITE } from "@/apps/registry";
 
