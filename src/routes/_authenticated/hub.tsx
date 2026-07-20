@@ -71,6 +71,7 @@ function Hub() {
   const [loading, setLoading] = useState(true);
   const [onboarded, setOnboarded] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const load = useServerFn(getMyEntitlements);
   const checkOnb = useServerFn(hasOnboarded);
   const checkAdmin = useServerFn(amIAdmin);
@@ -89,7 +90,7 @@ function Hub() {
       }
       try { setEnts(await load()); } finally { setLoading(false); }
       try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
-      try { const { isAdmin } = await checkAdmin(); setIsAdmin(isAdmin); } catch { /* noop */ }
+      try { const { isAdmin, isSuperAdmin } = await checkAdmin(); setIsAdmin(isAdmin); setIsSuperAdmin(isSuperAdmin); } catch { /* noop */ }
       try { const xp = await loadXp(); checkLevelUp(xp.level); } catch { /* noop */ }
     })();
   }, [load, checkOnb, checkAdmin, loadXp]);
@@ -198,41 +199,44 @@ function Hub() {
             <span className="font-semibold">{greeting()}{name ? "," : "."}</span>
             {name && <> <span className="text-serif text-serif-italic text-gradient">{name}</span><span className="font-semibold">.</span></>}
           </h1>
-          <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
-            O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
-          </p>
+          {isSuperAdmin && (
+            <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
+              O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
+            </p>
+          )}
 
-          <div className="mt-5 max-w-2xl">
-            <AICommandBar
-              placeholder="Ex.: monta meu jantar de hoje…"
-              suggestions={[
-                "🍳 Resolver jantar",
-                "📱 Criar post pra hoje",
-                "💰 Posso comprar?",
-                "💪 Treinar agora",
-                "✈️ Planejar viagem",
-              ]}
-              onSubmit={(t) => askAgent(t)}
-            />
-
-          </div>
+          {isSuperAdmin && (
+            <div className="mt-5 max-w-2xl">
+              <AICommandBar
+                placeholder="Ex.: monta meu jantar de hoje…"
+                suggestions={[
+                  "🍳 Resolver jantar",
+                  "📱 Criar post pra hoje",
+                  "💰 Posso comprar?",
+                  "💪 Treinar agora",
+                  "✈️ Planejar viagem",
+                ]}
+                onSubmit={(t) => askAgent(t)}
+              />
+            </div>
+          )}
         </section>
 
-        <DailyStory />
-
-        <DailyInsight />
-
-        <MorningBriefCard
-          name={name}
-          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
-        />
-
-        <WeeklyReviewCard
-          name={name}
-          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
-        />
-
-        <SunsetCard />
+        {isSuperAdmin && (
+          <>
+            <DailyStory />
+            <DailyInsight />
+            <MorningBriefCard
+              name={name}
+              apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+            />
+            <WeeklyReviewCard
+              name={name}
+              apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+            />
+            <SunsetCard />
+          </>
+        )}
 
 
 
@@ -259,50 +263,58 @@ function Hub() {
         <div className="mb-6"><PaywallBanner /></div>
 
         {/* Onda O — nudges silenciosos e contextuais */}
-        <SmartNudges ents={ents} />
+        {isSuperAdmin && <SmartNudges ents={ents} />}
 
-        {/* Roadmap do MVP — Próximos Passos */}
-        <CollapsibleSection
-          id="roadmap"
-          kicker="Status da Missão"
-          title="Progresso para o Lançamento MVP"
-          defaultOpen
-        >
-          <RoadmapProgress />
-        </CollapsibleSection>
+        {/* Roadmap do MVP — Próximos Passos (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="roadmap"
+            kicker="Status da Missão"
+            title="Progresso para o Lançamento MVP"
+            defaultOpen
+          >
+            <RoadmapProgress />
+          </CollapsibleSection>
+        )}
 
-        {/* Sugestões Preditivas — Onda III */}
-        <CollapsibleSection
-          id="predictive"
-          kicker="Automação Preditiva"
-          title="Sugestões da IA para você"
-          defaultOpen
-        >
-          <SmartSuggestions />
-        </CollapsibleSection>
+        {/* Sugestões Preditivas — Onda III (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="predictive"
+            kicker="Automação Preditiva"
+            title="Sugestões da IA para você"
+            defaultOpen
+          >
+            <SmartSuggestions />
+          </CollapsibleSection>
+        )}
 
-        {/* Dash de ROI */}
-        <CollapsibleSection
-          id="roi"
-          kicker="Impacto IA"
-          title="Seu Retorno sobre Investimento"
-          defaultOpen
-        >
-          <ROIDashboard />
-        </CollapsibleSection>
+        {/* Dash de ROI (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="roi"
+            kicker="Impacto IA"
+            title="Seu Retorno sobre Investimento"
+            defaultOpen
+          >
+            <ROIDashboard />
+          </CollapsibleSection>
+        )}
 
-        {/* Platform Pulse — Conexão Global */}
-        <CollapsibleSection
-          id="pulse"
-          kicker="Pulse NXA"
-          title="Ecossistema em Tempo Real"
-          defaultOpen
-        >
-          <div className="space-y-6">
-            <PlatformPulse />
-            <GlobalAnalytics />
-          </div>
-        </CollapsibleSection>
+        {/* Platform Pulse — Conexão Global (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="pulse"
+            kicker="Pulse NXA"
+            title="Ecossistema em Tempo Real"
+            defaultOpen
+          >
+            <div className="space-y-6">
+              <PlatformPulse />
+              <GlobalAnalytics />
+            </div>
+          </CollapsibleSection>
+        )}
 
         {/* Foco de hoje — sempre visível, sem collapse */}
         <div className="mb-2">
@@ -396,48 +408,54 @@ function Hub() {
           )}
         </CollapsibleSection>
 
-        {/* Concierge IA — recolhido por padrão */}
-        <CollapsibleSection
-          id="briefing"
-          kicker="Concierge IA"
-          title="Briefing proativo"
-          defaultOpen={false}
-        >
-          <BriefingCard />
-        </CollapsibleSection>
+        {/* Concierge IA — apenas Super Admin */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="briefing"
+            kicker="Concierge IA"
+            title="Briefing proativo"
+            defaultOpen={false}
+          >
+            <BriefingCard />
+          </CollapsibleSection>
+        )}
 
-        {/* Streaks & badges — recolhido por padrão */}
-        <CollapsibleSection
-          id="streaks"
-          kicker="Progresso"
-          title="Streaks & conquistas"
-          defaultOpen={false}
-        >
-          <StreaksBadges />
-        </CollapsibleSection>
+        {/* Streaks & badges — apenas Super Admin */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="streaks"
+            kicker="Progresso"
+            title="Streaks & conquistas"
+            defaultOpen={false}
+          >
+            <StreaksBadges />
+          </CollapsibleSection>
+        )}
 
-        <CollapsibleSection
-          id="activity"
-          kicker="Atividade & Comunidade"
-          title="Vida na NXA"
-          defaultOpen={false}
-          action={<Link to="/feed" className="text-[11px] underline">ver feed completo</Link>}
-        >
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">Suas conquistas</div>
-              <ActivityFeed />
-            </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">O que estão criando</div>
-              <div className="surface p-5 text-center space-y-3">
-                <Sparkles className="mx-auto h-5 w-5 text-primary" />
-                <p className="text-xs text-muted-foreground">Dicas, prompts e inspiração da comunidade NXA.</p>
-                <Link to="/feed" className="btn-primary w-full py-2 text-[11px]">Entrar no Círculo</Link>
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="activity"
+            kicker="Atividade & Comunidade"
+            title="Vida na NXA"
+            defaultOpen={false}
+            action={<Link to="/feed" className="text-[11px] underline">ver feed completo</Link>}
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">Suas conquistas</div>
+                <ActivityFeed />
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">O que estão criando</div>
+                <div className="surface p-5 text-center space-y-3">
+                  <Sparkles className="mx-auto h-5 w-5 text-primary" />
+                  <p className="text-xs text-muted-foreground">Dicas, prompts e inspiração da comunidade NXA.</p>
+                  <Link to="/feed" className="btn-primary w-full py-2 text-[11px]">Entrar no Círculo</Link>
+                </div>
               </div>
             </div>
-          </div>
-        </CollapsibleSection>
+          </CollapsibleSection>
+        )}
 
         {/* Discover / upsell — recolhido por padrão */}
         {discover.length > 0 && (
