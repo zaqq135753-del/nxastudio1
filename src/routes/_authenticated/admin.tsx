@@ -163,6 +163,7 @@ function AdminPage() {
             { id: "revenue", label: "Receita", Icon: DollarSign },
             { id: "activity", label: "Atividade", Icon: Activity },
             { id: "pricing", label: "Preços", Icon: Tag },
+            { id: "whatsapp", label: "WhatsApp", Icon: MessageCircle },
             { id: "config", label: "Configurações", Icon: Settings },
           ] as const).map(({ id, label, Icon }) => (
             <button key={id} onClick={() => setTab(id as Tab)}
