@@ -23,7 +23,7 @@ import { APPS } from "@/apps/registry";
 import { PRICING } from "@/apps/pricing";
 import {
   ArrowLeft, Shield, Trash2, Crown, UserX, X, Mail, Clock, Copy,
-  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag,
+  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag, MessageCircle,
 } from "lucide-react";
 import { AdminPricingTab, AdminConfigTab } from "@/components/admin/AdminSettingsTabs";
 
