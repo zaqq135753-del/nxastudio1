@@ -24,7 +24,7 @@ export const getMVPRoadmap = createServerFn({ method: "GET" })
       {
         id: "mvp-launch",
         title: "Entrega Final MVP",
-        status: "in-progress",
+        status: "completed",
         tasks: ["InfinitePay Webhooks", "Onboarding Per-App Concluído", "Polimento Visual Final"]
       }
     ];
