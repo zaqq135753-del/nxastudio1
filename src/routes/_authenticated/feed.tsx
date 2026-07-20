@@ -438,9 +438,10 @@ function PostCard({ post, meId, onLike, onDelete }: { post: FeedPost, meId: stri
               {/* Comment Input */}
               <div className="flex gap-3">
                 <div className="h-8 w-8 rounded-lg bg-orange-100 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-orange-600">
-                   {meProfile?.avatar_url ? <img src={meProfile.avatar_url} className="h-full w-full rounded-lg object-cover" /> : (meProfile?.display_name?.[0] ?? "U").toUpperCase()}
+                   M
                 </div>
                 <div className="flex-1 relative">
+
                   <input 
                     value={newComment}
                     onChange={e => setNewComment(e.target.value)}
