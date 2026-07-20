@@ -203,37 +203,38 @@ function Hub() {
             O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
           </p>
 
-          <div className="mt-5 max-w-2xl">
-            <AICommandBar
-              placeholder="Ex.: monta meu jantar de hoje…"
-              suggestions={[
-                "🍳 Resolver jantar",
-                "📱 Criar post pra hoje",
-                "💰 Posso comprar?",
-                "💪 Treinar agora",
-                "✈️ Planejar viagem",
-              ]}
-              onSubmit={(t) => askAgent(t)}
-            />
-
-          </div>
+          {isSuperAdmin && (
+            <div className="mt-5 max-w-2xl">
+              <AICommandBar
+                placeholder="Ex.: monta meu jantar de hoje…"
+                suggestions={[
+                  "🍳 Resolver jantar",
+                  "📱 Criar post pra hoje",
+                  "💰 Posso comprar?",
+                  "💪 Treinar agora",
+                  "✈️ Planejar viagem",
+                ]}
+                onSubmit={(t) => askAgent(t)}
+              />
+            </div>
+          )}
         </section>
 
-        <DailyStory />
-
-        <DailyInsight />
-
-        <MorningBriefCard
-          name={name}
-          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
-        />
-
-        <WeeklyReviewCard
-          name={name}
-          apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
-        />
-
-        <SunsetCard />
+        {isSuperAdmin && (
+          <>
+            <DailyStory />
+            <DailyInsight />
+            <MorningBriefCard
+              name={name}
+              apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+            />
+            <WeeklyReviewCard
+              name={name}
+              apps={ents.filter((e) => e.status === "active" || e.status === "trial").map((e) => e.app_slug)}
+            />
+            <SunsetCard />
+          </>
+        )}
 
 
 
@@ -260,7 +261,7 @@ function Hub() {
         <div className="mb-6"><PaywallBanner /></div>
 
         {/* Onda O — nudges silenciosos e contextuais */}
-        <SmartNudges ents={ents} />
+        {isSuperAdmin && <SmartNudges ents={ents} />}
 
         {/* Roadmap do MVP — Próximos Passos (Apenas Super Admin) */}
         {isSuperAdmin && (
@@ -405,48 +406,55 @@ function Hub() {
           )}
         </CollapsibleSection>
 
-        {/* Concierge IA — recolhido por padrão */}
-        <CollapsibleSection
-          id="briefing"
-          kicker="Concierge IA"
-          title="Briefing proativo"
-          defaultOpen={false}
-        >
-          <BriefingCard />
-        </CollapsibleSection>
+        {/* Concierge IA — apenas Super Admin */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="briefing"
+            kicker="Concierge IA"
+            title="Briefing proativo"
+            defaultOpen={false}
+          >
+            <BriefingCard />
+          </CollapsibleSection>
+        )}
 
-        {/* Streaks & badges — recolhido por padrão */}
-        <CollapsibleSection
-          id="streaks"
-          kicker="Progresso"
-          title="Streaks & conquistas"
-          defaultOpen={false}
-        >
-          <StreaksBadges />
-        </CollapsibleSection>
+        {/* Streaks & badges — apenas Super Admin */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="streaks"
+            kicker="Progresso"
+            title="Streaks & conquistas"
+            defaultOpen={false}
+          >
+            <StreaksBadges />
+          </CollapsibleSection>
+        )}
 
         <CollapsibleSection
-          id="activity"
-          kicker="Atividade & Comunidade"
-          title="Vida na NXA"
-          defaultOpen={false}
-          action={<Link to="/feed" className="text-[11px] underline">ver feed completo</Link>}
-        >
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">Suas conquistas</div>
-              <ActivityFeed />
-            </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">O que estão criando</div>
-              <div className="surface p-5 text-center space-y-3">
-                <Sparkles className="mx-auto h-5 w-5 text-primary" />
-                <p className="text-xs text-muted-foreground">Dicas, prompts e inspiração da comunidade NXA.</p>
-                <Link to="/feed" className="btn-primary w-full py-2 text-[11px]">Entrar no Círculo</Link>
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="activity"
+            kicker="Atividade & Comunidade"
+            title="Vida na NXA"
+            defaultOpen={false}
+            action={<Link to="/feed" className="text-[11px] underline">ver feed completo</Link>}
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">Suas conquistas</div>
+                <ActivityFeed />
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">O que estão criando</div>
+                <div className="surface p-5 text-center space-y-3">
+                  <Sparkles className="mx-auto h-5 w-5 text-primary" />
+                  <p className="text-xs text-muted-foreground">Dicas, prompts e inspiração da comunidade NXA.</p>
+                  <Link to="/feed" className="btn-primary w-full py-2 text-[11px]">Entrar no Círculo</Link>
+                </div>
               </div>
             </div>
-          </div>
-        </CollapsibleSection>
+          </CollapsibleSection>
+        )}
 
         {/* Discover / upsell — recolhido por padrão */}
         {discover.length > 0 && (
