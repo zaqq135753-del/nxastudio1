@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 
 export const getMVPRoadmap = createServerFn({ method: "GET" })
   .handler(async () => {
@@ -19,7 +18,7 @@ export const getMVPRoadmap = createServerFn({ method: "GET" })
       {
         id: "predictive-ui",
         title: "Inteligência Global (Onda III)",
-        status: "in-progress",
+        status: "completed",
         tasks: ["Sugestões Preditivas", "ROI Dashboard", "Global Analytics"]
       },
       {
