@@ -261,15 +261,17 @@ function Hub() {
         {/* Onda O — nudges silenciosos e contextuais */}
         <SmartNudges ents={ents} />
 
-        {/* Roadmap do MVP — Próximos Passos */}
-        <CollapsibleSection
-          id="roadmap"
-          kicker="Status da Missão"
-          title="Progresso para o Lançamento MVP"
-          defaultOpen
-        >
-          <RoadmapProgress />
-        </CollapsibleSection>
+        {/* Roadmap do MVP — Próximos Passos (Apenas Super Admin) */}
+        {isAdmin && (
+          <CollapsibleSection
+            id="roadmap"
+            kicker="Status da Missão"
+            title="Progresso para o Lançamento MVP"
+            defaultOpen
+          >
+            <RoadmapProgress />
+          </CollapsibleSection>
+        )}
 
         {/* Sugestões Preditivas — Onda III */}
         <CollapsibleSection
