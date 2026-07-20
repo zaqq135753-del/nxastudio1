@@ -274,25 +274,29 @@ function Hub() {
           </CollapsibleSection>
         )}
 
-        {/* Sugestões Preditivas — Onda III */}
-        <CollapsibleSection
-          id="predictive"
-          kicker="Automação Preditiva"
-          title="Sugestões da IA para você"
-          defaultOpen
-        >
-          <SmartSuggestions />
-        </CollapsibleSection>
+        {/* Sugestões Preditivas — Onda III (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="predictive"
+            kicker="Automação Preditiva"
+            title="Sugestões da IA para você"
+            defaultOpen
+          >
+            <SmartSuggestions />
+          </CollapsibleSection>
+        )}
 
-        {/* Dash de ROI */}
-        <CollapsibleSection
-          id="roi"
-          kicker="Impacto IA"
-          title="Seu Retorno sobre Investimento"
-          defaultOpen
-        >
-          <ROIDashboard />
-        </CollapsibleSection>
+        {/* Dash de ROI (Apenas Super Admin) */}
+        {isSuperAdmin && (
+          <CollapsibleSection
+            id="roi"
+            kicker="Impacto IA"
+            title="Seu Retorno sobre Investimento"
+            defaultOpen
+          >
+            <ROIDashboard />
+          </CollapsibleSection>
+        )}
 
         {/* Platform Pulse — Conexão Global (Apenas Super Admin) */}
         {isSuperAdmin && (
