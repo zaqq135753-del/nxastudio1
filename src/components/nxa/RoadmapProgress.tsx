@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getMVPRoadmap } from "@/lib/roadmap.functions";
+import { getMVPRoadmap, type RoadmapStep } from "@/lib/roadmap.functions";
 import { CheckCircle2, Circle, Clock } from "lucide-react";
 
 export function RoadmapProgress() {
   const load = useServerFn(getMVPRoadmap);
   const { data: roadmap, isLoading } = useQuery({
     queryKey: ["mvp-roadmap"],
-    queryFn: () => load(),
+    queryFn: () => load() as Promise<RoadmapStep[]>,
   });
 
   if (isLoading || !roadmap) return <div className="animate-pulse h-32 bg-muted/20 rounded-3xl" />;
