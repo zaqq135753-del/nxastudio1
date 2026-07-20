@@ -34,6 +34,8 @@ import { SmartNudges } from "@/components/nxa/SmartNudges";
 import { PlatformPulse } from "@/components/nxa/PlatformPulse";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
+import { SmartSuggestions } from "@/components/nxa/SmartSuggestions";
+import { GlobalAnalytics } from "@/components/nxa/GlobalAnalytics";
 
 
 
@@ -258,6 +260,16 @@ function Hub() {
         {/* Onda O — nudges silenciosos e contextuais */}
         <SmartNudges ents={ents} />
 
+        {/* Sugestões Preditivas — Onda III */}
+        <CollapsibleSection
+          id="predictive"
+          kicker="Automação Preditiva"
+          title="Sugestões da IA para você"
+          defaultOpen
+        >
+          <SmartSuggestions />
+        </CollapsibleSection>
+
         {/* Dash de ROI */}
         <CollapsibleSection
           id="roi"
@@ -275,7 +287,10 @@ function Hub() {
           title="Ecossistema em Tempo Real"
           defaultOpen
         >
-          <PlatformPulse />
+          <div className="space-y-6">
+            <PlatformPulse />
+            <GlobalAnalytics />
+          </div>
         </CollapsibleSection>
 
         {/* Foco de hoje — sempre visível, sem collapse */}

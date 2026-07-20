@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-// pode ser, faça essas melhorias sugeridas e pegue outras ideias e ja faça dentro dessa onda também.
+// faça os proximos passos
 import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
 import { APPS, SUITE } from "@/apps/registry";
 
