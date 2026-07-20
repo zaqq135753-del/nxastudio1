@@ -14,7 +14,7 @@ export const getROIDashboard = createServerFn({ method: "GET" })
     const sb = context.supabase;
     const userId = context.userId;
 
-    // Buscamos dados reais para basear o ROI
+    // Buscamos dados reais das tabelas existentes para basear o ROI
     const [
       { count: postCount },
       { count: recipeCount },
@@ -22,15 +22,15 @@ export const getROIDashboard = createServerFn({ method: "GET" })
       { count: studySessions }
     ] = await Promise.all([
       sb.from("feed_posts").select("*", { count: "exact", head: true }).eq("user_id", userId),
-      sb.from("recipes").select("*", { count: "exact", head: true }).eq("user_id", userId),
-      sb.from("grana_transactions").select("*", { count: "exact", head: true }).eq("user_id", userId),
-      sb.from("fluency_sessions").select("*", { count: "exact", head: true }).eq("user_id", userId),
+      sb.from("saved_recipes").select("*", { count: "exact", head: true }).eq("user_id", userId),
+      sb.from("fin_transactions").select("*", { count: "exact", head: true }).eq("user_id", userId),
+      sb.from("lang_sessions").select("*", { count: "exact", head: true }).eq("user_id", userId),
     ]);
 
     // Fórmulas de ROI NXA Studio
-    // 1 post = 30 min economizados
-    // 1 receita = 15 min de planejamento economizados
-    // 1 transação = 5 min de controle manual
+    // 1 post = 30 min economizados (copywriting IA)
+    // 1 receita = 15 min de planejamento (kitchen planning IA)
+    // 1 transação = 5 min de controle manual (OCR/Sync financeiro)
     // 1 sessão de estudo = 45 min de tutor particular
     
     const posts = postCount ?? 0;
@@ -41,7 +41,7 @@ export const getROIDashboard = createServerFn({ method: "GET" })
     const timeSavedMin = (posts * 30) + (recipes * 15) + (transactions * 5) + (studies * 45);
     const timeSavedHours = Math.round(timeSavedMin / 60);
     
-    // Estimativa financeira baseada em valor de hora técnica média (R$ 50/h)
+    // Estimativa financeira baseada em valor de hora média (R$ 50/h)
     const moneySavedBrl = timeSavedHours * 50;
     
     const tasksAutomated = posts + recipes + transactions + studies;
