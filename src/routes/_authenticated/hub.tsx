@@ -24,6 +24,7 @@ import { CollapsibleSection } from "@/components/nxa/CollapsibleSection";
 import { SoundToggle } from "@/components/nxa/SoundToggle";
 import { DailyStory } from "@/components/nxa/DailyStory";
 import { ActivityFeed } from "@/components/nxa/ActivityFeed";
+import { ROIDashboard } from "@/components/nxa/ROIDashboard";
 import { FocusHeatmap } from "@/components/nxa/FocusHeatmap";
 import { DailyInsight } from "@/components/nxa/DailyInsight";
 import { SunsetCard } from "@/components/nxa/SunsetCard";
@@ -150,7 +151,12 @@ function Hub() {
             <Link to="/memoria" title="Sua Memória IA"
               className="press hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
               style={{ color: "var(--muted-foreground)" }}>
-              <Command size={13} /> Memória
+            <Command size={13} /> Memória
+            </Link>
+            <Link to="/feed" title="Comunidade NXA"
+              className="press hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
+              style={{ color: "var(--muted-foreground)" }}>
+              🌐 Comunidade
             </Link>
             <Link to="/afiliados" title="Programa de afiliados"
               className="press hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium hover:bg-[var(--n-100)]"
@@ -250,6 +256,16 @@ function Hub() {
 
         {/* Onda O — nudges silenciosos e contextuais */}
         <SmartNudges ents={ents} />
+
+        {/* Dash de ROI */}
+        <CollapsibleSection
+          id="roi"
+          kicker="Impacto IA"
+          title="Seu Retorno sobre Investimento"
+          defaultOpen
+        >
+          <ROIDashboard />
+        </CollapsibleSection>
 
         {/* Foco de hoje — sempre visível, sem collapse */}
         <div className="mb-2">
@@ -365,13 +381,24 @@ function Hub() {
 
         <CollapsibleSection
           id="activity"
-          kicker="Atividade"
-          title="Suas conquistas recentes"
+          kicker="Atividade & Comunidade"
+          title="Vida na NXA"
           defaultOpen={false}
+          action={<Link to="/feed" className="text-[11px] underline">ver feed completo</Link>}
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <ActivityFeed />
-            <FocusHeatmap />
+            <div>
+              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">Suas conquistas</div>
+              <ActivityFeed />
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-wider mb-3 text-muted-foreground">O que estão criando</div>
+              <div className="surface p-5 text-center space-y-3">
+                <Sparkles className="mx-auto h-5 w-5 text-primary" />
+                <p className="text-xs text-muted-foreground">Dicas, prompts e inspiração da comunidade NXA.</p>
+                <Link to="/feed" className="btn-primary w-full py-2 text-[11px]">Entrar no Círculo</Link>
+              </div>
+            </div>
           </div>
         </CollapsibleSection>
 
