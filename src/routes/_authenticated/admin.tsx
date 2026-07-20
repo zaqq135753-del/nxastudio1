@@ -42,7 +42,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "overview" | "users" | "apps" | "revenue" | "activity" | "pricing" | "config";
+type Tab = "overview" | "users" | "apps" | "revenue" | "activity" | "pricing" | "config" | "whatsapp";
 type Filter = "all" | "admin" | "trial" | "prime" | "no_apps" | "expiring";
 
 function AdminPage() {
