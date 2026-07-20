@@ -199,9 +199,11 @@ function Hub() {
             <span className="font-semibold">{greeting()}{name ? "," : "."}</span>
             {name && <> <span className="text-serif text-serif-italic text-gradient">{name}</span><span className="font-semibold">.</span></>}
           </h1>
-          <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
-            O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
-          </p>
+          {isSuperAdmin && (
+            <p className="mt-3 text-[15px] sm:text-lg max-w-xl" style={{ color: "var(--muted-foreground)" }}>
+              O que você quer resolver agora? Peça em uma frase — a NXA cuida do resto.
+            </p>
+          )}
 
           {isSuperAdmin && (
             <div className="mt-5 max-w-2xl">
