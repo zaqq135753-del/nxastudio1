@@ -34,6 +34,8 @@ import { SmartNudges } from "@/components/nxa/SmartNudges";
 import { PlatformPulse } from "@/components/nxa/PlatformPulse";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
+import { SmartSuggestions } from "@/components/nxa/SmartSuggestions";
+import { GlobalAnalytics } from "@/components/nxa/GlobalAnalytics";
 
 
 
