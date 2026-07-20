@@ -19,8 +19,8 @@ export async function seedAppPricing() {
       .from('app_pricing_overrides')
       .upsert({ 
         app_slug: app.slug, 
-        price_base: app.base, 
-        price_prime: app.prime,
+        base_monthly: app.base, 
+        prime_monthly: app.prime,
         updated_at: new Date().toISOString()
       }, { onConflict: 'app_slug' });
   }
