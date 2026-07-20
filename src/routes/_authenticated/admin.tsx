@@ -452,6 +452,7 @@ function AdminPage() {
         )}
 
         {tab === "pricing" && <AdminPricingTab />}
+        {tab === "whatsapp" && <AdminWhatsAppTab />}
         {tab === "config" && <AdminConfigTab />}
       </main>
 
