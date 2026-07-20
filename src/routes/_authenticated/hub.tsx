@@ -90,7 +90,7 @@ function Hub() {
       }
       try { setEnts(await load()); } finally { setLoading(false); }
       try { const { onboarded } = await checkOnb(); setOnboarded(onboarded); } catch { /* noop */ }
-      try { const { isAdmin } = await checkAdmin(); setIsAdmin(isAdmin); } catch { /* noop */ }
+      try { const { isAdmin, isSuperAdmin } = await checkAdmin(); setIsAdmin(isAdmin); setIsSuperAdmin(isSuperAdmin); } catch { /* noop */ }
       try { const xp = await loadXp(); checkLevelUp(xp.level); } catch { /* noop */ }
     })();
   }, [load, checkOnb, checkAdmin, loadXp]);
