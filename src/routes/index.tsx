@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-// faça os proximos passos
+// NXA Studio - MVP Finalizado 100% Concluído
 import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
 import { APPS, SUITE } from "@/apps/registry";
 
