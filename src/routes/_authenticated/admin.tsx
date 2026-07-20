@@ -23,9 +23,10 @@ import { APPS } from "@/apps/registry";
 import { PRICING } from "@/apps/pricing";
 import {
   ArrowLeft, Shield, Trash2, Crown, UserX, X, Mail, Clock, Copy,
-  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag,
+  Users, LayoutGrid, DollarSign, Activity, Search, Download, Zap, Settings, Tag, MessageCircle,
 } from "lucide-react";
 import { AdminPricingTab, AdminConfigTab } from "@/components/admin/AdminSettingsTabs";
+import { AdminWhatsAppTab } from "@/components/admin/AdminWhatsAppTab";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -41,7 +42,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "overview" | "users" | "apps" | "revenue" | "activity" | "pricing" | "config";
+type Tab = "overview" | "users" | "apps" | "revenue" | "activity" | "pricing" | "config" | "whatsapp";
 type Filter = "all" | "admin" | "trial" | "prime" | "no_apps" | "expiring";
 
 function AdminPage() {
@@ -163,6 +164,7 @@ function AdminPage() {
             { id: "revenue", label: "Receita", Icon: DollarSign },
             { id: "activity", label: "Atividade", Icon: Activity },
             { id: "pricing", label: "Preços", Icon: Tag },
+            { id: "whatsapp", label: "WhatsApp", Icon: MessageCircle },
             { id: "config", label: "Configurações", Icon: Settings },
           ] as const).map(({ id, label, Icon }) => (
             <button key={id} onClick={() => setTab(id as Tab)}
@@ -450,6 +452,7 @@ function AdminPage() {
         )}
 
         {tab === "pricing" && <AdminPricingTab />}
+        {tab === "whatsapp" && <AdminWhatsAppTab />}
         {tab === "config" && <AdminConfigTab />}
       </main>
 
