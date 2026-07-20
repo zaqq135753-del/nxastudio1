@@ -23,6 +23,7 @@ import { Route as AuthenticatedAgenteRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedAfiliadosRouteImport } from './routes/_authenticated/afiliados'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp-webhook'
+import { Route as ApiPublicVoiceCommandRouteImport } from './routes/api/public/voice-command'
 import { Route as ApiPublicSeedAdminsRouteImport } from './routes/api/public/seed-admins'
 import { Route as ApiPublicInfinitepayWebhookRouteImport } from './routes/api/public/infinitepay-webhook'
 import { Route as AuthenticatedAppsStyleiaRouteRouteImport } from './routes/_authenticated/apps/styleia/route'
@@ -163,6 +164,11 @@ const ApiPublicWhatsappWebhookRoute =
     path: '/api/public/whatsapp-webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicVoiceCommandRoute = ApiPublicVoiceCommandRouteImport.update({
+  id: '/api/public/voice-command',
+  path: '/api/public/voice-command',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSeedAdminsRoute = ApiPublicSeedAdminsRouteImport.update({
   id: '/api/public/seed-admins',
   path: '/api/public/seed-admins',
@@ -602,6 +608,7 @@ export interface FileRoutesByFullPath {
   '/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
   '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
+  '/api/public/voice-command': typeof ApiPublicVoiceCommandRoute
   '/api/public/whatsapp-webhook': typeof ApiPublicWhatsappWebhookRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -676,6 +683,7 @@ export interface FileRoutesByTo {
   '/assinar/$slug': typeof AssinarSlugRoute
   '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
+  '/api/public/voice-command': typeof ApiPublicVoiceCommandRoute
   '/api/public/whatsapp-webhook': typeof ApiPublicWhatsappWebhookRoute
   '/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -762,6 +770,7 @@ export interface FileRoutesById {
   '/_authenticated/apps/styleia': typeof AuthenticatedAppsStyleiaRouteRouteWithChildren
   '/api/public/infinitepay-webhook': typeof ApiPublicInfinitepayWebhookRoute
   '/api/public/seed-admins': typeof ApiPublicSeedAdminsRoute
+  '/api/public/voice-command': typeof ApiPublicVoiceCommandRoute
   '/api/public/whatsapp-webhook': typeof ApiPublicWhatsappWebhookRoute
   '/_authenticated/apps/$slug/midia': typeof AuthenticatedAppsSlugMidiaRoute
   '/_authenticated/apps/cosmosia/compatibilidade': typeof AuthenticatedAppsCosmosiaCompatibilidadeRoute
@@ -848,6 +857,7 @@ export interface FileRouteTypes {
     | '/apps/styleia'
     | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
+    | '/api/public/voice-command'
     | '/api/public/whatsapp-webhook'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
@@ -922,6 +932,7 @@ export interface FileRouteTypes {
     | '/assinar/$slug'
     | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
+    | '/api/public/voice-command'
     | '/api/public/whatsapp-webhook'
     | '/apps/$slug/midia'
     | '/apps/cosmosia/compatibilidade'
@@ -1007,6 +1018,7 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/styleia'
     | '/api/public/infinitepay-webhook'
     | '/api/public/seed-admins'
+    | '/api/public/voice-command'
     | '/api/public/whatsapp-webhook'
     | '/_authenticated/apps/$slug/midia'
     | '/_authenticated/apps/cosmosia/compatibilidade'
@@ -1075,6 +1087,7 @@ export interface RootRouteChildren {
   AssinarSlugRoute: typeof AssinarSlugRoute
   ApiPublicInfinitepayWebhookRoute: typeof ApiPublicInfinitepayWebhookRoute
   ApiPublicSeedAdminsRoute: typeof ApiPublicSeedAdminsRoute
+  ApiPublicVoiceCommandRoute: typeof ApiPublicVoiceCommandRoute
   ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
   ApiPublicHooksDailyBriefingRoute: typeof ApiPublicHooksDailyBriefingRoute
 }
@@ -1177,6 +1190,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/whatsapp-webhook'
       fullPath: '/api/public/whatsapp-webhook'
       preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice-command': {
+      id: '/api/public/voice-command'
+      path: '/api/public/voice-command'
+      fullPath: '/api/public/voice-command'
+      preLoaderRoute: typeof ApiPublicVoiceCommandRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/seed-admins': {
@@ -1973,6 +1993,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssinarSlugRoute: AssinarSlugRoute,
   ApiPublicInfinitepayWebhookRoute: ApiPublicInfinitepayWebhookRoute,
   ApiPublicSeedAdminsRoute: ApiPublicSeedAdminsRoute,
+  ApiPublicVoiceCommandRoute: ApiPublicVoiceCommandRoute,
   ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
   ApiPublicHooksDailyBriefingRoute: ApiPublicHooksDailyBriefingRoute,
 }
