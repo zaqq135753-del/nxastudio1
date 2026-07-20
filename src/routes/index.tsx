@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-// então vamos fazer essa comunidade que acho interessante mesmo pq podemos melhorar ela sempre e sempre e também o dashboard de ROI, faça essas duas ai da melhor forma e que se adapte a ideia geral do app para começarmos a vender
+// euj queria que fosse algo como o linkedin mesmo sabe? tipo poder postar, curtir, comentar, postar fotos, vídeos, experiências e tudo mais da melhor forma e visual também, acho que seria bacana, pense nessa ideia de forma avançada e inteligente entendendo o mercado e fazendo melhor.
 import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
 import { APPS, SUITE } from "@/apps/registry";
 

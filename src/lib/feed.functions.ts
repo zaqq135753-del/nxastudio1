@@ -19,6 +19,16 @@ export type FeedPost = {
   liked_by_me?: boolean;
 };
 
+export type FeedComment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  author_name?: string | null;
+  author_avatar?: string | null;
+};
+
 const CreateSchema = z.object({
   app_slug: z.string(),
   title: z.string().min(1).max(140),
@@ -33,6 +43,7 @@ export const createFeedPost = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => CreateSchema.parse(d))
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
+    
     const { data: row, error } = await sb.from("feed_posts").insert({
       user_id: context.userId,
       app_slug: data.app_slug,
@@ -40,16 +51,26 @@ export const createFeedPost = createServerFn({ method: "POST" })
       title: data.title,
       body: data.body ?? null,
       media_url: data.media_url ?? null,
-      meta: data.meta ?? {},
+      meta: {
+        ...data.meta,
+        client_timestamp: new Date().toISOString(),
+      },
     }).select("id").single();
+    
     if (error) throw new Error(error.message);
-    // +15 XP por post
+    
+    const xpReward = data.kind === 'media' ? 25 : 15;
     const { data: cur } = await sb.from("user_xp").select("total_xp").eq("user_id", context.userId).maybeSingle();
-    const total = (cur?.total_xp ?? 0) + 15;
+    const total = (cur?.total_xp ?? 0) + xpReward;
+    
     await sb.from("user_xp").upsert({
-      user_id: context.userId, total_xp: total, level: levelFromXp(total), updated_at: new Date().toISOString(),
+      user_id: context.userId, 
+      total_xp: total, 
+      level: levelFromXp(total), 
+      updated_at: new Date().toISOString(),
     }, { onConflict: "user_id" });
-    return { id: row!.id };
+    
+    return { id: row!.id, xp_gained: xpReward };
   });
 
 export const listFeed = createServerFn({ method: "GET" })
@@ -101,4 +122,50 @@ export const deleteFeedPost = createServerFn({ method: "POST" })
       .delete().eq("id", data.id).eq("user_id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
+  });
+
+export const addComment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { post_id: string; content: string }) => d)
+  .handler(async ({ data, context }) => {
+    const sb = context.supabase;
+    const { data: comment, error } = await sb.from("feed_comments").insert({
+      post_id: data.post_id,
+      user_id: context.userId,
+      content: data.content
+    }).select("*").single();
+    
+    if (error) throw new Error(error.message);
+    
+    const { data: prof } = await sb.from("profiles").select("display_name, avatar_url").eq("id", context.userId).single();
+    
+    return {
+      ...comment,
+      author_name: prof?.display_name,
+      author_avatar: prof?.avatar_url
+    } as FeedComment;
+  });
+
+export const listComments = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { post_id: string }) => d)
+  .handler(async ({ data, context }) => {
+    const sb = context.supabase;
+    const { data: comments } = await sb.from("feed_comments")
+      .select("*")
+      .eq("post_id", data.post_id)
+      .order("created_at", { ascending: true });
+    
+    const list = comments ?? [];
+    if (list.length === 0) return [];
+    
+    const userIds = [...new Set(list.map(c => c.user_id))];
+    const { data: profs } = await sb.from("profiles").select("id, display_name, avatar_url").in("id", userIds);
+    const pMap = new Map((profs ?? []).map(p => [p.id, p]));
+    
+    return list.map(c => ({
+      ...c,
+      author_name: pMap.get(c.user_id)?.display_name,
+      author_avatar: pMap.get(c.user_id)?.avatar_url
+    })) as FeedComment[];
   });
