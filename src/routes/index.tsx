@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-// diante todas essas tecnologias, como vc acha que está a estrutura toda para vendermos isso por um valor que ainda não sei qual cobrar? acha que precisamos de algo a mais ou está bom?
+// então vamos fazer essa comunidade que acho interessante mesmo pq podemos melhorar ela sempre e sempre e também o dashboard de ROI, faça essas duas ai da melhor forma e que se adapte a ideia geral do app para começarmos a vender
 import { ArrowRight, Check, Sparkles, Lock } from "lucide-react";
 import { APPS, SUITE } from "@/apps/registry";
 
@@ -39,17 +39,17 @@ function Landing() {
             Uma conta.<br />Vários apps de IA.
           </h1>
           <p className="mt-6 max-w-xl text-lg" style={{ color: "var(--n-500)" }}>
-            {SUITE.name} é uma suíte de aplicativos feitos com IA — cada um resolve
-            uma parte da sua rotina. Assine só o que usar, tudo com o mesmo login.
+            {SUITE.name} é um ecossistema inteligente com mais de 10 apps, 
+            comunidade ativa e dashboard de ROI real para seu tempo e dinheiro.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link to="/auth" className="btn-primary">Criar conta grátis <ArrowRight size={16} /></Link>
             <a href="#apps" className="btn-ghost">Ver os apps</a>
           </div>
           <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ color: "var(--n-500)" }}>
-            <span className="inline-flex items-center gap-1.5"><Check size={14} /> {SUITE.pricePerApp} por app</span>
-            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Um login pra tudo</span>
-            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Cancele quando quiser</span>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Dash de ROI Real</span>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Comunidade Exclusiva</span>
+            <span className="inline-flex items-center gap-1.5"><Check size={14} /> Suíte Omnichannel</span>
           </div>
         </div>
       </section>
@@ -99,11 +99,11 @@ function Landing() {
       </section>
 
       <section className="mx-auto max-w-4xl px-6 pb-24 text-center">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">Sua próxima ferramenta começa aqui.</h2>
-        <p className="mx-auto mt-3 max-w-lg" style={{ color: "var(--n-500)" }}>
-          Uma conta. Vários apps. Preço único por app, sem pegadinha.
+        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">Pronto para o próximo nível?</h2>
+        <p className="mx-auto mt-3 max-w-lg" style={{ color: "var(--muted-foreground)" }}>
+          Entre para a comunidade, monitore sua economia de tempo com o Dash de ROI e use IA de forma estratégica.
         </p>
-        <Link to="/auth" className="btn-primary mt-6">Criar minha conta <ArrowRight size={16} /></Link>
+        <Link to="/auth" className="btn-primary mt-6">Começar agora <ArrowRight size={16} /></Link>
       </section>
 
       <footer className="border-t py-8 text-center text-xs"
