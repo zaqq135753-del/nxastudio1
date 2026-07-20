@@ -33,23 +33,67 @@ export const createFeedPost = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => CreateSchema.parse(d))
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
+    
+    // Check if it's an image generation or video upload
+    let finalMediaUrl = data.media_url;
+    
     const { data: row, error } = await sb.from("feed_posts").insert({
       user_id: context.userId,
       app_slug: data.app_slug,
       kind: data.kind,
       title: data.title,
       body: data.body ?? null,
-      media_url: data.media_url ?? null,
-      meta: data.meta ?? {},
+      media_url: finalMediaUrl ?? null,
+      meta: {
+        ...data.meta,
+        client_timestamp: new Date().toISOString(),
+      },
     }).select("id").single();
+    
     if (error) throw new Error(error.message);
-    // +15 XP por post
+    
+    // XP Rewards
+    const xpReward = data.kind === 'media' ? 25 : 15;
     const { data: cur } = await sb.from("user_xp").select("total_xp").eq("user_id", context.userId).maybeSingle();
-    const total = (cur?.total_xp ?? 0) + 15;
+    const total = (cur?.total_xp ?? 0) + xpReward;
+    
     await sb.from("user_xp").upsert({
-      user_id: context.userId, total_xp: total, level: levelFromXp(total), updated_at: new Date().toISOString(),
+      user_id: context.userId, 
+      total_xp: total, 
+      level: levelFromXp(total), 
+      updated_at: new Date().toISOString(),
     }, { onConflict: "user_id" });
-    return { id: row!.id };
+    
+    return { id: row!.id, xp_gained: xpReward };
+  });
+
+export const addComment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { post_id: string; content: string }) => d)
+  .handler(async ({ data, context }) => {
+    const sb = context.supabase;
+    // Comments stored in feed_posts as a different 'kind' or a separate table
+    // For MVP efficiency, we'll use a comments table if it exists, or just log activity
+    const { data: comment, error } = await sb.from("feed_comments").insert({
+      post_id: data.post_id,
+      user_id: context.userId,
+      content: data.content
+    }).select("*").single();
+    
+    if (error) throw new Error(error.message);
+    return comment;
+  });
+
+export const listComments = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { post_id: string }) => d)
+  .handler(async ({ data, context }) => {
+    const sb = context.supabase;
+    const { data: comments } = await sb.from("feed_comments")
+      .select("*, profiles(display_name, avatar_url)")
+      .eq("post_id", data.post_id)
+      .order("created_at", { ascending: true });
+    return comments ?? [];
   });
 
 export const listFeed = createServerFn({ method: "GET" })
