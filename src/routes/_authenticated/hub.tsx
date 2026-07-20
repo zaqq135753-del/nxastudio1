@@ -71,6 +71,7 @@ function Hub() {
   const [loading, setLoading] = useState(true);
   const [onboarded, setOnboarded] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const load = useServerFn(getMyEntitlements);
   const checkOnb = useServerFn(hasOnboarded);
   const checkAdmin = useServerFn(amIAdmin);
