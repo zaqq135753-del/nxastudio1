@@ -80,11 +80,16 @@ export function AdminWhatsAppTab() {
       </div>
 
       <div className="surface p-6 border-dashed border-2">
-        <h3 className="text-sm font-semibold mb-2">Siri & Alexa (Voice Shortcuts)</h3>
+        <h3 className="text-sm font-semibold mb-2">Omnichannel: Siri, Alexa & Agentes Externos</h3>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Para integrar Siri/Alexa, estamos utilizando os Webhooks Globais da NXA. 
-          O usuário pode criar um Atalho (iOS) que faz uma requisição POST para <code>/api/public/voice-command</code> enviando o texto capturado.
+          Para integrar Siri/Alexa ou sistemas externos, a NXA expõe um Agente de Orquestração Inteligente. 
+          As requisições POST para <code>/api/public/voice-command</code> processam linguagem natural e 
+          executam ações através de todos os apps da suíte usando a memória do usuário.
         </p>
+        <div className="mt-4 grid gap-3 text-[10px] font-mono opacity-70">
+          <div className="rounded bg-muted p-2">POST /api/public/voice-command</div>
+          <div className="rounded bg-muted p-2">POST /api/public/whatsapp-webhook</div>
+        </div>
       </div>
     </div>
   );

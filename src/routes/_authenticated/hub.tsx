@@ -31,6 +31,7 @@ import { SunsetCard } from "@/components/nxa/SunsetCard";
 import { MorningBriefCard } from "@/components/nxa/MorningBriefCard";
 import { WeeklyReviewCard } from "@/components/nxa/WeeklyReviewCard";
 import { SmartNudges } from "@/components/nxa/SmartNudges";
+import { PlatformPulse } from "@/components/nxa/PlatformPulse";
 import { getMyXp } from "@/lib/gamification.functions";
 import { checkLevelUp } from "@/lib/celebrate";
 
@@ -265,6 +266,16 @@ function Hub() {
           defaultOpen
         >
           <ROIDashboard />
+        </CollapsibleSection>
+
+        {/* Platform Pulse — Conexão Global */}
+        <CollapsibleSection
+          id="pulse"
+          kicker="Pulse NXA"
+          title="Ecossistema em Tempo Real"
+          defaultOpen
+        >
+          <PlatformPulse />
         </CollapsibleSection>
 
         {/* Foco de hoje — sempre visível, sem collapse */}
