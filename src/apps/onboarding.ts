@@ -112,15 +112,7 @@ export const APP_ONBOARDING: Record<string, AppOnboardingConfig> = {
         options: ["Descontraído", "Profissional", "Inspirador", "Educativo"] },
     ],
   },
-  cosmosia: {
-    title: "Bem-vindo ao NXA Cosmos",
-    subtitle: "Vamos ler seu mapa.",
-    steps: [
-      { key: "birthDate", question: "Data de nascimento?", type: "text", placeholder: "DD/MM/AAAA" },
-      { key: "birthTime", question: "Hora de nascimento?", type: "text", placeholder: "HH:MM (aproximado ok)" },
-      { key: "birthPlace", question: "Cidade de nascimento?", type: "text", placeholder: "Cidade, Estado" },
-    ],
-  },
+
   roteiroia: {
     title: "Bem-vindo ao NXA Roteiro",
     subtitle: "Como você gosta de viajar?",
