@@ -365,6 +365,9 @@ const CFG: Record<string, AppConfig> = {
       { id: "skeleton", label: "Esqueletos Coringa", desc: "Estruturas prontas pra qualquer tema", icon: Sparkle, to: "/apps/cosmosia/esqueletos", prime: true },
       { id: "tutor", label: "Tira-Dúvidas 24h", desc: "Explicação passo a passo de questões", icon: MessageCircle, to: "/apps/cosmosia/tutor" },
       { id: "plan", label: "Plano Reta Final", desc: "O que revisar dia a dia", icon: Target, to: "/apps/cosmosia/plano" },
+      { id: "quiz", label: "Simulador Express", desc: "5 questões por matéria com gabarito", icon: ListChecks, to: "/apps/cosmosia/simulado" },
+      { id: "cards", label: "Flashcards Rápidos", desc: "Fichas de memorização pro celular", icon: BookOpen, to: "/apps/cosmosia/flashcards", prime: true },
+      { id: "tracker", label: "Diagnóstico & NOTA", desc: "Evolução de desempenho e nota estimada", icon: LineChart, to: "/apps/cosmosia/diagnostico" },
     ],
     bottomNav: [
       { to: "/apps/cosmosia", label: "Início", icon: Home },
