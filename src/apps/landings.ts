@@ -128,18 +128,18 @@ export const LANDINGS: Record<string, AppLanding> = {
     footerTag: "👗 Vestindo com inteligência desde 2026",
   },
   cosmosia: {
-    edition: "NXA Cosmos · Edição nº 009",
-    titleLead: "O céu",
-    titleAccent: "seu",
+    edition: "NXA Estudantil · Edição nº 009",
+    titleLead: "A aprovação",
+    titleAccent: "sua",
     titleTail: ".",
     subtitle:
-      "Mapa astral completo, horóscopo diário no seu contexto, tarot e compatibilidade — com uma IA que lê o céu por você.",
+      "Correção de redação instantânea com nota por competência, modelos coringa e tutor 24h — com uma IA que estuda com você.",
     bullets: [
-      "Mapa astral e leitura personalizada",
-      "Horóscopo diário no seu contexto",
-      "Tarot e compatibilidade em segundos",
+      "Correção de redação em segundos com nota de 0 a 1000",
+      "Modelos de redação coringa prontos pra aplicar",
+      "Tutor de exatas, humanas e biológicas 24h por chat",
     ],
-    footerTag: "🌙 Lendo o céu com inteligência desde 2026",
+    footerTag: "🎓 Estudando com inteligência desde 2026",
   },
   roteiroia: {
     edition: "NXA Travel · Edição nº 010",
