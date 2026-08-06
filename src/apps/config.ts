@@ -353,7 +353,7 @@ const CFG: Record<string, AppConfig> = {
   },
   cosmosia: {
     slug: "cosmosia",
-    name: "NXA Estudantil", shortName: "Estudos", category: "Educação & ENEM",
+    name: "NXA Study", shortName: "Study", category: "Educação & ENEM",
     icon: GraduationCap, accent: "indigo",
     pain: "Estou acumulado com matérias do ENEM, não sei se minha redação tá boa e travo em questões difíceis.",
     heroTitle: "Sua aprovação no ENEM com auxílio de Inteligência Artificial.",

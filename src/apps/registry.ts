@@ -151,7 +151,7 @@ export const APPS: readonly AppEntry[] = [
   },
   {
     slug: "cosmosia",
-    name: "NXA Estudantil",
+    name: "NXA Study",
     tagline: "Sua aprovação no ENEM com IA",
     description: "Correção de redação instantânea, modelos coringa 900+, simulados e tira-dúvidas 24h.",
     icon: GraduationCap,
