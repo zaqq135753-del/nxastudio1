@@ -10,6 +10,14 @@ export const Route = createFileRoute("/_authenticated/apps/cosmosia/esqueletos")
   component: EsqueletosPage,
 });
 
+const THEME_EXAMPLES = [
+  { label: "📱 Inteligência Artificial e Empregos", text: "Desafios do impacto da inteligência artificial no mercado de trabalho brasileiro" },
+  { label: "🧠 Saúde Mental e Redes Sociais", text: "Caminhos para combater a ansiedade e o vício digital entre os jovens no Brasil" },
+  { label: "🌱 Mudanças Climáticas", text: "A urgência da preservação ambiental e transição energética no Brasil contemporâneo" },
+  { label: "🎓 Abandono Escolar", text: "Estratégias para combater a evasão no ensino médio público brasileiro" },
+  { label: "🏛️ Inclusão de PNEs", text: "Desafios para a inclusão social e acessibilidade de pessoas com deficiência" },
+];
+
 function EsqueletosPage() {
   const [theme, setTheme] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,12 +26,13 @@ function EsqueletosPage() {
 
   const runSkeleton = useServerFn(generateSkeleton);
 
-  async function handleGenerate() {
-    if (!theme.trim()) return toast.error("Informe o tema para gerar o esqueleto.");
+  async function handleGenerate(customTheme?: string) {
+    const targetTheme = customTheme || theme;
+    if (!targetTheme.trim()) return toast.error("Informe o tema para gerar o esqueleto.");
 
     setLoading(true);
     try {
-      const data = await runSkeleton({ data: { theme } });
+      const data = await runSkeleton({ data: { theme: targetTheme } });
       setSkeleton(data);
       toast.success("Esqueleto Coringa gerado com sucesso!");
     } catch (e) {
@@ -49,7 +58,7 @@ function EsqueletosPage() {
 
       <div className="surface mb-6 p-5">
         <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-          Tema da Redação
+          Tema da Redação (Digite ou Selecione um Exemplo)
         </label>
         <input
           type="text"
@@ -59,8 +68,30 @@ function EsqueletosPage() {
           className="input-field mb-4 w-full"
         />
 
+        {/* Sugestões de Temas Rápidos */}
+        <div className="mb-5">
+          <span className="text-[11px] font-extrabold uppercase text-neutral-400 block mb-2">
+            💡 Sugestões de Temas Quentes do ENEM:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {THEME_EXAMPLES.map((item, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setTheme(item.text);
+                  void handleGenerate(item.text);
+                }}
+                className="px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 hover:bg-indigo-500/10 hover:border-indigo-500/30 hover:text-indigo-400 transition text-xs font-semibold text-neutral-700 dark:text-neutral-300"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <button
-          onClick={handleGenerate}
+          onClick={() => handleGenerate()}
           disabled={loading}
           className="btn-primary flex items-center justify-center gap-2"
         >
