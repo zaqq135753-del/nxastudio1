@@ -17,6 +17,8 @@ import { Bell } from "lucide-react";
 import { StudyIncentiveTicker, VipCodeRedeem } from "./StudyIncentive";
 import { CrossAppPromoBanner } from "./CrossAppPromoBanner";
 
+import { ScorePredictorWidget } from "./ScorePredictorWidget";
+
 type Props = {
   slug: string;
   /** Pilot apps que ganham botão de voz realtime. */
@@ -76,6 +78,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
         {slug === "studyia" && (
           <div className="fade-up">
+            <ScorePredictorWidget />
             <StudyIncentiveTicker />
             <VipCodeRedeem />
           </div>
