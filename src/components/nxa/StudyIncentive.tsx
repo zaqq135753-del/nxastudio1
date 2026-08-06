@@ -3,7 +3,7 @@ import { KeyRound, Sparkles, CheckCircle2, Trophy, Flame, Target } from "lucide-
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-const VALID_CODES = ["STUDYVIP", "ENEM1000", "STUDY1490", "APROVADO2026", "WPPVIP"];
+const VALID_CODES = ["STUDYVIP", "ENEM1000", "STUDY1490", "APROVADO2026", "WPPVIP", "ADMIN2026", "ADMINVIP"];
 
 export function VipCodeRedeem() {
   const [open, setOpen] = useState(false);
