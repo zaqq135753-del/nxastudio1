@@ -80,9 +80,12 @@ function EsqueletosPage() {
                 type="button"
                 onClick={() => {
                   setTheme(item.text);
-                  void handleGenerate(item.text);
                 }}
-                className="px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 hover:bg-indigo-500/10 hover:border-indigo-500/30 hover:text-indigo-400 transition text-xs font-semibold text-neutral-700 dark:text-neutral-300"
+                className={`px-3 py-1.5 rounded-full border transition text-xs font-semibold ${
+                  theme === item.text
+                    ? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
+                    : "border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 hover:bg-indigo-500/10 hover:border-indigo-500/30 hover:text-indigo-400 text-neutral-700 dark:text-neutral-300"
+                }`}
               >
                 {item.label}
               </button>
@@ -91,13 +94,14 @@ function EsqueletosPage() {
         </div>
 
         <button
+          type="button"
           onClick={() => handleGenerate()}
           disabled={loading}
-          className="btn-primary flex items-center justify-center gap-2"
+          className="w-full py-4 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition transform active:scale-95"
         >
           {loading ? (
             <>
-              <Sparkles size={16} className="animate-spin" /> Montando esqueleto coringa…
+              <Sparkles size={16} className="animate-spin text-amber-300" /> Montando esqueleto coringa…
             </>
           ) : (
             <>
