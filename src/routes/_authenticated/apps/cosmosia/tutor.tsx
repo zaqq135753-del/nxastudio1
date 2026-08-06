@@ -53,7 +53,7 @@ function TutorPage() {
         subtitle="Tire dúvidas de matérias e entenda o passo a passo de resolução de qualquer questão do ENEM."
       />
 
-      <div className="surface mb-4 flex flex-col h-[500px] rounded-2xl border border-white/10 p-4">
+      <div className="surface mb-4 flex flex-col h-[500px] p-4">
         {/* Messages list */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-2">
           {messages.map((m, idx) => (
@@ -63,7 +63,7 @@ function TutorPage() {
             >
               <div
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs ${
-                  m.role === "user" ? "bg-indigo-600 text-white" : "bg-white/10 text-indigo-400"
+                  m.role === "user" ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "bg-neutral-200 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
                 }`}
               >
                 {m.role === "user" ? <User size={14} /> : <Bot size={14} />}
@@ -72,8 +72,8 @@ function TutorPage() {
               <div
                 className={`max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
                   m.role === "user"
-                    ? "bg-indigo-600 text-white rounded-tr-none"
-                    : "bg-white/5 border border-white/10 text-white/90 rounded-tl-none"
+                    ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 rounded-tr-none"
+                    : "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 rounded-tl-none"
                 }`}
               >
                 {m.content}
@@ -82,27 +82,27 @@ function TutorPage() {
           ))}
 
           {loading && (
-            <div className="flex items-center gap-2 text-xs text-white/60">
-              <Sparkles size={14} className="animate-spin text-indigo-400" />
+            <div className="flex items-center gap-2 text-xs text-neutral-500">
+              <Sparkles size={14} className="animate-spin text-indigo-500" />
               Tutor analisando questão…
             </div>
           )}
         </div>
 
         {/* Input box */}
-        <div className="mt-3 flex gap-2 pt-3 border-t border-white/10">
+        <div className="mt-3 flex gap-2 pt-3 border-t border-neutral-200 dark:border-neutral-800">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Cole sua questão ou faça uma pergunta sobre a matéria..."
-            className="input-field flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="input-field flex-1"
           />
           <button
             onClick={handleSend}
             disabled={loading || !input.trim()}
-            className="btn-primary flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-white transition hover:bg-indigo-500 disabled:opacity-40"
+            className="btn-primary flex items-center justify-center"
           >
             <Send size={16} />
           </button>

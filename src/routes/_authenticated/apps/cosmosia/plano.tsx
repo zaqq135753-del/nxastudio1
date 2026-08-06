@@ -23,16 +23,16 @@ function PlanoPage() {
 
       <div className="space-y-4">
         {PLAN_WEEKS.map((p, idx) => (
-          <div key={idx} className="surface rounded-2xl border border-white/10 p-5">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-400">
+          <div key={idx} className="surface p-5">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-500">
               <Target size={14} /> {p.week}
             </div>
-            <h3 className="mt-1 text-base font-bold text-white">{p.focus}</h3>
+            <h3 className="mt-1 text-base font-bold">{p.focus}</h3>
 
-            <ul className="mt-3 space-y-2 text-xs text-white/80">
+            <ul className="mt-3 space-y-2 text-xs text-neutral-600 dark:text-neutral-300">
               {p.tasks.map((t, tIdx) => (
                 <li key={tIdx} className="flex items-center gap-2">
-                  <CheckCircle size={14} className="text-indigo-400 shrink-0" />
+                  <CheckCircle size={14} className="text-emerald-500 shrink-0" />
                   <span>{t}</span>
                 </li>
               ))}

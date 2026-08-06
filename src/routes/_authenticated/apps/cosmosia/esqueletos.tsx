@@ -48,7 +48,7 @@ function EsqueletosPage() {
       />
 
       <div className="surface mb-6 p-5">
-        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/70">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
           Tema da Redação
         </label>
         <input
@@ -56,13 +56,13 @@ function EsqueletosPage() {
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
           placeholder="Ex: O papel da tecnologia na transformação da educação básica no Brasil"
-          className="input-field mb-4 w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="input-field mb-4 w-full"
         />
 
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className="btn-primary flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+          className="btn-primary flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
@@ -79,11 +79,11 @@ function EsqueletosPage() {
       {skeleton && (
         <div className="fade-up space-y-4">
           {/* Repertoires */}
-          <div className="surface rounded-xl border border-amber-500/20 bg-amber-950/10 p-4">
-            <div className="text-xs font-bold uppercase tracking-wider text-amber-400">Repertórios Sociológicos Inclusos</div>
+          <div className="surface p-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Repertórios Sociológicos Inclusos</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {skeleton.repertoires.map((rep, idx) => (
-                <span key={idx} className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-medium text-amber-300">
+                <span key={idx} className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300">
                   📚 {rep}
                 </span>
               ))}
@@ -91,59 +91,59 @@ function EsqueletosPage() {
           </div>
 
           {/* Intro */}
-          <div className="surface rounded-xl border border-white/10 bg-white/5 p-5">
+          <div className="surface p-5">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-indigo-400">Introdução</span>
+              <span className="text-xs font-bold uppercase text-neutral-500">Introdução</span>
               <button
                 onClick={() => copyToClipboard(skeleton.introduction, "intro")}
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white"
+                className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
               >
-                {copiedSection === "intro" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />} Copiar
+                {copiedSection === "intro" ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />} Copiar
               </button>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">{skeleton.introduction}</p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{skeleton.introduction}</p>
           </div>
 
           {/* D1 */}
-          <div className="surface rounded-xl border border-white/10 bg-white/5 p-5">
+          <div className="surface p-5">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-indigo-400">Desenvolvimento 1 (Causa & Repertório)</span>
+              <span className="text-xs font-bold uppercase text-neutral-500">Desenvolvimento 1 (Causa & Repertório)</span>
               <button
                 onClick={() => copyToClipboard(skeleton.development1, "d1")}
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white"
+                className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
               >
-                {copiedSection === "d1" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />} Copiar
+                {copiedSection === "d1" ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />} Copiar
               </button>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">{skeleton.development1}</p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{skeleton.development1}</p>
           </div>
 
           {/* D2 */}
-          <div className="surface rounded-xl border border-white/10 bg-white/5 p-5">
+          <div className="surface p-5">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-indigo-400">Desenvolvimento 2 (Consequência)</span>
+              <span className="text-xs font-bold uppercase text-neutral-500">Desenvolvimento 2 (Consequência)</span>
               <button
                 onClick={() => copyToClipboard(skeleton.development2, "d2")}
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white"
+                className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
               >
-                {copiedSection === "d2" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />} Copiar
+                {copiedSection === "d2" ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />} Copiar
               </button>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">{skeleton.development2}</p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{skeleton.development2}</p>
           </div>
 
           {/* Conclusion */}
-          <div className="surface rounded-xl border border-white/10 bg-white/5 p-5">
+          <div className="surface p-5">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-indigo-400">Conclusão (Proposta de Intervenção Completa)</span>
+              <span className="text-xs font-bold uppercase text-neutral-500">Conclusão (Proposta de Intervenção Completa)</span>
               <button
                 onClick={() => copyToClipboard(skeleton.conclusion, "conc")}
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white"
+                className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
               >
-                {copiedSection === "conc" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />} Copiar
+                {copiedSection === "conc" ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />} Copiar
               </button>
             </div>
-            <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">{skeleton.conclusion}</p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{skeleton.conclusion}</p>
           </div>
         </div>
       )}

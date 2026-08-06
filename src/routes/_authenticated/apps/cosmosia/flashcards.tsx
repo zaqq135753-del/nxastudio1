@@ -32,26 +32,26 @@ function FlashcardsPage() {
         subtitle="Fichas de revisão interativas para fixar os conceitos mais cobrados direto no celular."
       />
 
-      <div className="surface mx-auto flex h-72 max-w-md flex-col justify-between rounded-3xl border border-white/10 p-6 text-center shadow-xl">
-        <div className="text-xs font-bold uppercase tracking-wider text-indigo-400">{card.topic}</div>
+      <div className="surface mx-auto flex h-72 max-w-md flex-col justify-between rounded-3xl p-6 text-center shadow-xl">
+        <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">{card.topic}</div>
 
         <div className="my-auto flex items-center justify-center p-4">
-          <p className="text-base font-semibold text-white leading-relaxed">
+          <p className="text-base font-semibold leading-relaxed">
             {flipped ? card.back : card.front}
           </p>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-white/10">
+        <div className="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-neutral-800">
           <button
             onClick={() => setFlipped(!flipped)}
-            className="flex items-center gap-1.5 text-xs text-white/70 hover:text-white"
+            className="flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
           >
             <RotateCw size={14} /> Virar Cartão
           </button>
 
           <button
             onClick={next}
-            className="rounded-full bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500"
+            className="btn-primary py-1.5 text-xs font-semibold"
           >
             Próximo Cartão →
           </button>
