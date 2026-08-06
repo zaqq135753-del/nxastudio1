@@ -366,9 +366,9 @@ const CFG: Record<string, AppConfig> = {
       { id: "tutor", label: "Tira-Dúvidas 24h", desc: "Explicação passo a passo de questões", icon: MessageCircle, to: "/apps/cosmosia/tutor" },
       { id: "plan", label: "Plano Reta Final", desc: "O que revisar dia a dia", icon: Target, to: "/apps/cosmosia/plano" },
       { id: "quiz", label: "Simulador Express", desc: "5 questões por matéria com gabarito", icon: ListChecks, to: "/apps/cosmosia/simulado" },
-      { id: "cards", label: "Flashcards Rápidos", desc: "Fichas de memorização pro celular", icon: BookOpen, to: "/apps/cosmosia/flashcards", prime: true },
-      { id: "audio", label: "Caderno de Áudio (Feynman)", desc: "Grave sua voz e receba análise da IA", icon: Mic, to: "/apps/cosmosia/audio" },
-      { id: "tracker", label: "Diagnóstico & NOTA", desc: "Evolução de desempenho e nota estimada", icon: LineChart, to: "/apps/cosmosia/diagnostico" },
+      { id: "cards", label: "Flashcards Rápidos", desc: "Fichas de memorização 3D pro celular", icon: BookOpen, to: "/apps/cosmosia/flashcards", prime: true },
+      { id: "audio", label: "Caderno de Áudio (Feynman)", desc: "Grave sua voz e receba análise da IA", icon: Mic, to: "/apps/cosmosia/audio", prime: true },
+      { id: "tracker", label: "Diagnóstico & NOTA SISU", desc: "Evolução de desempenho e nota estimada", icon: LineChart, to: "/apps/cosmosia/diagnostico", prime: true },
     ],
     bottomNav: [
       { to: "/apps/cosmosia", label: "Início", icon: Home },

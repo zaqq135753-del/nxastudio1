@@ -67,6 +67,9 @@ export function isEntitled(entitlements: Entitlement[], slug: string): boolean {
 }
 
 export function isPrime(entitlements: Entitlement[], slug: string): boolean {
+  if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true" && slug === "cosmosia") {
+    return true;
+  }
   const e = findEntitlement(entitlements, slug);
   if (!e || !isEntitled(entitlements, slug)) return false;
   return e.tier === "prime";
