@@ -356,8 +356,8 @@ const CFG: Record<string, AppConfig> = {
     name: "NXA Study", shortName: "Study", category: "Educação & ENEM",
     icon: GraduationCap, accent: "indigo",
     pain: "Estou acumulado com matérias do ENEM, não sei se minha redação tá boa e travo em questões difíceis.",
-    heroTitle: "Sua aprovação no ENEM com auxílio de Inteligência Artificial.",
-    heroSubtitle: "Correção de redação instantânea, esqueletos coringa e tira-dúvidas 24h.",
+    heroTitle: "Destrave sua Nota 900+ no ENEM e conquiste sua vaga na faculdade dos sonhos 🚀",
+    heroSubtitle: "Correção por foto da redação manuscrita, esqueletos coringa prontos e Tutor IA 24h para você gabaritar a prova!",
     heroCta: { label: "Corrigir redação agora", to: "/apps/studyia/redacao" },
     helpMePrompt: "Me ajuda a estudar pro ENEM hoje",
     missions: [

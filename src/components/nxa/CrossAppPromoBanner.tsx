@@ -33,12 +33,12 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
       </div>
 
       {/* Marquee Continuo Animado (Carrossel deslizando da direita para esquerda sem parar) */}
-      <div className="relative w-full overflow-hidden py-1 rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 backdrop-blur-md">
+      <div className="relative w-full overflow-hidden p-1.5 rounded-2xl bg-neutral-900/90 dark:bg-neutral-950/80 border border-neutral-700/80 dark:border-neutral-800 backdrop-blur-md shadow-2xl">
         {/* Fade de gradiente nas bordas para suavizar a passagem */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-neutral-100 dark:from-neutral-950 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-neutral-100 dark:from-neutral-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-neutral-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-neutral-950 to-transparent z-10 pointer-events-none" />
 
-        <div className="flex gap-3 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
+        <div className="flex gap-2.5 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
           {marqueeItems.map((app, index) => {
             const Icon = app.icon;
             return (
@@ -46,27 +46,27 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
                 key={`${app.slug}-${index}`}
                 to="/assinar/$slug"
                 params={{ slug: app.slug }}
-                className={`group shrink-0 relative overflow-hidden rounded-xl border p-3 bg-gradient-to-r ${app.bg} backdrop-blur-xl transition hover:scale-105 hover:shadow-xl flex items-center gap-3 w-64 sm:w-72`}
+                className={`group shrink-0 relative overflow-hidden rounded-xl border border-white/20 p-2.5 bg-gradient-to-r ${app.bg} backdrop-blur-xl transition hover:scale-105 hover:shadow-xl flex items-center gap-2.5 w-60 sm:w-64`}
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-neutral-900/90 dark:bg-white/20 text-white shadow-md">
-                  <Icon size={18} />
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/40 text-white shadow-md">
+                  <Icon size={16} />
                 </div>
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
-                    <h5 className="text-xs font-black text-neutral-900 dark:text-white group-hover:text-amber-500 transition truncate">
+                    <h5 className="text-xs font-black text-white group-hover:text-amber-300 transition truncate">
                       {app.name}
                     </h5>
                     <span className="rounded-md bg-amber-400 text-neutral-950 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-tight shadow-sm shrink-0 animate-pulse">
                       {app.tag}
                     </span>
                   </div>
-                  <p className="text-[10px] text-neutral-700 dark:text-neutral-200 font-semibold truncate mt-0.5">
+                  <p className="text-[10px] text-neutral-200 font-bold truncate mt-0.5">
                     {app.desc}
                   </p>
                 </div>
 
-                <ArrowRight size={14} className="text-neutral-500 dark:text-neutral-300 group-hover:text-amber-400 group-hover:translate-x-1 transition shrink-0" />
+                <ArrowRight size={13} className="text-white/70 group-hover:text-amber-300 group-hover:translate-x-0.5 transition shrink-0" />
               </Link>
             );
           })}
