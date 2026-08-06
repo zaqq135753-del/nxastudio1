@@ -84,20 +84,20 @@ export function VipCodeRedeem() {
 
 export function StudyIncentiveTicker() {
   const messages = [
-    { icon: Flame, text: "Faltam poucos meses para o ENEM! Treine 1 redação hoje.", color: "text-amber-400" },
-    { icon: Target, text: "Dica de Ouro: Explicar a matéria no Caderno de Áudio fixa 80% do assunto.", color: "text-emerald-400" },
-    { icon: Trophy, text: "Alunos Nota 900+ fazem pelo menos 3 simulados cronometrados por semana.", color: "text-indigo-400" },
+    { icon: Flame, text: "Faltam poucos meses para o ENEM! Treine 1 redação hoje.", color: "text-amber-500" },
+    { icon: Target, text: "Dica de Ouro: Explicar a matéria no Caderno de Áudio fixa 80% do assunto.", color: "text-emerald-500" },
+    { icon: Trophy, text: "Alunos Nota 900+ fazem pelo menos 3 simulados cronometrados por semana.", color: "text-indigo-500" },
   ];
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
   return (
-    <div className="relative mb-6 overflow-hidden rounded-2xl border border-purple-500/20 bg-zinc-950/70 p-3.5 text-xs backdrop-blur-xl shadow-lg shadow-purple-950/20">
+    <div className="relative mb-6 overflow-hidden rounded-2xl border border-purple-500/20 bg-white/80 dark:bg-zinc-950/70 p-3.5 text-xs backdrop-blur-xl shadow-sm">
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5 rounded-full bg-purple-500/20 border border-purple-500/30 px-3 py-1 text-[10px] font-extrabold uppercase text-purple-300 tracking-wider shrink-0 animate-pulse">
-          <Sparkles size={12} className="text-amber-400" /> Foco Aprovado
+        <div className="flex items-center gap-1.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 border border-purple-500/30 px-3 py-1 text-[10px] font-extrabold uppercase text-purple-700 dark:text-purple-300 tracking-wider shrink-0 animate-pulse">
+          <Sparkles size={12} className="text-amber-500" /> Foco Aprovado
         </div>
-        <p className="text-zinc-200 font-medium truncate leading-relaxed">
+        <p className="text-zinc-700 dark:text-zinc-200 font-medium truncate leading-relaxed">
           {messages[currentIdx].text}
         </p>
       </div>

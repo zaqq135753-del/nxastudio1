@@ -3,22 +3,22 @@ import { Sparkles, Trophy, ArrowRight } from "lucide-react";
 
 export function ScorePredictorWidget() {
   return (
-    <div className="relative mb-8 rounded-2xl overflow-hidden p-[1px] bg-gradient-to-r from-purple-500/40 via-indigo-500/40 to-cyan-500/40 shadow-2xl shadow-purple-950/40 fade-up">
-      <div className="rounded-[15px] bg-zinc-950/80 backdrop-blur-xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div className="relative mb-8 rounded-2xl overflow-hidden p-[1px] bg-gradient-to-r from-purple-500/30 via-indigo-500/30 to-cyan-500/30 shadow-xl fade-up">
+      <div className="rounded-[15px] bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-purple-500/10 dark:border-purple-500/20">
         
         {/* Medidor de Nota Circular & Informações */}
         <div className="flex items-center gap-5 w-full md:w-auto">
           <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
               <path
-                className="text-zinc-800"
+                className="text-zinc-200 dark:text-zinc-800"
                 strokeWidth="3.5"
                 stroke="currentColor"
                 fill="none"
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
               <path
-                className="text-purple-500 stroke-current"
+                className="text-purple-600 dark:text-purple-400 stroke-current"
                 strokeDasharray="88, 100"
                 strokeWidth="3.5"
                 strokeLinecap="round"
@@ -26,17 +26,17 @@ export function ScorePredictorWidget() {
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
             </svg>
-            <span className="absolute font-extrabold text-xl text-white">880</span>
+            <span className="absolute font-extrabold text-xl text-zinc-900 dark:text-white">880</span>
           </div>
 
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-bold text-base text-white">Nota Estimada de Redação</h3>
-              <span className="px-2 py-0.5 text-[10px] uppercase font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full flex items-center gap-1">
+              <h3 className="font-bold text-base text-zinc-900 dark:text-white">Nota Estimada de Redação</h3>
+              <span className="px-2 py-0.5 text-[10px] uppercase font-extrabold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-full flex items-center gap-1">
                 <Trophy size={11} /> Nível Medicina
               </span>
             </div>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1 font-medium">
               Sua nota atual supera 92% dos alunos. Envie 1 redação hoje para ultrapassar a barreira dos 920+!
             </p>
           </div>
