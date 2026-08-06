@@ -373,7 +373,7 @@ function defaultTopics(slug: string, format: "ebook" | "pptx"): string[] {
     granaia: ["Sair das dívidas em 90 dias", "Investir do zero", "Planejamento financeiro anual", "Renda extra online"],
     fitia: ["Treino em casa 12 semanas", "Hipertrofia iniciante", "Emagrecimento sustentável", "Mobilidade e postura"],
     styleia: ["Guarda-roupa cápsula", "Estilo profissional", "Cores que combinam", "Look para eventos"],
-    cosmosia: ["Interpretação mapa astral", "Rituais lunares", "Guia dos signos", "Tarot para iniciantes"],
+    cosmosia: ["Modelos de Redação Nota 1000", "Checklists de Física e Química", "Fórmulas de Matemática Básica", "Cronograma Reta Final ENEM"],
     roteiroia: ["Roteiro 7 dias Europa", "Fim de semana barato", "Viagem solo segura", "Roteiro família com crianças"],
   };
   const base = map[slug] ?? ["Introdução ao tema", "Guia prático completo", "Erros comuns a evitar", "Próximos passos"];
