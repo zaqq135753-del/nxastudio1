@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
-import { correctEssay, type EssayCorrection } from "@/lib/estudantil.functions";
-import { PenLine, Sparkles, CheckCircle2, AlertCircle, Award, Camera, Upload, FileText } from "lucide-react";
+import { correctEssay, transcribeEssayOcr, type EssayCorrection } from "@/lib/estudantil.functions";
+import { PenLine, Sparkles, CheckCircle2, AlertCircle, Award, Camera, Upload, FileText, FileSearch } from "lucide-react";
 import { PromoUpsellModal } from "@/components/commerce/PromoUpsellModal";
 import { toast } from "sonner";
 
@@ -14,6 +14,8 @@ export const Route = createFileRoute("/_authenticated/apps/cosmosia/redacao")({
 function RedacaoPage() {
   const [theme, setTheme] = useState("");
   const [essayText, setEssayText] = useState("");
+  const [transcription, setTranscription] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [ocrLoading, setOcrLoading] = useState(false);
   const [result, setResult] = useState<EssayCorrection | null>(null);
@@ -24,37 +26,32 @@ function RedacaoPage() {
   const pdfInputRef = useRef<HTMLInputElement>(null);
 
   const runCorrection = useServerFn(correctEssay);
+  const runOcr = useServerFn(transcribeEssayOcr);
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, isCamera = false) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setOcrLoading(true);
-    toast.info(isCamera ? "Processando foto da câmera..." : "Lendo documento/foto...");
+    toast.info(isCamera ? "Analisando caligrafia da foto com IA Visão..." : "Lendo documento/foto...");
 
-    if (file.type.includes("image")) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Simulando a transcrição rápida da caligrafia pela IA
-        setEssayText(
-          "Em relação aos desafios para a preservação da saúde mental entre os jovens no Brasil, é imperioso constatar que a negligência governamental e a pressão das redes sociais agravam a problemática. Sob a ótica do filósofo Zygmunt Bauman em sua teoria da Modernidade Líquida, as relações humanas tornaram-se frágeis e superficiais. Portanto, medidas urgentes são necessárias pelo Ministério da Saúde em parceria com o Ministério da Educação para promover oficinas de apoio psicológico nas escolas públicas."
-        );
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Data = reader.result as string;
+      setUploadedImage(base64Data);
+
+      try {
+        const res = await runOcr({ data: { imageBase64: base64Data } });
+        setTranscription(res.transcription);
+        setEssayText(res.transcription);
+        toast.success("Transcrição da folha concluída com sucesso!");
+      } catch (err) {
+        toast.error("Não foi possível transcrever a imagem. Digite ou cole seu texto.");
+      } finally {
         setOcrLoading(false);
-        toast.success("Texto extraído da foto com sucesso!");
-      };
-      reader.readAsDataURL(file);
-    } else if (file.type.includes("pdf") || file.name.endsWith(".pdf")) {
-      setTimeout(() => {
-        setEssayText(
-          "A preservação do meio ambiente e o desenvolvimento sustentável representam desafios centrais no cenário brasileiro contemporâneo. Segundo o conceito de Cidadania de Thomas Marshall, todos os indivíduos têm direito a um meio ambiente ecologicamente equilibrado. Logo, cabe ao Poder Público intensificar a fiscalização ambiental e incentivar o uso de energias renováveis."
-        );
-        setOcrLoading(false);
-        toast.success("Texto lido do arquivo PDF com sucesso!");
-      }, 1500);
-    } else {
-      setOcrLoading(false);
-      toast.error("Formato de arquivo não suportado. Envie uma foto ou PDF.");
-    }
+      }
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleCorrect() {
@@ -137,9 +134,28 @@ function RedacaoPage() {
         </div>
 
         {ocrLoading && (
-          <div className="mb-4 p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold flex items-center justify-center gap-2">
-            <Sparkles size={16} className="animate-spin" />
-            Lendo caligrafia/arquivo com Visão de IA…
+          <div className="mb-4 p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold flex items-center justify-center gap-2.5">
+            <Sparkles size={18} className="animate-spin text-amber-400" />
+            <span>Processando Visão Computacional OCR (Transcrevendo Caligrafia da Folha Manuscrita)...</span>
+          </div>
+        )}
+
+        {transcription && (
+          <div className="mb-5 p-4 rounded-2xl bg-neutral-900 border border-neutral-700/60 text-white fade-up space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-400">
+                <FileSearch size={16} /> Transcrição Automática da Folha Manuscrita (IA Visão)
+              </span>
+              <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/20 px-2 py-0.5 rounded-full">
+                Caligrafia Lida
+              </span>
+            </div>
+            <p className="text-xs leading-relaxed text-neutral-300 italic bg-neutral-800/60 p-3 rounded-xl border border-neutral-700/40">
+              "{transcription}"
+            </p>
+            <div className="text-[10px] text-neutral-400">
+              💡 *Você pode ajustar ou editar qualquer palavra no campo de texto abaixo antes de clicar em Analisar.*
+            </div>
           </div>
         )}
 
@@ -150,17 +166,17 @@ function RedacaoPage() {
           type="text"
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          placeholder="Ex: Desafios para a preservação da saúde mental entre os jovens no Brasil"
+          placeholder="Ex: Invisibilidade e trabalho de cuidado realizado pela mulher no Brasil"
           className="input-field mb-4 w-full"
         />
 
         <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-          Texto da sua Redação
+          Texto da sua Redação (Digitado ou Transcrito)
         </label>
         <textarea
           value={essayText}
           onChange={(e) => setEssayText(e.target.value)}
-          placeholder="Cole seu texto de redação completo aqui ou tire uma foto acima..."
+          placeholder="Cole seu texto de redação completo aqui ou envie a foto da folha acima..."
           rows={10}
           className="input-field mb-4 w-full"
         />

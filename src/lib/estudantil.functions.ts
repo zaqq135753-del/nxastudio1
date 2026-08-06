@@ -164,6 +164,39 @@ export type AudioAnalysis = {
   aiAdvice: string;
 };
 
+export const transcribeEssayOcr = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { imageBase64: string }) => d)
+  .handler(async ({ data }) => {
+    const system = `Você é um especialista em OCR e transcrição de caligrafia humana em folhas de redação do ENEM.
+Sua única tarefa é transcrever FIELMENTE e INTEGRALMENTE cada palavra escrita à mão na folha de redação enviada.
+Mantenha a divisão dos parágrafos exatamente como está no papel.
+Não corrija os erros ortográficos do aluno na transcrição (mantenha os erros originais para que a IA de correção avalie depois).
+Retorne ESTRITAMENTE um JSON com o campo "transcription".
+Exemplo:
+{
+  "transcription": "Conforme estudos demográficos realizados pelo Instituto Brasileiro de Geografia e Estatística..."
+}`;
+
+    const raw = await callGateway({
+      model: "openai/gpt-4o-mini",
+      messages: [
+        { role: "system", content: system },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Transcreva fielmente o texto desta folha manuscrita de redação do ENEM:" },
+            { type: "image_url", image_url: { url: data.imageBase64 } },
+          ],
+        },
+      ],
+      temperature: 0.2,
+      max_tokens: 2500,
+    });
+
+    return parseJson<{ transcription: string }>(raw);
+  });
+
 export const analyzeAudioExplanation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { topic: string; transcript: string }) => d)

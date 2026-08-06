@@ -3,7 +3,13 @@ const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 export const TEXT_MODEL = "openai/gpt-5-mini";
 
-export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
+export type ChatMessage = {
+  role: "system" | "user" | "assistant";
+  content: string | (
+    | { type: "text"; text: string }
+    | { type: "image_url"; image_url: { url: string } }
+  )[];
+};
 
 // Simple in-memory rate limiter (max 6 requests per 60 seconds per session)
 const rateMap = new Map<string, { count: number; resetAt: number }>();
