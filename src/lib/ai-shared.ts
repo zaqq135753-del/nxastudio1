@@ -5,6 +5,26 @@ export const TEXT_MODEL = "openai/gpt-5-mini";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
+// Simple in-memory rate limiter (max 6 requests per 60 seconds per session)
+const rateMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(key = "global") {
+  const now = Date.now();
+  const record = rateMap.get(key) ?? { count: 0, resetAt: now + 60000 };
+
+  if (now > record.resetAt) {
+    record.count = 0;
+    record.resetAt = now + 60000;
+  }
+
+  record.count += 1;
+  rateMap.set(key, record);
+
+  if (record.count > 10) {
+    throw new Error("Você atingiu o limite de requisições por minuto. Aguarde 60 segundos.");
+  }
+}
+
 /**
  * Roteamento inteligente:
  * - Se model começa com "openai/" E OPENAI_API_KEY existe → chama OpenAI direto (usa sua chave/créditos).
@@ -17,6 +37,8 @@ export async function callGateway(body: {
   max_tokens?: number;
   response_format?: { type: "json_object" };
 }): Promise<string> {
+  checkRateLimit();
+
   const openaiKey = process.env.OPENAI_API_KEY;
   const lovableKey = process.env.LOVABLE_API_KEY;
 

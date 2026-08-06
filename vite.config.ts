@@ -1,5 +1,3 @@
-// @lovable.dev/vite-tanstack-config already includes TanStack, Tailwind, Nitro (default: cloudflare).
-// Here we override Nitro to target Vercel for deployment on vercel.com.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
@@ -8,5 +6,20 @@ export default defineConfig({
   },
   nitro: {
     preset: "vercel",
+  },
+  build: {
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      mangle: {
+        toplevel: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
   },
 });
