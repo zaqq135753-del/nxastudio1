@@ -2,19 +2,17 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { getMyEntitlements, isEntitled } from "@/lib/entitlements.functions";
 
 export const Route = createFileRoute("/_authenticated/apps/studyia")({
-  beforeLoad: async ({ context }) => {
-    const ents = await context.queryClient.ensureQueryData({
-      queryKey: ["entitlements"],
-      queryFn: () => context.fetchEntitlements(),
-    });
-    if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true") {
-      return;
-    }
-    if (!isEntitled(ents, "studyia")) {
-      throw redirect({ to: "/assinar/$slug", params: { slug: "studyia" } });
-    }
-    const status = getAppStatus(ents, "studyia");
-    if (status.status === "locked") {
+  beforeLoad: async () => {
+    try {
+      if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true") {
+        return;
+      }
+      const ents = await getMyEntitlements();
+      if (!isEntitled(ents, "studyia")) {
+        throw redirect({ to: "/assinar/$slug", params: { slug: "studyia" } });
+      }
+    } catch (e) {
+      if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
       throw redirect({ to: "/assinar/$slug", params: { slug: "studyia" } });
     }
   },

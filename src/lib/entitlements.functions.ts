@@ -32,15 +32,22 @@ export const getMyEntitlements = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     // Admins get full access (prime + active) on every app.
-    const { data: userAuth } = await context.supabase.auth.getUser();
-    const userEmail = userAuth?.user?.email?.toLowerCase();
+    let userEmail: string | undefined;
+    try {
+      const { data: userAuth } = await context.supabase.auth.getUser();
+      userEmail = userAuth?.user?.email?.toLowerCase();
+    } catch {}
 
-    const { data: adminRow } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId)
-      .eq("role", "admin")
-      .maybeSingle();
+    let adminRow: { role: string } | null = null;
+    try {
+      const { data } = await context.supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", context.userId)
+        .eq("role", "admin")
+        .maybeSingle();
+      adminRow = data;
+    } catch {}
 
     if (adminRow || userEmail === "zaqq135753@gmail.com") {
       return VALID_SLUGS.map((slug) => ({
