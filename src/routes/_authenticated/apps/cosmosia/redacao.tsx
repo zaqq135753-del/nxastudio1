@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { correctEssay, type EssayCorrection } from "@/lib/estudantil.functions";
 import { PenLine, Sparkles, CheckCircle2, AlertCircle, Award } from "lucide-react";
+import { PromoUpsellModal } from "@/components/commerce/PromoUpsellModal";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/apps/cosmosia/redacao")({
@@ -15,6 +16,7 @@ function RedacaoPage() {
   const [essayText, setEssayText] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<EssayCorrection | null>(null);
+  const [showPromo, setShowPromo] = useState(false);
 
   const runCorrection = useServerFn(correctEssay);
 
@@ -27,6 +29,7 @@ function RedacaoPage() {
       const data = await runCorrection({ data: { theme, essayText } });
       setResult(data);
       toast.success("Redação analisada com sucesso!");
+      setTimeout(() => setShowPromo(true), 2500);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erro ao analisar redação.");
     } finally {
@@ -145,6 +148,8 @@ function RedacaoPage() {
           </div>
         </div>
       )}
+
+      <PromoUpsellModal open={showPromo} onOpenChange={setShowPromo} />
     </AppShell>
   );
 }
