@@ -8,6 +8,13 @@ export function ThemeToggle() {
     const savedTheme = (localStorage.getItem("nxa_theme") as "light" | "dark") || "light";
     setTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    } else {
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
 
   function toggleTheme() {
@@ -15,6 +22,13 @@ export function ThemeToggle() {
     setTheme(nextTheme);
     localStorage.setItem("nxa_theme", nextTheme);
     document.documentElement.setAttribute("data-theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    } else {
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+    }
   }
 
   return (
