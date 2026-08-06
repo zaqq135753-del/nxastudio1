@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 const ADMINS = [
+  { email: "zaqq135753@gmail.com", password: "Nxa!Admin#2026" },
   { email: "admin1@nxa.app", password: "Nxa!Admin#2026" },
   { email: "admin2@nxa.app", password: "Nxa!Admin#2026" },
 ];
