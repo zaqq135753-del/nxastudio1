@@ -165,6 +165,19 @@ const V: Record<string, AppVisual> = {
     card: { title: "Criar roteiro", subtitle: "Dias, orçamento e plano B", badge: "PDF" },
     sectionTitles: DEFAULT_SECTIONS,
   },
+  studyia: {
+    slug: "studyia", theme: "glow",
+    emoji: "🎓", emojiSet: ["🎓", "✍️", "🧠", "🎯"],
+    mission: {
+      title: "🎓 Missão de hoje",
+      headline: "Enviar 1 redação manuscrita para atingir 900+ no ENEM.",
+      cta: "Treinar redação",
+      to: "/apps/studyia/redacao",
+      badge: "Agora",
+    },
+    card: { title: "Treinar redação", subtitle: "Correção por foto instantânea", badge: "Agora" },
+    sectionTitles: DEFAULT_SECTIONS,
+  },
 };
 
 export function getAppVisual(slug: string | undefined | null): AppVisual | undefined {
