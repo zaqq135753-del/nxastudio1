@@ -60,7 +60,17 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
   }
 
   return (
-    <div className="min-h-screen pb-28">
+    <div className="min-h-screen pb-28 relative">
+      {/* Background Image Layer com Opacidade Suave e Blur Moderno */}
+      <div
+        className="fixed inset-0 -z-10 pointer-events-none opacity-20 dark:opacity-25 transition-opacity"
+        style={{
+          backgroundImage: `url('/assets/cover-cosmosia.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(40px)",
+        }}
+      />
       <header className="fixed top-0 left-0 right-0 z-40 border-b glass"
         style={{ borderRadius: 0, borderColor: "var(--line-1)" }}>
         <div className="mx-auto flex h-14 max-w-[820px] items-center justify-between px-5">

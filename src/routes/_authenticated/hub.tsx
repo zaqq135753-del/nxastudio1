@@ -54,7 +54,7 @@ import roteiroiaCover from "@/assets/cover-roteiroia.jpg";
 const COVERS: Record<string, string> = {
   saboria: saboriaCover, fitia: fitiaCover, granaia: granaiaCover, glowia: glowiaCover,
   petia: petiaCover, socialia: socialiaCover, fluencyia: fluencyiaCover, styleia: styleiaCover,
-  cosmosia: cosmosiaCover, roteiroia: roteiroiaCover,
+  studyia: cosmosiaCover, roteiroia: roteiroiaCover,
 };
 
 export const Route = createFileRoute("/_authenticated/hub")({
