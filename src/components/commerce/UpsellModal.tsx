@@ -17,9 +17,7 @@ export function UpsellModal({ slug, open, onOpenChange, onConfirm, onSkip, busy 
   if (!p) return null;
 
   function handleGoSharkbot() {
-    const checkoutUrl = slug === "studyia"
-      ? "https://paylume.fans/c/nxa-estudantil"
-      : "https://paylume.fans/c/nxa-studio";
+    const checkoutUrl = "https://paylume.fans/c/nxa-studio";
     window.location.href = checkoutUrl;
   }
 
@@ -56,10 +54,10 @@ export function UpsellModal({ slug, open, onOpenChange, onConfirm, onSkip, busy 
           <div className="mt-4 flex items-center justify-between rounded-2xl bg-neutral-900 p-4 border border-neutral-800">
             <div>
               <span className="text-[10px] uppercase font-bold text-neutral-400 block">Investimento no ENEM</span>
-              <span className="text-xs text-emerald-400 font-extrabold">Desconto de 50% Aplicado</span>
+              <span className="text-xs text-emerald-400 font-extrabold">Preço Promocional</span>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-black text-amber-400">R$ 14,90</span>
+              <span className="text-2xl font-black text-amber-400">R$ 29,90</span>
               <span className="text-[10px] text-neutral-400 block">/mês no PIX</span>
             </div>
           </div>
@@ -73,7 +71,7 @@ export function UpsellModal({ slug, open, onOpenChange, onConfirm, onSkip, busy 
             className="btn-primary flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-sm font-black text-white transition transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-emerald-950/50 border border-emerald-400/30"
           >
             <Sparkles size={20} className="animate-spin text-amber-300" />
-            GARANTIR ACESSO POR R$ 14,90
+            GARANTIR ACESSO POR R$ 29,90
           </button>
           <button
             type="button"

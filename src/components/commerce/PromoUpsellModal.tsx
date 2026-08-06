@@ -8,7 +8,7 @@ type Props = {
   checkoutUrl?: string;
 };
 
-export function PromoUpsellModal({ open, onOpenChange, checkoutUrl = "https://paylume.fans/c/nxa-estudantil" }: Props) {
+export function PromoUpsellModal({ open, onOpenChange, checkoutUrl = "https://paylume.fans/c/nxa-studio" }: Props) {
   const [timeLeft, setTimeLeft] = useState(599); // 09:59 mins
 
   useEffect(() => {
@@ -56,11 +56,11 @@ export function PromoUpsellModal({ open, onOpenChange, checkoutUrl = "https://pa
           {/* Comparativo de Preço */}
           <div className="my-5 rounded-2xl bg-neutral-800/80 p-4 border border-neutral-700/50 flex items-center justify-between">
             <div className="text-left">
-              <span className="text-[11px] text-neutral-400 line-through block">De R$ 29,90/mês</span>
+              <span className="text-[11px] text-neutral-400 line-through block">De R$ 45,90/mês</span>
               <span className="text-xs text-emerald-400 font-bold">Por apenas</span>
             </div>
             <div className="text-right">
-              <span className="text-3xl font-extrabold text-white">R$ 14,90</span>
+              <span className="text-3xl font-extrabold text-white">R$ 29,90</span>
               <span className="text-[10px] text-neutral-400 block">/mês no PIX ou Cartão</span>
             </div>
           </div>
@@ -71,7 +71,7 @@ export function PromoUpsellModal({ open, onOpenChange, checkoutUrl = "https://pa
               onClick={handleBuy}
               className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-sm font-extrabold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl shadow-lg shadow-emerald-900/30 transition transform active:scale-95"
             >
-              Garantir Acesso Ilimitado por R$ 14,90 <ArrowRight size={18} />
+              Garantir Acesso Ilimitado por R$ 29,90 <ArrowRight size={18} />
             </button>
 
             <button

@@ -1,10 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { createFileRoute } from "@tanstack/react-start";
+import { useState, useEffect, useRef } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { analyzeAudioExplanation, type AudioAnalysis } from "@/lib/estudantil.functions";
-import { Mic, Square, Play, Sparkles, CheckCircle2, AlertCircle, Volume2, History, Trash2 } from "lucide-react";
+import { getAudioHistory, saveAudioAnalysis, clearAudioHistory } from "@/lib/audio.functions";
+import { Mic, Square, Play, Sparkles, CheckCircle2, AlertCircle, Volume2, History, Trash2, Activity } from "lucide-react";
 import { toast } from "sonner";
+
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 
 export const Route = createFileRoute("/_authenticated/apps/studyia/audio")({
   component: AudioPage,
@@ -28,61 +36,156 @@ export function AudioPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AudioAnalysis | null>(null);
   const [history, setHistory] = useState<AudioEntry[]>([]);
+  
+  // Audio Visualizer State
+  const [audioData, setAudioData] = useState<number[]>(new Array(30).fill(0));
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const animationFrameRef = useRef<number>(0);
+  const recognitionRef = useRef<any>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const runAnalysis = useServerFn(analyzeAudioExplanation);
+  const fetchHistory = useServerFn(getAudioHistory);
+  const clearDbHistory = useServerFn(clearAudioHistory);
+  const saveDbAnalysis = useServerFn(saveAudioAnalysis);
 
   useEffect(() => {
-    const saved = localStorage.getItem("nxa_study_audio_history");
-    if (saved) {
-      try { setHistory(JSON.parse(saved)); } catch {}
-    }
-  }, []);
+    fetchHistory()
+      .then((data: any) => setHistory(data))
+      .catch(() => {});
+  }, [fetchHistory]);
 
-  function saveToHistory(entry: AudioAnalysis) {
-    const newEntry: AudioEntry = {
-      id: Date.now().toString(),
-      topic: topic || "Explicação de Estudos",
-      transcript,
-      score: entry.score,
-      date: new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }),
-      accuratePoints: entry.accuratePoints,
-      missingConcepts: entry.missingConcepts,
-      aiAdvice: entry.aiAdvice,
-    };
-    const updated = [newEntry, ...history];
-    setHistory(updated);
-    localStorage.setItem("nxa_study_audio_history", JSON.stringify(updated));
+  async function saveToHistory(entry: AudioAnalysis) {
+    try {
+      await saveDbAnalysis({ data: { topic: topic || "Explicação de Estudos", transcript, analysis: entry } });
+      const updated = await fetchHistory();
+      setHistory(updated as any);
+    } catch (e) {
+      toast.error("Erro ao salvar no histórico do banco.");
+    }
   }
 
-  function clearHistory() {
-    setHistory([]);
-    localStorage.removeItem("nxa_study_audio_history");
-    toast.info("Histórico de áudios limpo.");
+  async function clearHistory() {
+    try {
+      await clearDbHistory();
+      setHistory([]);
+      toast.info("Histórico de áudios limpo do banco de dados.");
+    } catch (e) {
+      toast.error("Erro ao limpar histórico.");
+    }
+  }
+
+  async function startRecording() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const audioCtx = new AudioContext();
+      audioContextRef.current = audioCtx;
+      
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      analyserRef.current = analyser;
+
+      const source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+      sourceRef.current = source;
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      const updateVisualizer = () => {
+        if (!analyserRef.current) return;
+        analyserRef.current.getByteFrequencyData(dataArray);
+        const step = Math.floor(dataArray.length / 30);
+        const newAudioData = [];
+        for (let i = 0; i < 30; i++) {
+          newAudioData.push(dataArray[i * step] || 0);
+        }
+        setAudioData(newAudioData);
+        animationFrameRef.current = requestAnimationFrame(updateVisualizer);
+      };
+      updateVisualizer();
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'pt-BR';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        let fullText = "";
+
+        recognition.onresult = (event: any) => {
+          let interimTranscript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              fullText += event.results[i][0].transcript + " ";
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          setTranscript(fullText + interimTranscript);
+        };
+
+        recognition.onerror = (event: any) => {
+          console.error("Speech recognition error", event.error);
+        };
+
+        recognition.start();
+        recognitionRef.current = recognition;
+      } else {
+        toast.warning("Seu navegador não suporta transcrição de voz nativa. Use o Chrome ou Edge.");
+      }
+
+      setIsRecording(true);
+      setTranscript("");
+      setResult(null);
+      toast.info("Gravação iniciada! Pode falar...");
+    } catch (err) {
+      toast.error("Erro ao acessar microfone. Verifique as permissões do seu navegador.");
+    }
+  }
+
+  function stopRecording() {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setAudioData(new Array(30).fill(0));
+    setIsRecording(false);
+    toast.success("Gravação concluída!");
   }
 
   function toggleRecord() {
-    if (!isRecording) {
-      setIsRecording(true);
-      toast.info("Gravação iniciada... Fale sua explicação em voz alta!");
-      setTimeout(() => {
-        setIsRecording(false);
-        setTranscript("A Revolução Industrial começou na Inglaterra por causa da abundância de carvão mineral, capitalismo nascente e o êxodo rural causado pelos cercamentos das terras.");
-        toast.success("Áudio gravado e transcrito pela IA!");
-      }, 4000);
-    } else {
-      setIsRecording(false);
-    }
+    if (isRecording) stopRecording();
+    else startRecording();
   }
 
   async function handleAnalyze() {
     if (!topic.trim()) return toast.error("Informe o tema da sua explicação.");
     if (!transcript.trim()) return toast.error("Grave sua explicação em áudio primeiro.");
 
+    if (isRecording) stopRecording();
+
     setLoading(true);
     try {
       const res = await runAnalysis({ data: { topic, transcript } });
       setResult(res);
-      saveToHistory(res);
+      await saveToHistory(res);
       toast.success("Análise de Feynman concluída e salva no banco!");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erro na análise.");
@@ -111,19 +214,39 @@ export function AudioPage() {
         />
 
         {/* Audio Recording Controls */}
-        <div className="mb-4 flex flex-col items-center justify-center rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 p-6 text-center">
+        <div className="mb-4 flex flex-col items-center justify-center rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 p-6 text-center transition-all">
+          
+          {isRecording && (
+            <div className="mb-6 flex h-16 w-full max-w-sm items-center justify-center gap-1 rounded-xl bg-neutral-900 px-4 py-2 shadow-inner">
+              {audioData.map((val, i) => {
+                const height = Math.max(4, (val / 255) * 100);
+                return (
+                  <div
+                    key={i}
+                    className="w-1.5 rounded-full bg-indigo-500 transition-all duration-75"
+                    style={{ height: `${height}%` }}
+                  />
+                );
+              })}
+            </div>
+          )}
+
           <button
             onClick={toggleRecord}
-            className={`flex h-16 w-16 items-center justify-center rounded-full transition ${
+            className={`flex h-16 w-16 items-center justify-center rounded-full transition-transform active:scale-95 shadow-lg ${
               isRecording
-                ? "bg-red-600 text-white animate-pulse"
-                : "bg-indigo-600 text-white hover:bg-indigo-500"
+                ? "bg-red-500 hover:bg-red-600 text-white animate-pulse shadow-red-500/40"
+                : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/40"
             }`}
           >
-            {isRecording ? <Square size={24} /> : <Mic size={24} />}
+            {isRecording ? <Square size={24} fill="currentColor" /> : <Mic size={24} />}
           </button>
-          <p className="mt-3 text-xs font-medium text-neutral-500">
-            {isRecording ? "Gravando sua voz... (Fale por até 2 minutos)" : "Clique no microfone para falar e gravar sua aula"}
+          <p className="mt-4 text-xs font-medium text-neutral-500 flex items-center justify-center gap-2">
+            {isRecording ? (
+              <><Activity size={14} className="text-red-500 animate-pulse" /> Gravando e transcrevendo em tempo real... (Toque para parar)</>
+            ) : (
+              "Clique no microfone para falar e gravar sua aula"
+            )}
           </p>
         </div>
 
