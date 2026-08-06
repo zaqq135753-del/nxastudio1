@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { findApp } from "@/apps/registry";
 import { VoiceAssistant } from "@/components/voice/VoiceAssistant";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { useServerFn } from "@tanstack/react-start";
 import { pingActivity } from "@/lib/streaks.functions";
 
@@ -95,6 +96,7 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
               🏆 Feed
             </Link>
             <span className="chip">✨ IA</span>
+            <ThemeToggle />
             <button onClick={signOut} title="Sair"
               className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full"
               style={{ background: "var(--n-100)" }}>
