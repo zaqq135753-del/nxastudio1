@@ -2,10 +2,10 @@ import { Sparkles, ArrowRight, ChefHat, Dumbbell, Wallet, Languages, Tag, Zap, F
 import { Link } from "@tanstack/react-router";
 
 const ALL_APPS = [
-  { slug: "saboria", name: "NXA Chef", desc: "Receitas por foto", icon: ChefHat, tag: "50% OFF", color: "text-amber-400" },
-  { slug: "fitia", name: "NXA Fit", desc: "Treinos e dieta com IA", icon: Dumbbell, tag: "R$ 14,90", color: "text-emerald-400" },
-  { slug: "granaia", name: "NXA Grana", desc: "Controle financeiro", icon: Wallet, tag: "VIP DESCONTO", color: "text-blue-400" },
-  { slug: "fluencyia", name: "NXA Fluency", desc: "Inglês 24h por voz", icon: Languages, tag: "BÔNUS 50%", color: "text-purple-400" },
+  { slug: "saboria", name: "NXA Chef", desc: "Receitas por foto", icon: ChefHat, tag: "R$ 29,90", color: "text-amber-400" },
+  { slug: "fitia", name: "NXA Fit", desc: "Treinos e dieta com IA", icon: Dumbbell, tag: "R$ 29,90", color: "text-emerald-400" },
+  { slug: "granaia", name: "NXA Grana", desc: "Controle financeiro", icon: Wallet, tag: "R$ 29,90", color: "text-blue-400" },
+  { slug: "fluencyia", name: "NXA Fluency", desc: "Inglês 24h por voz", icon: Languages, tag: "R$ 29,90", color: "text-purple-400" },
 ];
 
 export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
@@ -35,14 +35,14 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
             <div>
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/30 animate-pulse">
-                  <Flame size={12} className="animate-bounce" /> PASSAPORTE NXA
+                  <Flame size={12} className="animate-bounce" /> OFERTA EXCLUSIVA ALUNOS
                 </span>
                 <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20 animate-pulse">
-                  50% OFF LIBERADO
+                  R$ 29,90 / MÊS CADA
                 </span>
               </div>
               <h4 className="text-sm sm:text-base font-black text-white tracking-tight mt-1 flex items-center gap-1.5">
-                Desdestrave Todas as Nossas IAs por R$ 14,90!
+                Outras IAs de <span className="line-through text-neutral-400 font-bold">R$ 45,90</span> por apenas <span className="text-emerald-400 font-extrabold">R$ 29,90</span> cada!
               </h4>
             </div>
           </div>
