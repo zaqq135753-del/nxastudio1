@@ -12,7 +12,7 @@ const APPS_INDEX = [
   { slug: "socialia",  name: "NXA Social",  route: "/apps/socialia",  about: "posts, legendas, hashtags, calendário" },
   { slug: "fluencyia", name: "NXA Lingua",  route: "/apps/fluencyia", about: "aprender idiomas, conversar, vocabulário" },
   { slug: "styleia",   name: "NXA Style",   route: "/apps/styleia",   about: "estilo pessoal, looks, guarda-roupa" },
-  { slug: "cosmosia",  name: "NXA Cosmos",  route: "/apps/cosmosia",  about: "astrologia, mapa, tarô, horóscopo" },
+  { slug: "cosmosia",  name: "NXA Estudantil",  route: "/apps/cosmosia",  about: "ENEM, vestibulares, redação nota 1000, simulados, método feynman" },
   { slug: "roteiroia", name: "NXA Travel",  route: "/apps/roteiroia", about: "viagens, roteiros, destinos" },
 ];
 

@@ -72,10 +72,10 @@ const P: Record<string, Persona> = {
     loading: ["Abrindo o armário…", "Combinando peças…", "Testando acessórios…"],
   },
   cosmosia: {
-    slug: "cosmosia", name: "Cosmos", emoji: "🌌",
-    tone: "Mística e poética, mas com pés no chão.",
-    greeting: "As estrelas alinharam. Sobre o que quer saber?",
-    loading: ["Consultando os astros…", "Embaralhando o tarot…", "Ouvindo a lua…"],
+    slug: "cosmosia", name: "Estudantil", emoji: "🎓",
+    tone: "Mentor especialista em provas, redação Nota 1000 e técnicas de aprendizagem acelerada para o ENEM.",
+    greeting: "Como posso te ajudar nos estudos hoje?",
+    loading: ["Consultando o edital…", "Organizando o cronograma…", "Revisando conceitos…"],
   },
   roteiroia: {
     slug: "roteiroia", name: "Piloto", emoji: "✈️",
