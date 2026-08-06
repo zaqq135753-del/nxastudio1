@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { generateQuiz, type QuizQuestion } from "@/lib/estudantil.functions";
-import { ListChecks, Sparkles, CheckCircle2, XCircle } from "lucide-react";
+import { ListChecks, Sparkles, CheckCircle2, XCircle, Timer, Award } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/apps/cosmosia/simulado")({
@@ -18,6 +18,21 @@ function SimuladoPage() {
   const [questions, setQuestions] = useState<QuizQuestion[] | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(180 * 3); // 3 minutes per question (9 minutes)
+
+  useEffect(() => {
+    if (!questions || submitted || timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [questions, submitted, timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   const runQuiz = useServerFn(generateQuiz);
 
@@ -25,6 +40,7 @@ function SimuladoPage() {
     setLoading(true);
     setSubmitted(false);
     setUserAnswers({});
+    setTimeLeft(180 * 3);
     try {
       const data = await runQuiz({ data: { subject } });
       setQuestions(data);
@@ -41,15 +57,17 @@ function SimuladoPage() {
     setUserAnswers({ ...userAnswers, [questionId]: optIdx });
   }
 
+  const scoreCount = questions ? questions.filter(q => userAnswers[q.id] === q.correctIndex).length : 0;
+
   return (
     <AppShell appSlug="cosmosia">
       <ScreenHeader
-        title="Simulador Express ENEM"
-        subtitle="Treine com 3 a 5 questões por matéria com gabarito e explicação comentada na hora."
+        title="Simulador com Cronômetro do ENEM"
+        subtitle="Treine com 3 minutos por questão (ritmo oficial da banca) e receba o gabarito comentado da IA."
       />
 
       <div className="surface mb-6 p-5">
-        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/70">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
           Escolha a Matéria
         </label>
         <div className="mb-4 flex flex-wrap gap-2">
@@ -59,8 +77,8 @@ function SimuladoPage() {
               onClick={() => setSubject(sub)}
               className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
                 subject === sub
-                  ? "bg-indigo-600 text-white"
-                  : "bg-white/5 border border-white/10 text-white/70 hover:text-white"
+                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                  : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200"
               }`}
             >
               {sub}
@@ -71,15 +89,15 @@ function SimuladoPage() {
         <button
           onClick={handleStart}
           disabled={loading}
-          className="btn-primary flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
+          className="btn-primary flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
-              <Sparkles size={16} className="animate-spin" /> Gerando questões de {subject}…
+              <Sparkles size={16} className="animate-spin" /> Gerando simulado de {subject}…
             </>
           ) : (
             <>
-              <ListChecks size={16} /> Iniciar Simulado Express
+              <ListChecks size={16} /> Iniciar Simulado (3 min/questão)
             </>
           )}
         </button>
@@ -87,23 +105,35 @@ function SimuladoPage() {
 
       {questions && (
         <div className="fade-up space-y-6">
+          {/* Header Bar with Timer & Score */}
+          <div className="surface flex items-center justify-between p-4">
+            <div className="flex items-center gap-2 font-mono font-bold text-amber-600 dark:text-amber-400">
+              <Timer size={18} /> Tempo de Prova: {formatTime(timeLeft)}
+            </div>
+            {submitted && (
+              <div className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
+                <Award size={18} /> Resultado: {scoreCount} / {questions.length} acertos
+              </div>
+            )}
+          </div>
+
           {questions.map((q) => {
             const isCorrect = userAnswers[q.id] === q.correctIndex;
             return (
-              <div key={q.id} className="surface rounded-xl border border-white/10 bg-white/5 p-5">
-                <div className="mb-3 text-xs font-bold uppercase text-indigo-400">Questão {q.id}</div>
-                <p className="mb-4 text-sm text-white/90 leading-relaxed font-medium">{q.question}</p>
+              <div key={q.id} className="surface p-5">
+                <div className="mb-3 text-xs font-bold uppercase text-neutral-500">Questão {q.id}</div>
+                <p className="mb-4 text-sm leading-relaxed font-medium">{q.question}</p>
 
                 <div className="space-y-2">
                   {q.options.map((opt, idx) => {
                     const selected = userAnswers[q.id] === idx;
-                    let style = "border-white/10 bg-white/5 text-white/80 hover:bg-white/10";
+                    let style = "border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 hover:bg-neutral-100";
 
                     if (submitted) {
-                      if (idx === q.correctIndex) style = "border-emerald-500/50 bg-emerald-950/30 text-emerald-300 font-semibold";
-                      else if (selected) style = "border-red-500/50 bg-red-950/30 text-red-300";
+                      if (idx === q.correctIndex) style = "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold";
+                      else if (selected) style = "border-red-500 bg-red-500/10 text-red-700 dark:text-red-300";
                     } else if (selected) {
-                      style = "border-indigo-500 bg-indigo-600/20 text-white font-semibold";
+                      style = "border-neutral-900 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold";
                     }
 
                     return (
@@ -113,16 +143,16 @@ function SimuladoPage() {
                         className={`w-full text-left p-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-between ${style}`}
                       >
                         <span>{opt}</span>
-                        {submitted && idx === q.correctIndex && <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />}
-                        {submitted && selected && idx !== q.correctIndex && <XCircle size={16} className="text-red-400 shrink-0" />}
+                        {submitted && idx === q.correctIndex && <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />}
+                        {submitted && selected && idx !== q.correctIndex && <XCircle size={16} className="text-red-500 shrink-0" />}
                       </button>
                     );
                   })}
                 </div>
 
                 {submitted && (
-                  <div className="mt-4 rounded-xl border border-indigo-500/20 bg-indigo-950/20 p-4 text-xs text-white/80 leading-relaxed">
-                    <span className="font-bold text-indigo-400">Gabarito Comentado: </span>
+                  <div className="mt-4 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-4 text-xs leading-relaxed">
+                    <span className="font-bold text-neutral-900 dark:text-white">Gabarito Comentado: </span>
                     {q.explanation}
                   </div>
                 )}
@@ -133,7 +163,7 @@ function SimuladoPage() {
           {!submitted && (
             <button
               onClick={() => setSubmitted(true)}
-              className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-500"
+              className="btn-primary w-full py-3"
             >
               Finalizar Simulado & Ver Gabarito
             </button>

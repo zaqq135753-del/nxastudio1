@@ -156,3 +156,39 @@ Responda ESTRITAMENTE em JSON:
 
     return parseJson<QuizQuestion[]>(raw);
   });
+
+export type AudioAnalysis = {
+  score: number;
+  accuratePoints: string[];
+  missingConcepts: string[];
+  aiAdvice: string;
+};
+
+export const analyzeAudioExplanation = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { topic: string; transcript: string }) => d)
+  .handler(async ({ data }) => {
+    const system = `Você é um professor e especialista pedagógico aplicando a Técnica de Feynman para o ENEM.
+O aluno gravou uma explicação em voz alta com as próprias palavras sobre o tema: "${data.topic}".
+Analise o texto transcrito da fala dele.
+
+Responda ESTRITAMENTE em JSON:
+{
+  "score": 8,
+  "accuratePoints": ["Ponto correto 1", "Ponto correto 2"],
+  "missingConcepts": ["Conceito esquecido 1", "Conceito esquecido 2"],
+  "aiAdvice": "Conselho pedagógico para aprimorar a memorização do aluno."
+}`;
+
+    const raw = await callGateway({
+      model: TEXT_MODEL,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: `Tema: ${data.topic}\nTranscrição da fala do aluno: "${data.transcript}"` },
+      ],
+      temperature: 0.5,
+      max_tokens: 1500,
+    });
+
+    return parseJson<AudioAnalysis>(raw);
+  });

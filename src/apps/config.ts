@@ -9,7 +9,7 @@ import {
   Sparkles, Camera, CalendarDays, HeartPulse, ShoppingBag,
   MessageCircle, MessageCircleHeart, ClipboardList, Utensils, GraduationCap,
   Refrigerator, PenLine, Hash, LineChart, Home, User, BookOpen, ListChecks,
-  Receipt, Target, Activity, Palette, Stars, Sparkle, Heart, Compass,
+  Receipt, Target, Activity, Palette, Stars, Sparkle, Heart, Compass, Mic,
   Route as RouteIcon, MapPin,
 } from "lucide-react";
 
@@ -367,6 +367,7 @@ const CFG: Record<string, AppConfig> = {
       { id: "plan", label: "Plano Reta Final", desc: "O que revisar dia a dia", icon: Target, to: "/apps/cosmosia/plano" },
       { id: "quiz", label: "Simulador Express", desc: "5 questões por matéria com gabarito", icon: ListChecks, to: "/apps/cosmosia/simulado" },
       { id: "cards", label: "Flashcards Rápidos", desc: "Fichas de memorização pro celular", icon: BookOpen, to: "/apps/cosmosia/flashcards", prime: true },
+      { id: "audio", label: "Caderno de Áudio (Feynman)", desc: "Grave sua voz e receba análise da IA", icon: Mic, to: "/apps/cosmosia/audio" },
       { id: "tracker", label: "Diagnóstico & NOTA", desc: "Evolução de desempenho e nota estimada", icon: LineChart, to: "/apps/cosmosia/diagnostico" },
     ],
     bottomNav: [
