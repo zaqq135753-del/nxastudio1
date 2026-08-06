@@ -46,6 +46,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
   function askAgent(prompt: string) {
     sessionStorage.setItem("nxa:agent:seed", prompt);
+    sessionStorage.setItem("nxa:agent:appSlug", slug);
     void navigate({ to: "/agente" });
   }
 

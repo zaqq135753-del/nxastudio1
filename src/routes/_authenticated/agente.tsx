@@ -30,9 +30,13 @@ function AgentePage() {
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [turns, loading]);
 
+  const [appSlug, setAppSlug] = useState<string>("cosmosia");
+
   // Seed vindo do Command Center (hub AICommandBar)
   useEffect(() => {
     const seed = sessionStorage.getItem("nxa:agent:seed");
+    const slug = sessionStorage.getItem("nxa:agent:appSlug");
+    if (slug) setAppSlug(slug);
     if (seed) {
       sessionStorage.removeItem("nxa:agent:seed");
       setInput(seed);
@@ -73,7 +77,7 @@ function AgentePage() {
   }
 
   return (
-    <AppShell>
+    <AppShell appSlug={appSlug}>
       <ScreenHeader
         title="NXA Agente"
         subtitle="Fale o que precisa. Eu proponho ações — você confirma."
