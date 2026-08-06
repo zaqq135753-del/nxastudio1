@@ -89,11 +89,11 @@ function SimuladoPage() {
         <button
           onClick={handleStart}
           disabled={loading}
-          className="btn-primary flex items-center justify-center gap-2"
+          className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto"
         >
           {loading ? (
             <>
-              <Sparkles size={16} className="animate-spin" /> Gerando simulado de {subject}…
+              <Sparkles size={16} className="animate-spin text-amber-400" /> Elaborando Caderno de Prova de {subject}…
             </>
           ) : (
             <>
@@ -102,6 +102,27 @@ function SimuladoPage() {
           )}
         </button>
       </div>
+
+      {loading && (
+        <div className="surface mb-6 p-8 text-center fade-up space-y-4">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+            <Sparkles size={28} className="animate-spin text-amber-400" />
+          </div>
+          <div>
+            <h4 className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+              Gerando Questões Inéditas de {subject}
+            </h4>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 max-w-sm mx-auto">
+              Nossa IA está selecionando questões no formato oficial da Banca do ENEM com gabarito comentado...
+            </p>
+          </div>
+          {/* Skeleton Pulse Rows */}
+          <div className="space-y-2 pt-2 max-w-md mx-auto">
+            <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded-full animate-pulse w-3/4 mx-auto" />
+            <div className="h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full animate-pulse w-1/2 mx-auto" />
+          </div>
+        </div>
+      )}
 
       {questions && (
         <div className="fade-up space-y-6">

@@ -114,7 +114,16 @@ export function parseJson<T>(raw: string): T {
   const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
   const start = cleaned.indexOf("{");
   const end = cleaned.lastIndexOf("}");
-  const slice = start >= 0 && end > start ? cleaned.slice(start, end + 1) : cleaned;
+  const startArr = cleaned.indexOf("[");
+  const endArr = cleaned.lastIndexOf("]");
+  
+  let slice = cleaned;
+  if (start >= 0 && end > start && (startArr === -1 || start < startArr)) {
+    slice = cleaned.slice(start, end + 1);
+  } else if (startArr >= 0 && endArr > startArr) {
+    slice = cleaned.slice(startArr, endArr + 1);
+  }
+
   const sanitized = slice
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
     .replace(/,\s*([}\]])/g, "$1");
@@ -122,7 +131,7 @@ export function parseJson<T>(raw: string): T {
     try { return JSON.parse(attempt) as T; } catch { /* try next */ }
   }
   console.error("[parseJson] inválido:", raw.slice(0, 600));
-  throw new Error("Ainda estou preparando suas sugestões. Toque em atualizar em alguns segundos.");
+  throw new Error("A IA está processando seu simulado. Clique novamente para gerar em instantes.");
 }
 
 
