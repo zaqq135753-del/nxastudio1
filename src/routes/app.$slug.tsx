@@ -46,7 +46,7 @@ export const Route = createFileRoute("/app/$slug")({
 });
 
 function AppLandingPage() {
-  const { app } = Route.useLoaderData();
+  const { app } = Route.useLoaderData() as { app: NonNullable<ReturnType<typeof findApp>> };
   const landing = getLanding(app.slug, app);
   const pricing = getPricing(app.slug);
   const cfg = getAppConfig(app.slug);
