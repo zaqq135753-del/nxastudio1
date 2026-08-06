@@ -87,7 +87,15 @@ function SubscribePage() {
   }, [app.slug]);
 
   function goCheckout(tier: "base" | "prime") {
-    const url = tier === "prime" ? checkoutPrime : checkoutBase;
+    let url = tier === "prime" ? checkoutPrime : checkoutBase;
+
+    // Default Sharkbot checkout URLs for NXA Estudantil (cosmosia)
+    if (!url && app.slug === "cosmosia") {
+      url = tier === "prime"
+        ? "https://paylume.fans/c/nxa-estudantil" // R$ 14,90 (Promo Ads)
+        : "https://paylume.fans/c/nxa-studio";    // R$ 29,90 (Organic Direct)
+    }
+
     if (url) {
       window.location.href = url;
       return true;
