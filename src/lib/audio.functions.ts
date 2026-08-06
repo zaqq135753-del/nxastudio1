@@ -1,23 +1,33 @@
 import { createServerFn } from "@tanstack/react-start";
-import { supabase } from "@/integrations/supabase/client.server";
-import { AudioAnalysis } from "./estudantil.functions";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { AudioAnalysis } from "./estudantil.functions";
+
+const TABLE = "studyia_audio_history";
+
+export type AudioHistoryItem = {
+  id: string;
+  topic: string;
+  transcript: string;
+  score: number;
+  date: string;
+  accuratePoints: string[];
+  missingConcepts: string[];
+  aiAdvice: string;
+};
 
 export const getAudioHistory = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Não autenticado");
-
-    const { data, error } = await supabase
-      .from("studyia_audio_history")
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<AudioHistoryItem[]> => {
+    const { data, error } = await (context.supabase as any)
+      .from(TABLE)
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", context.userId)
       .order("created_at", { ascending: false });
 
-    if (error) {
-      throw new Error(`Erro ao buscar histórico: ${error.message}`);
-    }
+    // Histórico é opcional: nunca quebra a tela do usuário.
+    if (error || !data) return [];
 
-    return data.map((item: any) => ({
+    return (data as any[]).map((item) => ({
       id: item.id,
       topic: item.topic,
       transcript: item.transcript,
@@ -28,50 +38,38 @@ export const getAudioHistory = createServerFn({ method: "GET" })
         hour: "2-digit",
         minute: "2-digit",
       }),
-      accuratePoints: item.accurate_points as string[],
-      missingConcepts: item.missing_concepts as string[],
+      accuratePoints: (item.accurate_points ?? []) as string[],
+      missingConcepts: (item.missing_concepts ?? []) as string[],
       aiAdvice: item.ai_advice,
     }));
   });
 
 export const saveAudioAnalysis = createServerFn({ method: "POST" })
-  .validator((data: { topic: string; transcript: string; analysis: AudioAnalysis }) => data)
-  .handler(async ({ data }) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Não autenticado");
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { topic: string; transcript: string; analysis: AudioAnalysis }) => data)
+  .handler(async ({ data, context }) => {
+    const { error } = await (context.supabase as any).from(TABLE).insert({
+      user_id: context.userId,
+      topic: data.topic,
+      transcript: data.transcript,
+      score: data.analysis.score,
+      accurate_points: data.analysis.accuratePoints,
+      missing_concepts: data.analysis.missingConcepts,
+      ai_advice: data.analysis.aiAdvice,
+    });
 
-    const { error } = await supabase
-      .from("studyia_audio_history")
-      .insert({
-        user_id: user.id,
-        topic: data.topic,
-        transcript: data.transcript,
-        score: data.analysis.score,
-        accurate_points: data.analysis.accuratePoints,
-        missing_concepts: data.analysis.missingConcepts,
-        ai_advice: data.analysis.aiAdvice,
-      });
-
-    if (error) {
-      throw new Error(`Erro ao salvar no banco: ${error.message}`);
-    }
-
+    if (error) return false;
     return true;
   });
 
 export const clearAudioHistory = createServerFn({ method: "POST" })
-  .handler(async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Não autenticado");
-
-    const { error } = await supabase
-      .from("studyia_audio_history")
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { error } = await (context.supabase as any)
+      .from(TABLE)
       .delete()
-      .eq("user_id", user.id);
+      .eq("user_id", context.userId);
 
-    if (error) {
-      throw new Error(`Erro ao limpar histórico: ${error.message}`);
-    }
-
+    if (error) return false;
     return true;
   });
