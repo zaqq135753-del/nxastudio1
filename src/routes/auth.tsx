@@ -32,7 +32,7 @@ function AuthPage() {
     if (slug && app) {
       try { await claim({ data: { slug: slug as never } }); } catch { /* noop */ }
       localStorage.removeItem(INTENT_KEY);
-      window.location.href = app.route;
+      navigate({ to: app.route as any, replace: true });
       return;
     }
     navigate({ to: "/hub", replace: true });

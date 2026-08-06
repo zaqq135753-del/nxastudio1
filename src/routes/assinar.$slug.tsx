@@ -56,6 +56,12 @@ function SubscribePage() {
   async function afterAuth() {
     try { await claim({ data: { slug: app.slug as never, tier: "base" } }); } catch { /* noop */ }
     localStorage.removeItem(INTENT_KEY);
+
+    const seenKey = `nxa_upsell_seen_${app.slug}`;
+    if (sessionStorage.getItem(seenKey)) {
+      navigate({ to: app.route as any, replace: true });
+      return;
+    }
     setUpsellOpen(true); // oferece Prime antes de redirecionar
   }
 
@@ -63,11 +69,13 @@ function SubscribePage() {
     setClaimBusy(true);
     try { await claim({ data: { slug: app.slug as never, tier: "prime" } }); } catch { /* noop */ }
     setClaimBusy(false);
-    window.location.href = app.route;
+    sessionStorage.setItem(`nxa_upsell_seen_${app.slug}`, "1");
+    navigate({ to: app.route as any, replace: true });
   }
 
   function skipPrime() {
-    window.location.href = app.route;
+    sessionStorage.setItem(`nxa_upsell_seen_${app.slug}`, "1");
+    navigate({ to: app.route as any, replace: true });
   }
 
   useEffect(() => {

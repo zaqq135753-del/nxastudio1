@@ -43,6 +43,7 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
   async function signOut() {
     await qc.cancelQueries();
     qc.clear();
+    sessionStorage.clear();
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   }
@@ -52,10 +53,11 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
   const backLabel = atAppRoot ? "Hub" : "Voltar";
 
   function handleBack(e: React.MouseEvent) {
-    // If user has history within this app, prefer real back to preserve scroll/state
-    if (!atAppRoot && window.history.length > 1) {
-      e.preventDefault();
-      window.history.back();
+    e.preventDefault();
+    if (atAppRoot) {
+      navigate({ to: "/hub" });
+    } else {
+      navigate({ to: (app?.route as any) ?? "/hub" });
     }
   }
 
