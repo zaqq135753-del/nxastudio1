@@ -26,18 +26,21 @@ export function AppHero({ app, status, trialDaysLeft, action }: Props) {
 
   return (
     <header className="mb-6 fade-up">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:flex sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <div className="edition-tag mb-2">{app.name}</div>
-          <h1 className="truncate text-[26px] font-black tracking-tight sm:text-[32px]">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 text-[11px] font-black uppercase text-indigo-400 tracking-wider mb-2">
+            ✨ {app.name}
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight text-neutral-900 dark:text-white">
             {app.heroTitle}
           </h1>
-          <p className="mt-1.5 text-[15px] leading-snug" style={{ color: "var(--muted-foreground)" }}>
+          <p className="mt-2 text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-neutral-300 font-medium max-w-2xl">
             {app.heroSubtitle}
           </p>
         </div>
         {status && (
-          <span className="chip chip-neutral shrink-0 whitespace-nowrap">
+          <span className="inline-flex items-center gap-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 text-xs font-bold text-neutral-900 dark:text-white shadow-lg shrink-0 self-start">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
             {STATUS_LABEL[status]}{trialSuffix}
           </span>
         )}
