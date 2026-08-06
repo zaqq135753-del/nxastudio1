@@ -7,7 +7,7 @@ import { PenLine, Sparkles, CheckCircle2, AlertCircle, Award, Camera, Upload, Fi
 import { PromoUpsellModal } from "@/components/commerce/PromoUpsellModal";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/redacao")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/redacao")({
   component: RedacaoPage,
 });
 
@@ -72,7 +72,7 @@ function RedacaoPage() {
   }
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Corretor de Redação ENEM (Texto, Foto ou PDF)"
         subtitle="Digite, tire foto da folha manuscrita ou envie um PDF para receber a nota oficial em segundos."

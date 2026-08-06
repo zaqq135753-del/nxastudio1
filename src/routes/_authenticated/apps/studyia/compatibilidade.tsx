@@ -6,7 +6,7 @@ import { compatibility, type Compatibility } from "@/lib/cosmos.functions";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/compatibilidade")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/compatibilidade")({
   component: Compat,
 });
 

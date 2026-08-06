@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const VALID_SLUGS = ["saboria","socialia","petia","fluencyia","glowia","granaia","fitia","styleia","cosmosia","roteiroia"] as const;
+const VALID_SLUGS = ["saboria","socialia","petia","fluencyia","glowia","granaia","fitia","styleia","studyia","roteiroia"] as const;
 
 export const claimTrial = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -67,7 +67,7 @@ export function isEntitled(entitlements: Entitlement[], slug: string): boolean {
 }
 
 export function isPrime(entitlements: Entitlement[], slug: string): boolean {
-  if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true" && slug === "cosmosia") {
+  if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true" && slug === "studyia") {
     return true;
   }
   const e = findEntitlement(entitlements, slug);

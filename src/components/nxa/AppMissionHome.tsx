@@ -73,7 +73,7 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
           action={showVoice ? <div className="flex justify-start"><RealtimeCallButton slug={slug} /></div> : undefined}
         />
 
-        {slug === "cosmosia" && (
+        {slug === "studyia" && (
           <div className="fade-up">
             <StudyIncentiveTicker />
             <VipCodeRedeem />

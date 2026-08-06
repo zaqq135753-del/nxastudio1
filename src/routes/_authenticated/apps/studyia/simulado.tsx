@@ -6,7 +6,7 @@ import { generateQuiz, type QuizQuestion } from "@/lib/estudantil.functions";
 import { ListChecks, Sparkles, CheckCircle2, XCircle, Timer, Award } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/simulado")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/simulado")({
   component: SimuladoPage,
 });
 
@@ -60,7 +60,7 @@ function SimuladoPage() {
   const scoreCount = questions ? questions.filter(q => userAnswers[q.id] === q.correctIndex).length : 0;
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Simulador com Cronômetro do ENEM"
         subtitle="Treine com 3 minutos por questão (ritmo oficial da banca) e receba o gabarito comentado da IA."

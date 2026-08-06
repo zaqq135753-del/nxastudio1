@@ -17,7 +17,7 @@ export function UpsellModal({ slug, open, onOpenChange, onConfirm, onSkip, busy 
   if (!p) return null;
 
   function handleGoSharkbot() {
-    const checkoutUrl = slug === "cosmosia"
+    const checkoutUrl = slug === "studyia"
       ? "https://paylume.fans/c/nxa-estudantil"
       : "https://paylume.fans/c/nxa-studio";
     window.location.href = checkoutUrl;

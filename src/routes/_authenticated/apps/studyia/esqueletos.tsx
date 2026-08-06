@@ -6,7 +6,7 @@ import { generateSkeleton, type EssaySkeleton } from "@/lib/estudantil.functions
 import { Sparkle, Sparkles, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/esqueletos")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/esqueletos")({
   component: EsqueletosPage,
 });
 
@@ -50,7 +50,7 @@ function EsqueletosPage() {
   }
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Esqueletos Coringa de Redação"
         subtitle="Gere a estrutura pronta Nota 900+ completa para qualquer tema com repertórios já encaixados."

@@ -6,7 +6,7 @@ import { generateNatalChart, getCosmosProfile, type NatalChart } from "@/lib/cos
 import { Stars } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/mapa")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/mapa")({
   component: MapaPage,
 });
 

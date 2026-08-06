@@ -319,9 +319,9 @@ export const PRICING: Record<string, AppPricing> = {
     ],
   }),
 
-  cosmosia: P({
+  studyia: P({
     base: {
-      name: "NXA Estudantil",
+      name: "NXA Study",
       priceLabel: "R$ 29,90 / mês",
       monthly: 29.9,
       tagline: "Sua aprovação no ENEM com auxílio de Inteligência Artificial.",
@@ -334,7 +334,7 @@ export const PRICING: Record<string, AppPricing> = {
       ],
     },
     prime: {
-      name: "NXA Estudantil Oferta Especial",
+      name: "NXA Study Oferta Especial",
       priceLabel: "R$ 14,90 / mês",
       monthly: 14.9,
       tagline: "Oferta exclusiva de anúncios com acesso total ilimitado.",
@@ -346,7 +346,7 @@ export const PRICING: Record<string, AppPricing> = {
         "Diagnóstico de Nota TRI do SISU",
       ],
     },
-    primeCopy: "Garanta seu acesso ao NXA Estudantil com desconto exclusivo de anúncios por apenas R$ 14,90!",
+    primeCopy: "Garanta seu acesso ao NXA Study com desconto exclusivo por apenas R$ 14,90!",
     compare: [
       { feature: "Corretor de Redação IA", base: true, prime: true },
       { feature: "Esqueletos Coringa", base: true, prime: true },

@@ -4,7 +4,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { LineChart, Award, TrendingUp, Sparkles, GraduationCap, Target, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/diagnostico")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/diagnostico")({
   component: DiagnosticoPage,
 });
 
@@ -25,7 +25,7 @@ export function DiagnosticoPage() {
   const chancePercentage = Math.min(99, Math.max(20, Math.round(50 + scoreDiff * 1.5)));
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Diagnóstico & Simulador de Aprovação SISU"
         subtitle="Acompanhe sua nota TRI estimada e descubra sua porcentagem de chance de passar na faculdade dos sonhos!"

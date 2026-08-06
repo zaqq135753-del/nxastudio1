@@ -5,7 +5,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { getCosmosProfile, upsertCosmosProfile } from "@/lib/cosmos.functions";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/perfil")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/perfil")({
   component: Perfil,
 });
 

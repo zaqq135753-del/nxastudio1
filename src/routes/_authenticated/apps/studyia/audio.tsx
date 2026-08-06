@@ -6,7 +6,7 @@ import { analyzeAudioExplanation, type AudioAnalysis } from "@/lib/estudantil.fu
 import { Mic, Square, Play, Sparkles, CheckCircle2, AlertCircle, Volume2, History, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/audio")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/audio")({
   component: AudioPage,
 });
 
@@ -92,7 +92,7 @@ export function AudioPage() {
   }
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Caderno de Áudio & Banco Feynman"
         subtitle="Grave você mesmo explicando a matéria em voz alta. A IA analisa sua fala e salva todas as suas aulas gravadas!"

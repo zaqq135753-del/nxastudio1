@@ -6,7 +6,7 @@ import { askTutor } from "@/lib/estudantil.functions";
 import { MessageCircle, Send, Sparkles, User, Bot, Camera, Image, FileDown } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/tutor")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/tutor")({
   component: TutorPage,
 });
 
@@ -66,26 +66,8 @@ export function TutorPage() {
     reader.readAsDataURL(file);
   }
 
-  async function handleSend() {
-    if (!input.trim() || loading) return;
-
-    const userQuery = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
-    setLoading(true);
-
-    try {
-      const res = await runTutor({ data: { question: userQuery } });
-      setMessages((prev) => [...prev, { role: "assistant", content: res.answer }]);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erro ao responder.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Tutor IA 24h & Resolvedor por Foto"
         subtitle="Tire foto da folha/apostila ou cole o enunciado de qualquer questão para receber a resolução comentada passo a passo."

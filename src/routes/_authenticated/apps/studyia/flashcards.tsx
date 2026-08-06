@@ -4,7 +4,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { BookOpen, RotateCcw, Check, Flame, Sparkles, Brain, Trophy, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/flashcards")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/flashcards")({
   component: FlashcardsPage,
 });
 
@@ -64,7 +64,7 @@ export function FlashcardsPage() {
   }
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Flashcards 3D & Sistema Anki (SRS)"
         subtitle="Memorização científica por Repetição Espaçada com efeito de giro 3D no celular."

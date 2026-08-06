@@ -6,7 +6,7 @@ import { drawTarot, listTarotHistory, type TarotReading } from "@/lib/cosmos.fun
 import { Sparkle } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/tarot")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/tarot")({
   component: TarotPage,
 });
 

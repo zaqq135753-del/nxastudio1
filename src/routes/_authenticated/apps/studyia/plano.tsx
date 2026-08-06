@@ -4,7 +4,7 @@ import { AppShell, ScreenHeader } from "@/components/layout/AppShell";
 import { Target, CheckCircle2, Circle, BellCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/apps/cosmosia/plano")({
+export const Route = createFileRoute("/_authenticated/apps/studyia/plano")({
   component: PlanoPage,
 });
 
@@ -41,7 +41,7 @@ function PlanoPage() {
   }
 
   return (
-    <AppShell appSlug="cosmosia">
+    <AppShell appSlug="studyia">
       <ScreenHeader
         title="Plano Reta Final ENEM 2026"
         subtitle="Cronograma prático focado nos 20% do conteúdo que geram 80% das questões da prova."
