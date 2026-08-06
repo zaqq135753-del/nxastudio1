@@ -18,7 +18,13 @@ export async function callGateway(body: {
   response_format?: { type: "json_object" };
 }): Promise<string> {
   const openaiKey = process.env.OPENAI_API_KEY;
-  const useOpenAI = openaiKey && body.model.startsWith("openai/");
+  const lovableKey = process.env.LOVABLE_API_KEY;
+
+  const useOpenAI = Boolean(openaiKey);
+
+  if (!openaiKey && !lovableKey) {
+    throw new Error("OPENAI_API_KEY não configurada nas Variáveis de Ambiente.");
+  }
 
   const url = useOpenAI ? OPENAI_URL : GATEWAY_URL;
   const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -27,10 +33,9 @@ export async function callGateway(body: {
   if (useOpenAI) {
     headers["Authorization"] = `Bearer ${openaiKey}`;
     payload.model = body.model.replace(/^openai\//, "");
+    if (payload.model === "gpt-5-mini") payload.model = "gpt-4o-mini";
   } else {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("LOVABLE_API_KEY não configurada");
-    headers["Lovable-API-Key"] = key;
+    headers["Lovable-API-Key"] = lovableKey!;
   }
 
   // GPT-5 family (and o1/o3/gpt-4.1): use max_completion_tokens and no custom
