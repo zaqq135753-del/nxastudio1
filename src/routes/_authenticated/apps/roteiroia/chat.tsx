@@ -62,7 +62,7 @@ function ChatPage() {
                     background: m.role === "user" ? "var(--c-orange)" : "var(--n-100)",
                     color: m.role === "user" ? "#fff" : "var(--n-700)",
                   }}>
-                  <div className="whitespace-pre-wrap">{m.content}</div>
+                  <div className="whitespace-pre-wrap">{typeof m.content === "string" ? m.content : m.content.map((part) => (part.type === "text" ? part.text : "")).join("")}</div>
                 </div>
               </div>
             ))}

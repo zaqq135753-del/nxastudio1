@@ -57,25 +57,15 @@ export const getPricingOverrides = createServerFn({ method: "GET" }).handler(asy
   return (data ?? []) as PricingOverride[];
 });
 
-export const getPlatformSettings = createServerFn({ method: "GET" }).handler(async () => {
-  const { createClient } = await import("@supabase/supabase-js");
-  const url = process.env.SUPABASE_URL!;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY!;
-  const client = createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-    global: {
-      fetch: (input, init) => {
-        const h = new Headers(init?.headers);
-        if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
-        h.set("apikey", key);
-        return fetch(input, { ...init, headers: h });
-      },
-    },
+/** Admin-only read: platform settings contain internal flags/quotas and must never be public. */
+export const getPlatformSettings = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { data, error } = await context.supabase.from("platform_settings").select("*").order("key");
+    if (error) throw error;
+    return (data ?? []) as PlatformSetting[];
   });
-  const { data, error } = await client.from("platform_settings").select("*").order("key");
-  if (error) throw error;
-  return (data ?? []) as PlatformSetting[];
-});
 
 export const adminUpsertPricingOverride = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

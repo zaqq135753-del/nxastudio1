@@ -32,6 +32,31 @@ export function TutorPage() {
 
   const runTutor = useServerFn(askTutor);
 
+  async function handleSend() {
+    const question = input.trim();
+    if (!question || loading) return;
+
+    setInput("");
+    setMessages((prev) => [...prev, { role: "user", content: question }]);
+    setLoading(true);
+
+    try {
+      const res = await runTutor({ data: { question } });
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: res.answer ?? "Não consegui responder agora." },
+      ]);
+    } catch (err: any) {
+      toast.error(err?.message ?? "Erro ao falar com o tutor");
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Tive um problema para responder. Tente novamente." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>, isCamera = false) {
     const file = e.target.files?.[0];
     if (!file) return;

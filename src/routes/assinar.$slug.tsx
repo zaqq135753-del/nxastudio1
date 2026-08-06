@@ -38,7 +38,7 @@ export const Route = createFileRoute("/assinar/$slug")({
 });
 
 function SubscribePage() {
-  const { app } = Route.useLoaderData();
+  const { app } = Route.useLoaderData() as { app: NonNullable<ReturnType<typeof findApp>> };
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);

@@ -61,7 +61,11 @@ export const registerReferral = createServerFn({ method: "POST" })
       .from("affiliate_referrals").select("id").eq("referred_user_id", userId).maybeSingle();
     if (existing) return { ok: false, reason: "already_referred" };
 
-    const { data: aff } = await supabase
+    // Code -> owner resolution runs server-side with elevated privileges so that
+    // affiliate rows never need to be readable by other (or anonymous) users.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: aff } = await supabaseAdmin
       .from("affiliates").select("user_id").eq("code", code).maybeSingle();
     if (!aff) return { ok: false, reason: "invalid_code" };
     if (aff.user_id === userId) return { ok: false, reason: "self" };
@@ -74,9 +78,9 @@ export const registerReferral = createServerFn({ method: "POST" })
     });
 
     // best-effort counter bump
-    const { data: cur } = await supabase
+    const { data: cur } = await supabaseAdmin
       .from("affiliates").select("signups").eq("user_id", aff.user_id).maybeSingle();
-    await supabase.from("affiliates")
+    await supabaseAdmin.from("affiliates")
       .update({ signups: (cur?.signups ?? 0) + 1 })
       .eq("user_id", aff.user_id);
 
