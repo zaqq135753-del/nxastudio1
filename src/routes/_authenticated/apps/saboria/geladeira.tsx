@@ -320,7 +320,7 @@ function GeladeiraPage() {
               <button className="btn-secondary" onClick={generate} disabled={loading}>
                 <RotateCw size={14} /> Outra
               </button>
-              <button className="btn-secondary" onClick={() => navigate({ to: "/nutri" })}>
+              <button className="btn-secondary" onClick={() => navigate({ to: "/apps/saboria/nutri" })}>
                 <BarChart3 size={14} /> Nutri
               </button>
             </div>
