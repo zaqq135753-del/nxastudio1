@@ -14,6 +14,7 @@ import { useEntitlements } from "@/hooks/useEntitlements";
 import { getAppConfig } from "@/apps/config";
 import { getAppVisual, appThemeClass } from "@/apps/visual";
 import { Bell } from "lucide-react";
+import { StudyIncentiveTicker, VipCodeRedeem } from "./StudyIncentive";
 
 type Props = {
   slug: string;
@@ -70,6 +71,13 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
           trialDaysLeft={trialDaysLeft}
           action={showVoice ? <div className="flex justify-start"><RealtimeCallButton slug={slug} /></div> : undefined}
         />
+
+        {slug === "cosmosia" && (
+          <div className="fade-up">
+            <StudyIncentiveTicker />
+            <VipCodeRedeem />
+          </div>
+        )}
 
         {visual && (
           <section className="mb-6">
