@@ -22,7 +22,7 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
         <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-emerald-500/30 blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
 
         {/* Faixa Tíquete Unificada */}
-        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 bg-neutral-950/80 backdrop-blur-xl rounded-[23px] overflow-hidden">
+        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl rounded-[23px] overflow-hidden border border-purple-500/10 dark:border-purple-500/20">
           
           {/* Lado Esquerdo: Tag de Presente Pulsante Automática & Chamada */}
           <div className="flex items-center gap-3.5 z-10 shrink-0">
@@ -41,8 +41,8 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
                   R$ 29,90 / MÊS CADA
                 </span>
               </div>
-              <h4 className="text-sm sm:text-base font-black text-white tracking-tight mt-1 flex items-center gap-1.5">
-                Outras IAs de <span className="line-through text-neutral-400 font-bold">R$ 45,90</span> por apenas <span className="text-emerald-400 font-extrabold">R$ 29,90</span> cada!
+              <h4 className="text-sm sm:text-base font-black text-zinc-900 dark:text-white tracking-tight mt-1 flex items-center gap-1.5">
+                Outras IAs de <span className="line-through text-neutral-400 font-bold">R$ 45,90</span> por apenas <span className="text-emerald-500 dark:text-emerald-400 font-extrabold">R$ 29,90</span> cada!
               </h4>
             </div>
           </div>
