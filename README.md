@@ -1,26 +1,11 @@
-# Your Friendly Guide
+# NXA Automation OS
 
-oi
+SaaS multi-tenant para automação comercial com WhatsApp, IA, CRM, agenda, pagamentos e automações.
 
-This project was built with [Lovable](https://lovable.dev).
+## Estado atual
+- Supabase DEV provisionado em sa-east-1.
+- Fundação multi-tenant e RLS implementadas.
+- Repositório reconstruído a partir do Master Build Spec.
 
-**Live app**: https://nxastudio.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/1c6de223-05b4-477d-a9de-0e749dcabd37).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## Stack
+React 19 + TypeScript + Vite + Supabase.
