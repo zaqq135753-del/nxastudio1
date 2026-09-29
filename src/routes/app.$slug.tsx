@@ -38,7 +38,7 @@ export const Route = createFileRoute("/app/$slug")({
   errorComponent: ({ error }) => (
     <div className="mx-auto max-w-md px-6 py-24 text-center">
       <h1 className="text-2xl font-semibold">Algo deu errado</h1>
-      <p className="mt-2 text-sm opacity-70">{error.message}</p>
+      <p className="mt-2 text-sm opacity-70">{error instanceof Error ? error.message : String(error)}</p>
       <Link to="/" className="mt-4 inline-block underline">Voltar</Link>
     </div>
   ),
