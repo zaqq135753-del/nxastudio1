@@ -105,7 +105,11 @@ function SubscribePage() {
 
     // Default Sharkbot checkout URLs for NXA Estudantil (cosmosia)
     if (!url && app.slug === "cosmosia") {
-      url = "https://paylume.fans/c/nxa-studio"; // R$ 29,90 (Todos os acessos)
+      url = "https://paylume.fans/c/nxa-studio"; // R$ 8,90 (Todos os acessos)
+    }
+
+    if (!url && app.slug === "saboria") {
+      url = "https://checkout.infinitepay.io/isaque-elias-4d5/Ioa160lD6X"; // R$ 8,90 InfinitePay
     }
 
     if (url) {

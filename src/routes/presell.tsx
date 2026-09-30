@@ -144,7 +144,7 @@ const INGREDIENTS_DEMO = [
 ];
 
 export function PresellSuperPage() {
-  const checkoutUrl = "/apps/saboria/geladeira";
+  const checkoutUrl = "https://checkout.infinitepay.io/isaque-elias-4d5/Ioa160lD6X";
 
   // Cronômetro regressivo
   const [timeLeft, setTimeLeft] = useState(14 * 60 + 20);
