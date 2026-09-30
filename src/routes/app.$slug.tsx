@@ -59,11 +59,10 @@ function AppLandingPage() {
           <ArrowLeft size={14} /> NXA Studio
         </Link>
         <Link
-          to="/assinar/$slug"
-          params={{ slug: app.slug }}
+          to={app.route as any}
           className="rounded-full bg-white px-4 py-2 text-xs font-medium text-neutral-900 hover:opacity-90"
         >
-          Começar 7 dias grátis
+          Abrir {app.name}
         </Link>
       </header>
 
@@ -95,13 +94,12 @@ function AppLandingPage() {
             </ul>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
-                to="/assinar/$slug"
-                params={{ slug: app.slug }}
+                to={app.route as any}
                 className="btn-primary"
               >
-                Começar 7 dias grátis <ArrowRight size={16} />
+                Abrir App Agora <ArrowRight size={16} />
               </Link>
-              <a href="#planos" className="btn-ghost">Ver planos</a>
+              <a href="#planos" className="btn-ghost">Ver detalhes</a>
             </div>
           </div>
 
@@ -203,11 +201,10 @@ function AppLandingPage() {
             7 dias grátis. Cancele quando quiser. Sem cartão para começar.
           </p>
           <Link
-            to="/assinar/$slug"
-            params={{ slug: app.slug }}
+            to={app.route as any}
             className="btn-primary mt-8"
           >
-            Começar agora <ArrowRight size={16} />
+            Abrir {app.name} Agora <ArrowRight size={16} />
           </Link>
         </div>
       </section>

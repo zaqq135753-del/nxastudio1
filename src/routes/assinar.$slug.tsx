@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, notFound, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Mail, Sparkles, ArrowRight, Check, ArrowLeft } from "lucide-react";
@@ -19,6 +19,12 @@ const INTENT_KEY = "nxa_intent_app";
 
 export const Route = createFileRoute("/assinar/$slug")({
   ssr: false,
+  beforeLoad: ({ params }) => {
+    const app = findApp(params.slug);
+    if (app) {
+      throw redirect({ to: app.route as any });
+    }
+  },
   head: ({ params }) => {
     const app = findApp(params.slug);
     return {

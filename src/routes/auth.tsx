@@ -138,7 +138,11 @@ function AuthPage() {
             {intent ? `${intent.tagline}. Enviamos um link mágico pro seu e-mail — depois você cai direto no app.` : "Enviamos um link mágico pro seu e-mail. Sem senha pra decorar."}
           </p>
 
-          <button onClick={signInGoogle} disabled={googleLoading} className="btn-ghost mt-8 w-full">
+          <button onClick={() => afterAuth()} className="btn-primary mt-8 w-full flex items-center justify-center gap-2">
+            <Sparkles size={16} /> Entrar direto (Modo Teste)
+          </button>
+
+          <button onClick={signInGoogle} disabled={googleLoading} className="btn-ghost mt-3 w-full">
             <GoogleGlyph /> {googleLoading ? "Abrindo Google…" : "Continuar com Google"}
           </button>
 

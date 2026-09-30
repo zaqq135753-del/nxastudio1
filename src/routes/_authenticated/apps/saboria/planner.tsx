@@ -182,13 +182,33 @@ function PlannerPage() {
 
           {plan.shoppingList?.length > 0 && (
             <div className="glass mt-6 p-5">
-              <h3 className="text-lg font-semibold">🛒 Lista de Compras Semanal</h3>
-              <p className="mt-1 text-xs" style={{ color: "var(--text-2)" }}>
-                Gerada automaticamente com base no plano alimentar
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-lg font-semibold">🛒 Lista de Compras Semanal</h3>
+                  <p className="mt-1 text-xs" style={{ color: "var(--text-2)" }}>
+                    Gerada automaticamente com base no plano alimentar
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!plan?.shoppingList) return;
+                    const lines = [
+                      `🛒 *Lista de Compras da Semana* (NXA Chef)`,
+                      plan.totalEstimatedCost ? `💰 *Custo estimado:* ${plan.totalEstimatedCost}\n` : ``,
+                      ...plan.shoppingList.map((item, idx) => `[ ] ${item}`),
+                      `\n✨ _Organizado com NXA Chef_`,
+                    ];
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 text-xs font-semibold transition"
+                >
+                  📲 Enviar Lista no WhatsApp
+                </button>
+              </div>
               {plan.totalEstimatedCost && (
-                <div className="mt-2 text-sm" style={{ color: "var(--brand-2)" }}>
-                  Custo estimado: {plan.totalEstimatedCost}
+                <div className="mt-3 text-sm font-medium" style={{ color: "var(--brand-2)" }}>
+                  Custo estimado total: {plan.totalEstimatedCost}
                 </div>
               )}
               <ul className="mt-4 space-y-2">

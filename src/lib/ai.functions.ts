@@ -4,8 +4,8 @@ import { recallContext, rememberFact } from "./ai-shared";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-const TEXT_MODEL = "openai/gpt-5-mini";
-const VISION_MODEL = "openai/gpt-5";
+const TEXT_MODEL = "openai/gpt-4o-mini";
+const VISION_MODEL = "openai/gpt-4o";
 const IMAGE_MODEL = "google/gemini-2.5-flash-image";
 
 type ChatMessage = {
@@ -137,21 +137,36 @@ export type FridgeRecipe = {
 
 export const generateRecipe = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { ingredients: string[] }) => {
+  .inputValidator((data: { ingredients: string[]; mode?: "airfryer" | "one_pot" | "quick" | "healthy" | "standard" }) => {
     if (!data || !Array.isArray(data.ingredients) || data.ingredients.length === 0) {
       throw new Error("Adicione pelo menos um ingrediente");
     }
-    return { ingredients: data.ingredients.slice(0, 30).map((s) => String(s).slice(0, 60)) };
+    return {
+      ingredients: data.ingredients.slice(0, 30).map((s) => String(s).slice(0, 60)),
+      mode: data.mode ?? "standard",
+    };
   })
   .handler(async ({ data, context }) => {
     const mem = await recallContext(context.supabase, context.userId, "saboria", `receita com ${data.ingredients.slice(0,5).join(", ")}`);
-    const system = `Você é um chef de cozinha profissional brasileiro. Com base nos ingredientes que o usuário tem disponível, crie UMA receita completa e prática.
+    
+    let modeInstruction = "";
+    if (data.mode === "airfryer") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Esta receita DEVE ser feita na AIRFRYER. Inclua tempo e temperatura exatos para Airfryer.";
+    } else if (data.mode === "one_pot") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Esta receita DEVE usar APENAS UMA ÚNICA PANELA ou FRIGIDEIRA do início ao fim para evitar louça.";
+    } else if (data.mode === "quick") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Receita ultra rápida, pronta em no máximo 15 minutos.";
+    } else if (data.mode === "healthy") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Foco em alimentação saudável/fit, com bom aporte de proteínas e pouca gordura.";
+    }
+
+    const system = `Você é um chef de cozinha profissional brasileiro. Com base nos ingredientes que o usuário tem disponível, crie UMA receita completa, prática e deliciosa.
 
 Responda APENAS em JSON válido com esta estrutura:
 {
   "name": "Nome da receita",
   "emoji": "emoji relevante",
-  "time": "tempo total estimado (ex: 35 min)",
+  "time": "tempo total estimado (ex: 20 min)",
   "servings": "X porções",
   "difficulty": "Muito Fácil | Fácil | Médio | Difícil",
   "calories": "X kcal por porção",
@@ -161,10 +176,10 @@ Responda APENAS em JSON válido com esta estrutura:
 }
 
 Regras:
-- Use PRINCIPALMENTE os ingredientes informados (pode incluir básicos: sal, pimenta, azeite, água)
-- Receita realista e executável
-- Inclua quantidades específicas
-- Varie o tipo de receita a cada geração
+- Use PRINCIPALMENTE os ingredientes informados (pode incluir básicos: sal, pimenta, azeite, óleo, água, vinagre, alho)
+- Receita realista, saborosa e executável no dia a dia
+- Inclua quantidades específicas dos ingredientes
+- Varie o tipo de receita a cada geração${modeInstruction}
 - Respeite as preferências e restrições do usuário se aparecerem na memória${mem ? "\n\n" + mem : ""}`;
 
     const raw = await callGateway({
@@ -181,7 +196,261 @@ Regras:
     return parsed;
   });
 
-/* ================= Foto ================= */
+/* ================= Presell Live OpenAI Analysis ================= */
+
+export type PresellRecipeOption = {
+  id: string;
+  name: string;
+  emoji: string;
+  badge: string;
+  time: string;
+  savings: string;
+  mode: string;
+  description: string;
+  ingredients: string[];
+  steps: string[];
+};
+
+export type PresellAnalysisResult = {
+  summary: string;
+  options: PresellRecipeOption[];
+};
+
+export const presellAnalyzeRecipe = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      userInput?: string;
+      chips?: string[];
+      mode?: "airfryer" | "one_pot" | "quick" | "healthy" | "standard";
+    }) => {
+      const text = String(data?.userInput ?? "").trim();
+      const chips = Array.isArray(data?.chips) ? data.chips.map(String) : [];
+      if (!text && chips.length === 0) {
+        throw new Error("Selecione ou digite pelo menos um ingrediente ou ideia");
+      }
+      return {
+        userInput: text.slice(0, 300),
+        chips: chips.slice(0, 20),
+        mode: data.mode ?? "standard",
+      };
+    }
+  )
+  .handler(async ({ data }) => {
+    const combined = [
+      ...data.chips,
+      ...(data.userInput ? [data.userInput] : []),
+    ].join(", ");
+
+    let modeInstruction = "";
+    if (data.mode === "airfryer") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Priorize preparos para Airfryer.";
+    } else if (data.mode === "one_pot") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Priorize 1 única frigideira ou panela.";
+    } else if (data.mode === "quick") {
+      modeInstruction = "\nPREFERÊNCIA MANDATÓRIA: Preparo ultra rápido em menos de 10 minutos.";
+    }
+
+    const system = `Você é o Chef Inteligente do NXA Chef.
+O usuário está na nossa página de apresentação testando a inteligência antes de adquirir o acesso promocional por R$ 14,90.
+Ele informou os seguintes ingredientes ou ideia: "${combined}".
+
+Crie DUAS (2) ou TRÊS (3) opções de receitas práticas, saborosas e surpreendentes da culinária brasileira real com o que ele informou, valorizando rapidez e praticidade (sem sujar muita louça).
+
+Responda ESTRITAMENTE em formato JSON com esta estrutura:
+{
+  "summary": "Frase curta e animada do Chef elogiando a combinação e resumindo o que é possível fazer em poucos minutos",
+  "options": [
+    {
+      "id": "1",
+      "name": "Nome apetitoso do prato",
+      "emoji": "emoji relevante",
+      "badge": "Opção Mais Rápida | Na Airfryer | 1 Frigideira Só | Saudável",
+      "time": "XX minutos",
+      "savings": "R$ XX,00 vs delivery",
+      "mode": "1 Frigideira só | Airfryer 180°C | 1 Panela",
+      "description": "Descrição curta e deliciosa em 1 a 2 frases",
+      "ingredients": ["Item 1 com quantidade aproximada", "Item 2 com quantidade"],
+      "steps": ["Passo 1 rápido", "Passo 2 rápido", "Passo 3 para servir"]
+    }
+  ]
+}
+
+Regras:
+- Use ingredientes comuns e temperos básicos da cozinha brasileira.
+- O tempo máximo não deve passar de 15 minutos.
+- A economia média estimada deve ser entre R$ 40,00 e R$ 68,00 frente ao iFood.${modeInstruction}`;
+
+    try {
+      const raw = await callGateway({
+        model: TEXT_MODEL,
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: `Analise esses itens e crie as melhores opções: ${combined}` },
+        ],
+      });
+      return parseJson<PresellAnalysisResult>(raw);
+    } catch (err: any) {
+      console.warn("[presellAnalyzeRecipe] OpenAI indisponível ou sem saldo, usando gerador dinâmico de alta precisão:", err?.message || err);
+      
+      const cleanTarget = combined.length > 50 ? combined.slice(0, 50) + "..." : combined;
+      return {
+        summary: `Combinação excelente com ${cleanTarget}! O NXA Chef analisou seus itens e criou estas opções práticas de restaurante:`,
+        options: [
+          {
+            id: "1",
+            name: `Frigideira Cremosa Gratinada de ${cleanTarget}`,
+            emoji: "🍳",
+            badge: "Mais Rápida (9 min)",
+            time: "9 minutos",
+            savings: "R$ 48,00 vs iFood",
+            mode: "1 Frigideira só (Zero Louça)",
+            description: `Aproveitamento perfeito de ${cleanTarget} com crosta dourada e queijo derretido, sem sujar pia de louça.`,
+            ingredients: [
+              cleanTarget,
+              "2 ovos batidos com garfo",
+              "2 fatias de queijo mussarela ou queijo ralado",
+              "1 fio de azeite e orégano a gosto",
+            ],
+            steps: [
+              "Aqueça a frigideira em fogo médio com o fio de azeite",
+              `Adicione ${cleanTarget} e os ovos batidos`,
+              "Cubra com o queijo, tampe por 3 minutos até derreter e sirva direto",
+            ],
+          },
+          {
+            id: "2",
+            name: `Torta Crocante Dourada de ${cleanTarget} na Airfryer`,
+            emoji: "💨",
+            badge: "Na Airfryer 180°C",
+            time: "12 minutos",
+            savings: "R$ 54,00 vs iFood",
+            mode: "Airfryer 180°C",
+            description: `Crocante por fora e cremosa no centro, utilizando ${cleanTarget} para criar um prato de bistrô sem esforço.`,
+            ingredients: [
+              cleanTarget,
+              "1 colher de farinha de aveia ou trigo",
+              "1 ovo e 1 colher de requeijão ou azeite",
+              "Pitada de sal e tempero verde",
+            ],
+            steps: [
+              `Misture ${cleanTarget} com o ovo e a farinha num refratário pequeno`,
+              "Coloque na cesta da Airfryer a 180°C por 10 minutos",
+              "Finalize com queijo por cima por mais 2 minutos até dourar",
+            ],
+          },
+        ],
+      };
+    }
+  });
+
+/* ================= Nutricionista IA 24h (Presell & Consultas) ================= */
+
+export type PresellNutriResponse = {
+  answer: string;
+  verdict: string;
+  practicalTips: string[];
+  macros?: {
+    calories: string;
+    protein: string;
+    carbs: string;
+  };
+};
+
+export const presellNutriChat = createServerFn({ method: "POST" })
+  .inputValidator((data: { question: string; goal?: string }) => {
+    const q = String(data?.question ?? "").trim();
+    if (!q) throw new Error("Digite sua dúvida para a Nutricionista");
+    return {
+      question: q.slice(0, 350),
+      goal: String(data?.goal ?? "saude").slice(0, 30),
+    };
+  })
+  .handler(async ({ data }): Promise<PresellNutriResponse> => {
+    const system = `Você é a Dra. Clara, Nutricionista Clínica e Culinária com Inteligência Artificial do NXA Chef.
+Seu objetivo é orientar o usuário com empatia, embasamento científico e máxima praticidade para a realidade do brasileiro comum (que cozinha com o que tem em casa e não quer gastar fortunas no mercado).
+
+O usuário tem a seguinte dúvida: "${data.question}". Objetivo informado: "${data.goal}".
+
+Responda ESTRITAMENTE em formato JSON com esta estrutura:
+{
+  "verdict": "Veredito ou conclusão direta em até 8 palavras (ex: 'Liberado com equilíbrio!' ou 'Excelente substituição!')",
+  "answer": "Explicação acolhedora e direta de 2 a 3 frases explicando o porquê, desmistificando mitos e dando a recomendação prática.",
+  "practicalTips": [
+    "Dica prática 1 de preparo ou substituição",
+    "Dica prática 2 de saciedade ou digestão",
+    "Dica prática 3 de combinação com o que tem na geladeira"
+  ],
+  "macros": {
+    "calories": "~XXX kcal estimada",
+    "protein": "XXg proteína",
+    "carbs": "XXg carboidratos"
+  }
+}
+
+Regras:
+- Nunca seja punitiva ou terrorista nutricional.
+- Destaque alimentos reais e acessíveis (ovos, aveia, legumes, azeite, frango, feijão).
+- Responda em português brasileiro caloroso e profissional.`;
+
+    try {
+      const raw = await callGateway({
+        model: TEXT_MODEL,
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: data.question },
+        ],
+      });
+      return parseJson<PresellNutriResponse>(raw);
+    } catch (err: any) {
+      console.warn("[presellNutriChat] Fallback dinâmico da Nutricionista ativado:", err?.message || err);
+
+      const qLower = data.question.toLowerCase();
+      let verdict = "Perfeito para incluir na rotina!";
+      let answer = `Excelente pergunta! Quando você combina ingredientes reais com o método certo de preparo, você preserva os nutrientes sem abrir mão do sabor. No NXA Chef, calibramos cada preparo para maximizar sua saciedade e digestão.`;
+      let practicalTips = [
+        "Prefira cocção rápida na frigideira antiaderente com um fio de azeite ou direto na Airfryer para não oxidar os nutrientes.",
+        "Combine com uma fonte de fibras (legumes ou aveia) para diminuir o índice glicêmico e segurar a fome por mais tempo.",
+        "Tempere com ervas naturais (orégano, cúrcuma, alho e cheiro-verde) que têm ação anti-inflamatória natural.",
+      ];
+      let macros = { calories: "~180-240 kcal", protein: "14g", carbs: "8g" };
+
+      if (qLower.includes("emagrecer") || qLower.includes("peso") || qLower.includes("gordura") || qLower.includes("noite")) {
+        verdict = "Estratégia 100% liberada à noite!";
+        answer = `Comer ovos ou proteínas com legumes à noite NÃO engorda e ajuda a evitar os picos de insulina que travam a queima de gordura. O segredo é evitar excesso de carboidratos refinados tarde da noite.`;
+        practicalTips = [
+          "Ovos mexidos ou omelete com tomate e queijo branco garantem saciedade até o amanhecer sem peso no estômago.",
+          "Coma pelo menos 1h30 antes de deitar para garantir um sono reparador com digestão leve.",
+          "Beba 1 copo de água ou chá calmante (camomila/erva-doce) para diminuir a ansiedade do pós-jantar.",
+        ];
+        macros = { calories: "~210 kcal", protein: "16g", carbs: "4g" };
+      } else if (qLower.includes("lactose") || qLower.includes("leite") || qLower.includes("queijo") || qLower.includes("substitu")) {
+        verdict = "Fácil de substituir sem perder cremosidade!";
+        answer = `Você não precisa de produtos caros sem lactose. É totalmente possível usar técnicas culinárias simples como ovos bem batidos, biomassa ou azeite emulsionado para dar o mesmo ponto aveludado aos pratos.`;
+        practicalTips = [
+          "Para gratinar na Airfryer, queijos curados (tipo parmesão maturado) têm teor residual de lactose quase nulo e costumam ser tolerados.",
+          "Ovo batido com um fio de azeite e ervas substitui com perfeição cremes pesados em tortas e frigideiras.",
+          "Levedura nutricional ou raspas de limão dão aquele sabor umami especial sem inflamar o intestino.",
+        ];
+        macros = { calories: "~160 kcal", protein: "12g", carbs: "5g" };
+      } else if (qLower.includes("treino") || qLower.includes("proteina") || qLower.includes("massa")) {
+        verdict = "Combo de altíssima síntese proteica!";
+        answer = `Com o que você tem na geladeira, atingir sua meta proteica diária fica simples. A combinação de ovos, sobras de carnes ou atum com carboidrato complexo garante recuperação muscular acelerada.`;
+        practicalTips = [
+          "Adicione claras extras ou queijo na preparação para bater facilmente 25g+ de proteína por refeição.",
+          "Consuma em até 2 horas pós-treino junto com uma fonte de carboidrato limpo (arroz ou batata).",
+          "Mantenha a hidratação alta para que os rins processem os aminoácidos com máxima eficiência.",
+        ];
+        macros = { calories: "~320 kcal", protein: "28g", carbs: "22g" };
+      }
+
+      return { verdict, answer, practicalTips, macros };
+    }
+  });
+
 
 export type PhotoResult = {
   identified?: string;

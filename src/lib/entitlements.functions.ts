@@ -31,59 +31,32 @@ export type Entitlement = {
 export const getMyEntitlements = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Admins get full access (prime + active) on every app.
-    let userEmail: string | undefined;
-    try {
-      const { data: userAuth } = await context.supabase.auth.getUser();
-      userEmail = userAuth?.user?.email?.toLowerCase();
-    } catch {}
-
-    let adminRow: { role: string } | null = null;
-    try {
-      const { data } = await context.supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", context.userId)
-        .eq("role", "admin")
-        .maybeSingle();
-      adminRow = data;
-    } catch {}
-
-    if (adminRow || userEmail === "zaqq135753@gmail.com") {
-      return VALID_SLUGS.map((slug) => ({
-        app_slug: slug,
-        status: "active",
-        expires_at: null,
-        tier: "prime",
-      })) as Entitlement[];
-    }
-    const { data, error } = await context.supabase
-      .from("app_entitlements")
-      .select("app_slug, status, expires_at, tier")
-      .eq("user_id", context.userId);
-    if (error) throw error;
-    return (data ?? []) as Entitlement[];
+    // Modo teste: todos os apps com tier Prime e status ativo
+    return VALID_SLUGS.map((slug) => ({
+      app_slug: slug,
+      status: "active",
+      expires_at: null,
+      tier: "prime",
+    })) as Entitlement[];
   });
 
 export function findEntitlement(entitlements: Entitlement[], slug: string): Entitlement | undefined {
-  return entitlements.find((x) => x.app_slug === slug);
+  return {
+    app_slug: slug,
+    status: "active",
+    expires_at: null,
+    tier: "prime",
+  };
 }
 
 export function isEntitled(entitlements: Entitlement[], slug: string): boolean {
-  const e = findEntitlement(entitlements, slug);
-  if (!e) return false;
-  if (e.status === "canceled") return false;
-  if (e.expires_at && new Date(e.expires_at) < new Date()) return false;
+  // Modo teste: tudo liberado
   return true;
 }
 
 export function isPrime(entitlements: Entitlement[], slug: string): boolean {
-  if (typeof window !== "undefined" && localStorage.getItem("nxa_vip_unlocked") === "true" && slug === "studyia") {
-    return true;
-  }
-  const e = findEntitlement(entitlements, slug);
-  if (!e || !isEntitled(entitlements, slug)) return false;
-  return e.tier === "prime";
+  // Modo teste: tudo liberado como Prime
+  return true;
 }
 
 export type AppStatus = {
@@ -93,13 +66,5 @@ export type AppStatus = {
 };
 
 export function getAppStatus(entitlements: Entitlement[], slug: string): AppStatus {
-  const e = findEntitlement(entitlements, slug);
-  if (!e) return { status: "available", tier: null, trialEndsAt: null };
-  const tier = (e.tier === "prime" ? "prime" : "base") as "base" | "prime";
-  if (e.status === "canceled") return { status: "locked", tier, trialEndsAt: null };
-  if (e.expires_at && new Date(e.expires_at) < new Date()) {
-    return { status: "locked", tier, trialEndsAt: e.expires_at };
-  }
-  if (e.status === "trial") return { status: "trial", tier, trialEndsAt: e.expires_at };
-  return { status: "active", tier, trialEndsAt: e.expires_at };
+  return { status: "active", tier: "prime", trialEndsAt: null };
 }

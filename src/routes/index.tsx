@@ -26,8 +26,8 @@ function Landing() {
             <SUITE.icon size={20} /> {SUITE.name}
           </Link>
           <div className="flex items-center gap-3">
-            <Link to="/auth" className="btn-ghost text-sm">Entrar</Link>
-            <Link to="/auth" className="btn-primary text-sm">Começar <ArrowRight size={14} /></Link>
+            <Link to="/hub" className="btn-ghost text-sm">Acessar Hub (Teste)</Link>
+            <Link to="/hub" className="btn-primary text-sm">Entrar no Hub <ArrowRight size={14} /></Link>
           </div>
         </div>
       </header>
@@ -43,7 +43,7 @@ function Landing() {
             comunidade ativa e dashboard de ROI real para seu tempo e dinheiro.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/auth" className="btn-primary">Criar conta grátis <ArrowRight size={16} /></Link>
+            <Link to="/hub" className="btn-primary">Acessar direto sem login <ArrowRight size={16} /></Link>
             <a href="#apps" className="btn-ghost">Ver os apps</a>
           </div>
           <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ color: "var(--n-500)" }}>
@@ -86,8 +86,8 @@ function Landing() {
                       <Link to="/app/$slug" params={{ slug: a.slug }} className="text-xs underline underline-offset-4" style={{ color: "var(--n-500)" }}>
                         Saiba mais
                       </Link>
-                      <Link to="/assinar/$slug" params={{ slug: a.slug }} className="font-medium underline underline-offset-4">
-                        Assinar
+                      <Link to={a.route as any} className="font-medium underline underline-offset-4">
+                        Abrir app
                       </Link>
                     </div>
                   )}
@@ -103,7 +103,7 @@ function Landing() {
         <p className="mx-auto mt-3 max-w-lg" style={{ color: "var(--muted-foreground)" }}>
           Entre para a comunidade, monitore sua economia de tempo com o Dash de ROI e use IA de forma estratégica.
         </p>
-        <Link to="/auth" className="btn-primary mt-6">Começar agora <ArrowRight size={16} /></Link>
+        <Link to="/hub" className="btn-primary mt-6">Entrar no Hub <ArrowRight size={16} /></Link>
       </section>
 
       <footer className="border-t py-8 text-center text-xs"

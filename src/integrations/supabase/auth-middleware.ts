@@ -55,7 +55,32 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
     const authHeader = request.headers.get('authorization');
 
     if (!authHeader) {
-      throw new Error('Unauthorized: No authorization header provided');
+      // Modo de teste sem login: fallback amigável
+      const supabase = createClient<Database>(
+        SUPABASE_URL!,
+        SUPABASE_PUBLISHABLE_KEY!,
+        {
+          global: {
+            fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY!),
+          },
+          auth: {
+            storage: undefined,
+            persistSession: false,
+            autoRefreshToken: false,
+          },
+        }
+      );
+
+      return next({
+        context: {
+          supabase,
+          userId: 'zaqq135753-test-user-id',
+          claims: {
+            sub: 'zaqq135753-test-user-id',
+            email: 'zaqq135753@gmail.com',
+          } as any,
+        },
+      });
     }
 
     if (!authHeader.startsWith('Bearer ')) {

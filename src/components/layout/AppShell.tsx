@@ -23,10 +23,13 @@ export function AppShell({ children, appSlug = "saboria" }: { children: ReactNod
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       const u = data.user;
-      if (!u) return;
+      if (!u) {
+        setInitial("Z");
+        return;
+      }
       const meta = (u.user_metadata ?? {}) as Record<string, unknown>;
       setAvatar((meta.avatar_url as string) ?? null);
-      const name = (meta.name as string) ?? u.email ?? "S";
+      const name = (meta.name as string) ?? u.email ?? "Z";
       setInitial(name.charAt(0).toUpperCase());
     });
   }, []);
