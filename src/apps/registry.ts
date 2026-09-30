@@ -190,6 +190,6 @@ export function findApp(slug: string): AppEntry | undefined {
 export const SUITE = {
   name: "NXA Studio",
   tagline: "Uma conta. Vários apps de IA.",
-  pricePerApp: "R$ 29 / mês",
+  pricePerApp: "R$ 8,90 / mês",
   icon: Sparkles,
 };

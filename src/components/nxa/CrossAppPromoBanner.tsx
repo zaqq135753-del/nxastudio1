@@ -1,58 +1,61 @@
-import { Sparkles, ArrowRight, ChefHat, Dumbbell, Wallet, Languages, Tag, Zap, Flame, Gift } from "lucide-react";
+import { Sparkles, ArrowRight, ChefHat, Dumbbell, Wallet, Languages, Flame, BookOpen, HeartPulse } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 const ALL_APPS = [
-  { slug: "saboria", name: "NXA Chef", desc: "Receitas por foto", icon: ChefHat, tag: "R$ 29,90", color: "text-amber-400" },
-  { slug: "fitia", name: "NXA Fit", desc: "Treinos e dieta com IA", icon: Dumbbell, tag: "R$ 29,90", color: "text-emerald-400" },
-  { slug: "granaia", name: "NXA Grana", desc: "Controle financeiro", icon: Wallet, tag: "R$ 29,90", color: "text-blue-400" },
-  { slug: "fluencyia", name: "NXA Fluency", desc: "Inglês 24h por voz", icon: Languages, tag: "R$ 29,90", color: "text-purple-400" },
+  { slug: "saboria", name: "NXA Chef", desc: "Receitas por foto & Nutri", icon: ChefHat, tag: "R$ 8,90", color: "text-amber-500", bg: "bg-amber-500/10 border-amber-500/20" },
+  { slug: "fitia", name: "NXA Fit", desc: "Treinos e dieta com IA", icon: Dumbbell, tag: "R$ 8,90", color: "text-emerald-500", bg: "bg-emerald-500/10 border-emerald-500/20" },
+  { slug: "granaia", name: "NXA Grana", desc: "Controle financeiro", icon: Wallet, tag: "R$ 8,90", color: "text-blue-500", bg: "bg-blue-500/10 border-blue-500/20" },
+  { slug: "fluencyia", name: "NXA Fluency", desc: "Inglês 24h por voz", icon: Languages, tag: "R$ 8,90", color: "text-purple-500", bg: "bg-purple-500/10 border-purple-500/20" },
+  { slug: "studyia", name: "NXA Study", desc: "Redação & Simulados ENEM", icon: BookOpen, tag: "R$ 8,90", color: "text-teal-500", bg: "bg-teal-500/10 border-teal-500/20" },
+  { slug: "petia", name: "NXA Pet", desc: "Vet e cuidados do pet", icon: HeartPulse, tag: "R$ 8,90", color: "text-rose-500", bg: "bg-rose-500/10 border-rose-500/20" },
 ];
 
 export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
   const promos = ALL_APPS.filter((a) => a.slug !== currentSlug);
-  const marqueeItems = [...promos, ...promos, ...promos, ...promos];
+  const marqueeItems = [...promos, ...promos, ...promos];
 
   return (
-    <div className="mb-8 fade-up">
-      {/* Banner Tíquete Unificado com LED de Borda e Animações Automáticas Continuas */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-950 p-0.5 shadow-2xl border border-indigo-500/40">
+    <div className="mb-6 fade-up">
+      <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card/90 backdrop-blur-xl p-4 sm:p-5 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
         
-        {/* Luzes LED Pulsantes de Fundo (Automáticas - sem necessidade de hover) */}
-        <div className="absolute -top-10 -left-10 h-32 w-32 rounded-full bg-amber-500/30 blur-2xl animate-pulse" />
-        <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-emerald-500/30 blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
+        {/* Glow sutil e elegante no background */}
+        <div className="pointer-events-none absolute -top-12 -left-12 h-36 w-36 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-12 -right-12 h-36 w-36 rounded-full bg-amber-500/10 blur-3xl" />
 
-        {/* Faixa Tíquete Unificada */}
-        <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl rounded-[23px] overflow-hidden border border-purple-500/10 dark:border-purple-500/20">
+        <div className="relative flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
           
-          {/* Lado Esquerdo: Tag de Presente Pulsante Automática & Chamada */}
+          {/* Lado Esquerdo: Ícone + Chamada de Oferta */}
           <div className="flex items-center gap-3.5 z-10 shrink-0">
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-neutral-950 font-black shadow-lg animate-bounce">
-              <Gift size={24} className="animate-spin" style={{ animationDuration: "8s" }} />
-              {/* LED de Ponto Neon */}
-              <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-neutral-950 animate-ping" />
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/15 to-orange-500/20 border border-amber-500/30 text-amber-500 shadow-sm">
+              <Sparkles size={22} className="animate-pulse" />
+              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              </span>
             </div>
 
             <div>
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/30 animate-pulse">
-                  <Flame size={12} className="animate-bounce" /> OFERTA EXCLUSIVA ALUNOS
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                  <Flame size={11} className="text-amber-500" /> OFERTA ESPECIAL
                 </span>
-                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20 animate-pulse">
-                  R$ 29,90 / MÊS CADA
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  R$ 8,90 / MÊS CADA
                 </span>
               </div>
-              <h4 className="text-sm sm:text-base font-black text-zinc-900 dark:text-white tracking-tight mt-1 flex items-center gap-1.5">
-                Outras IAs de <span className="line-through text-neutral-400 font-bold">R$ 45,90</span> por apenas <span className="text-emerald-500 dark:text-emerald-400 font-extrabold">R$ 29,90</span> cada!
+              <h4 className="text-sm sm:text-[15px] font-bold text-foreground tracking-tight mt-1 flex items-center gap-1.5 flex-wrap">
+                Outras IAs de <span className="line-through text-muted-foreground font-semibold">R$ 29,90</span> por apenas <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-base">R$ 8,90</span> cada!
               </h4>
             </div>
           </div>
 
-          {/* Lado Direito: Carrossel Marquee Ticker 100% Unificado Sem Camadas Separadas */}
-          <div className="relative w-full sm:w-[420px] overflow-hidden rounded-xl bg-white/5 border border-white/10 p-2 z-10 backdrop-blur-md">
-            <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-neutral-950 to-transparent z-20 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-neutral-950 to-transparent z-20 pointer-events-none" />
+          {/* Lado Direito: Carrossel Ticker com chips modernos */}
+          <div className="relative w-full lg:w-[460px] overflow-hidden rounded-xl bg-muted/40 border border-border/50 p-2 z-10">
+            {/* Máscaras de gradiente que respeitam o tema do app */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-card to-transparent z-20 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card to-transparent z-20 pointer-events-none" />
 
-            <div className="flex gap-6 animate-marquee whitespace-nowrap">
+            <div className="flex gap-4 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
               {marqueeItems.map((app, index) => {
                 const Icon = app.icon;
                 return (
@@ -60,25 +63,25 @@ export function CrossAppPromoBanner({ currentSlug }: { currentSlug: string }) {
                     key={`${app.slug}-${index}`}
                     to="/assinar/$slug"
                     params={{ slug: app.slug }}
-                    className="inline-flex items-center gap-2.5 group hover:opacity-80 transition"
+                    className="inline-flex items-center gap-2 rounded-lg bg-background/80 hover:bg-background border border-border/60 px-2.5 py-1.5 transition-all shadow-2xs hover:border-primary/40 group shrink-0"
                   >
-                    <div className={`flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 ${app.color} shadow-inner animate-pulse`}>
-                      <Icon size={15} />
+                    <div className={`flex h-6 w-6 items-center justify-center rounded-md border ${app.bg} ${app.color}`}>
+                      <Icon size={13} />
                     </div>
 
-                    <span className="text-xs font-black text-white tracking-tight">
+                    <span className="text-xs font-bold text-foreground tracking-tight">
                       {app.name}
                     </span>
 
-                    <span className="rounded-md bg-amber-400 text-neutral-950 px-1.5 py-0.5 text-[9px] font-black uppercase shadow-sm animate-bounce" style={{ animationDuration: "2s" }}>
+                    <span className="rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 px-1.5 py-0.2 text-[9px] font-black uppercase">
                       {app.tag}
                     </span>
 
-                    <span className="text-[10px] text-neutral-400 font-bold">
+                    <span className="text-[10px] text-muted-foreground hidden sm:inline">
                       · {app.desc}
                     </span>
 
-                    <ArrowRight size={12} className="text-amber-400 animate-pulse" />
+                    <ArrowRight size={11} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 );
               })}

@@ -22,8 +22,8 @@ export const PRICING: Record<string, AppPricing> = {
   saboria: P({
     base: {
       name: "NXA Chef",
-      priceLabel: "R$ 29 / mês",
-      monthly: 29,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Seu chef pessoal com IA para o dia a dia.",
       features: [
         "Onboarding de paladar",
@@ -64,8 +64,8 @@ export const PRICING: Record<string, AppPricing> = {
   socialia: P({
     base: {
       name: "NXA Social",
-      priceLabel: "R$ 29 / mês",
-      monthly: 29,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Ideias, legendas e copies no seu tom.",
       features: [
         "Gerador de posts e legendas",
@@ -103,8 +103,8 @@ export const PRICING: Record<string, AppPricing> = {
   petia: P({
     base: {
       name: "NXA Pet",
-      priceLabel: "R$ 24 / mês",
-      monthly: 24,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Vet e adestrador virtual para dúvidas do dia a dia.",
       features: [
         "Perfil completo do pet",
@@ -141,8 +141,8 @@ export const PRICING: Record<string, AppPricing> = {
   fluencyia: P({
     base: {
       name: "NXA Lingua",
-      priceLabel: "R$ 29 / mês",
-      monthly: 29,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Prática de idiomas por chat, no seu ritmo.",
       features: [
         "Conversa por texto",
@@ -176,8 +176,8 @@ export const PRICING: Record<string, AppPricing> = {
   glowia: P({
     base: {
       name: "NXA Glow",
-      priceLabel: "R$ 24 / mês",
-      monthly: 24,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Consultora de skincare no chat.",
       features: [
         "Perfil de pele e sensibilidades",
@@ -212,8 +212,8 @@ export const PRICING: Record<string, AppPricing> = {
   granaia: P({
     base: {
       name: "NXA Money",
-      priceLabel: "R$ 29 / mês",
-      monthly: 29,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Controle financeiro manual guiado por IA.",
       features: [
         "Transações manuais e extrato",
@@ -249,8 +249,8 @@ export const PRICING: Record<string, AppPricing> = {
   fitia: P({
     base: {
       name: "NXA Fit",
-      priceLabel: "R$ 29 / mês",
-      monthly: 29,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Personal trainer com IA para o treino do dia.",
       features: [
         "Plano de treino inicial",
@@ -285,8 +285,8 @@ export const PRICING: Record<string, AppPricing> = {
   styleia: P({
     base: {
       name: "NXA Style",
-      priceLabel: "R$ 24 / mês",
-      monthly: 24,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Personal stylist no chat.",
       features: [
         "Perfil de estilo",
@@ -322,8 +322,8 @@ export const PRICING: Record<string, AppPricing> = {
   studyia: P({
     base: {
       name: "NXA Study",
-      priceLabel: "R$ 29,90 / mês",
-      monthly: 29.9,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Sua aprovação no ENEM com auxílio de Inteligência Artificial.",
       features: [
         "Corretor de Redação Nota 1000",
@@ -335,8 +335,8 @@ export const PRICING: Record<string, AppPricing> = {
     },
     prime: {
       name: "NXA Study Oferta Especial",
-      priceLabel: "R$ 14,90 / mês",
-      monthly: 14.9,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Oferta exclusiva de anúncios com acesso total ilimitado.",
       features: [
         "Acesso TOTAL a todas as 7 ferramentas de IA",
@@ -346,7 +346,7 @@ export const PRICING: Record<string, AppPricing> = {
         "Diagnóstico de Nota TRI do SISU",
       ],
     },
-    primeCopy: "Garanta seu acesso ao NXA Study com desconto exclusivo por apenas R$ 14,90!",
+    primeCopy: "Garanta seu acesso ao NXA Study com desconto exclusivo por apenas R$ 8,90!",
     compare: [
       { feature: "Corretor de Redação IA", base: true, prime: true },
       { feature: "Esqueletos Coringa", base: true, prime: true },
@@ -358,8 +358,8 @@ export const PRICING: Record<string, AppPricing> = {
   roteiroia: P({
     base: {
       name: "NXA Travel",
-      priceLabel: "R$ 24 / mês",
-      monthly: 24,
+      priceLabel: "R$ 8,90 / mês",
+      monthly: 8.9,
       tagline: "Roteiros simples pra próxima viagem.",
       features: [
         "Roteiro simples por destino/dias",

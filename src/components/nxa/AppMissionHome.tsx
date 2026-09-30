@@ -105,11 +105,28 @@ export function AppMissionHome({ slug, showVoice = false }: Props) {
 
         {cfg.smartNotification && (
           <section className="mb-8 fade-up">
-            <div className="surface flex items-start gap-3 p-4">
-              <div className="tile-icon-wrap shrink-0"><Bell size={16} /></div>
-              <div className="min-w-0 flex-1">
-                <div className="edition-tag mb-1">Próxima ação</div>
-                <div className="text-[15px] leading-snug">{cfg.smartNotification}</div>
+            <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-gradient-to-r from-card via-card to-primary/5 p-4 sm:p-5 shadow-sm backdrop-blur-xl transition-all hover:border-primary/40 hover:shadow-md">
+              <div className="flex items-start gap-3.5">
+                <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 shadow-xs">
+                  <Bell size={18} />
+                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
+                  </span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+                      ⚡ Sugestão em Tempo Real
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      Atualizado agora
+                    </span>
+                  </div>
+                  <div className="text-sm sm:text-[15px] font-medium text-foreground leading-snug">
+                    {cfg.smartNotification}
+                  </div>
+                </div>
               </div>
             </div>
           </section>

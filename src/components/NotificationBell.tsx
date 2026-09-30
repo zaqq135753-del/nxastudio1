@@ -66,41 +66,47 @@ export function NotificationBell() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-11 z-50 w-[340px] max-h-[70vh] overflow-hidden rounded-2xl border glass"
-            style={{ borderColor: "var(--line-1)", boxShadow: "var(--shadow-elev)" }}>
-            <div className="flex items-center justify-between border-b px-4 py-2.5" style={{ borderColor: "var(--line-1)" }}>
-              <div className="text-sm font-semibold">Notificações</div>
+          <div className="absolute right-0 top-11 z-50 w-[350px] max-h-[75vh] overflow-hidden rounded-2xl border border-border/70 bg-card/95 backdrop-blur-2xl shadow-2xl"
+            style={{ boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.25)" }}>
+            <div className="flex items-center justify-between border-b border-border/50 px-4 py-3 bg-muted/20">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                <div className="text-sm font-bold text-foreground">Central de Avisos</div>
+              </div>
               {unread > 0 && (
-                <button onClick={markAll} className="text-[11px] opacity-70 hover:opacity-100 inline-flex items-center gap-1">
-                  <Check size={11} /> marcar tudo
+                <button onClick={markAll} className="text-[11px] font-medium text-primary hover:underline inline-flex items-center gap-1 cursor-pointer">
+                  <Check size={12} /> Marcar lidas
                 </button>
               )}
             </div>
-            <div className="max-h-[60vh] overflow-y-auto">
+            <div className="max-h-[60vh] overflow-y-auto divide-y divide-border/30">
               {loading && (
-                <div className="flex items-center gap-2 p-4 text-xs" style={{ color: "var(--muted-foreground)" }}>
-                  <Loader2 size={12} className="animate-spin" /> carregando…
+                <div className="flex items-center justify-center gap-2 p-6 text-xs text-muted-foreground">
+                  <Loader2 size={14} className="animate-spin text-primary" /> Carregando notificações…
                 </div>
               )}
               {!loading && items.length === 0 && (
-                <div className="p-6 text-center text-xs" style={{ color: "var(--muted-foreground)" }}>
-                  Sem notificações ainda. O Concierge IA vai te avisar quando tiver uma sugestão.
+                <div className="p-8 text-center text-xs text-muted-foreground">
+                  <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Bell size={18} />
+                  </div>
+                  <div className="font-semibold text-foreground">Tudo em dia!</div>
+                  <p className="mt-1 text-[11px]">Seu Concierge IA enviará notificações quando tiver sugestões para seus apps.</p>
                 </div>
               )}
               {items.map((n) => {
                 const inner = (
-                  <div className={`border-b px-4 py-3 text-sm ${!n.read_at ? "bg-[var(--n-50,rgba(0,0,0,0.02))]" : ""}`}
-                    style={{ borderColor: "var(--line-1)" }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase tracking-wider" style={{ color: "var(--muted-foreground)" }}>
+                  <div className={`p-3.5 text-sm transition-colors hover:bg-muted/40 ${!n.read_at ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
                         {n.app_slug ?? n.kind}
                       </span>
-                      <span className="text-[10px]" style={{ color: "var(--muted-foreground)" }}>
+                      <span className="text-[10px] text-muted-foreground font-mono">
                         {timeAgo(n.created_at)}
                       </span>
                     </div>
-                    <div className="mt-0.5 font-medium">{n.title}</div>
-                    {n.body && <div className="mt-0.5 text-[12px]" style={{ color: "var(--muted-foreground)" }}>{n.body}</div>}
+                    <div className="mt-1 font-semibold text-foreground text-xs leading-snug">{n.title}</div>
+                    {n.body && <div className="mt-0.5 text-[11px] text-muted-foreground leading-relaxed">{n.body}</div>}
                   </div>
                 );
                 return n.route ? (

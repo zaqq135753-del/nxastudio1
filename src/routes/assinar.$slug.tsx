@@ -223,7 +223,7 @@ function SubscribePage() {
           )}
 
           <p className="mt-4 text-center text-[11px]" style={{ color: "var(--cream-500)" }}>
-            7 dias grátis, depois R$ 29/mês. Cancele quando quiser.
+            7 dias grátis, depois R$ 8,90/mês. Cancele quando quiser.
           </p>
           <p className="mt-2 text-center text-[11px]" style={{ color: "var(--cream-500)" }}>
             Ao continuar, você concorda com os Termos e a Política de Privacidade.
