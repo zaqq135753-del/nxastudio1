@@ -7,21 +7,35 @@ const SUPER_ADMIN_EMAILS = new Set(["zaqq135753@gmail.com"]);
 const SLUGS = ["saboria","socialia","petia","fluencyia","glowia","granaia","fitia","styleia","cosmosia","roteiroia"] as const;
 type Slug = typeof SLUGS[number];
 
-async function assertAdmin(supabase: any, userId: string) {
-  const { data } = await supabase
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId)
-    .eq("role", "admin")
-    .maybeSingle();
-  if (!data) throw new Error("Forbidden: admin only");
+async function assertAdmin(supabase: any, userId: string, claims?: any) {
+  const email = (claims?.email ?? "").toString().toLowerCase();
+  if (SUPER_ADMIN_EMAILS.has(email)) return;
+  try {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!data) throw new Error("Forbidden: admin only");
+  } catch (err: any) {
+    if (SUPER_ADMIN_EMAILS.has(email)) return;
+    throw err;
+  }
 }
 
-async function assertSuperAdmin(userId: string) {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
-  const email = data?.user?.email?.toLowerCase() ?? "";
-  if (!SUPER_ADMIN_EMAILS.has(email)) throw new Error("Forbidden: super admin only");
+async function assertSuperAdmin(userId: string, claims?: any) {
+  const claimEmail = (claims?.email ?? "").toString().toLowerCase();
+  if (SUPER_ADMIN_EMAILS.has(claimEmail)) return;
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
+    const email = data?.user?.email?.toLowerCase() ?? "";
+    if (!SUPER_ADMIN_EMAILS.has(email)) throw new Error("Forbidden: super admin only");
+  } catch (err: any) {
+    if (SUPER_ADMIN_EMAILS.has(claimEmail)) return;
+    throw err;
+  }
 }
 
 export type AdminUserRow = {
@@ -37,14 +51,22 @@ export type AdminUserRow = {
 export const amIAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId)
-      .eq("role", "admin")
-      .maybeSingle();
     const email = (context.claims?.email ?? "").toString().toLowerCase();
-    return { isAdmin: !!data, isSuperAdmin: SUPER_ADMIN_EMAILS.has(email) };
+    const isSuperAdmin = SUPER_ADMIN_EMAILS.has(email);
+    if (isSuperAdmin) {
+      return { isAdmin: true, isSuperAdmin: true };
+    }
+    try {
+      const { data } = await context.supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", context.userId)
+        .eq("role", "admin")
+        .maybeSingle();
+      return { isAdmin: !!data, isSuperAdmin: false };
+    } catch {
+      return { isAdmin: false, isSuperAdmin: false };
+    }
   });
 
 export const adminListUsers = createServerFn({ method: "GET" })

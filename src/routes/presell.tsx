@@ -48,8 +48,9 @@ import {
   presellNutriChat,
   PresellRecipeOption,
   PresellAnalysisResult,
-  PresellNutriResponse,
 } from "@/lib/ai.functions";
+import { useServerFn } from "@tanstack/react-start";
+import { recordFunnelEvent } from "@/lib/funnel.functions";
 
 export const Route = createFileRoute("/presell")({
   head: () => ({
@@ -146,6 +147,63 @@ const INGREDIENTS_DEMO = [
 export function PresellSuperPage() {
   const checkoutUrl = "https://checkout.infinitepay.io/isaque-elias-4d5/Ioal60lD6X";
 
+  // Telemetria do Funil em Tempo Real
+  const sendFunnelEvent = useServerFn(recordFunnelEvent);
+
+  function getLeadSessionId(): string {
+    if (typeof window === "undefined") return "server";
+    let sid = sessionStorage.getItem("nxa_lead_sid");
+    if (!sid) {
+      sid = "lead_" + Math.random().toString(36).substring(2, 9) + "_" + Date.now().toString(36);
+      sessionStorage.setItem("nxa_lead_sid", sid);
+    }
+    return sid;
+  }
+
+  function trackLead(
+    eventType: "page_view" | "scroll_depth" | "sim_generate" | "recipe_expand" | "nutri_message" | "checkout_click",
+    section?: string,
+    metadata?: Record<string, any>
+  ) {
+    try {
+      const sessionId = getLeadSessionId();
+      sendFunnelEvent({
+        data: {
+          sessionId,
+          eventType,
+          section,
+          metadata,
+        },
+      }).catch(() => null);
+    } catch {
+      // Ignora silenciosamente
+    }
+  }
+
+  // Rastreamento automático: Page View + Scroll Depth (25%, 50%, 75%, 100%)
+  useEffect(() => {
+    trackLead("page_view", "presell_hero");
+
+    const sentMilestones = new Set<number>();
+    function handleScroll() {
+      const el = document.documentElement;
+      const totalScrollable = el.scrollHeight - window.innerHeight;
+      if (totalScrollable <= 0) return;
+      const pct = Math.round((window.scrollY / totalScrollable) * 100);
+
+      const milestones = [25, 50, 75, 100];
+      for (const m of milestones) {
+        if (pct >= m && !sentMilestones.has(m)) {
+          sentMilestones.add(m);
+          trackLead("scroll_depth", `scroll_${m}`, { depth: m });
+        }
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Cronômetro regressivo
   const [timeLeft, setTimeLeft] = useState(14 * 60 + 20);
   useEffect(() => {
@@ -210,6 +268,11 @@ export function PresellSuperPage() {
 
   async function handleAnalyzeWithOpenAI() {
     if (selectedChips.length === 0 && !customInput.trim()) return;
+
+    trackLead("sim_generate", "recipe_simulator", {
+      ingredients: [...selectedChips, ...(customInput.trim() ? [customInput.trim()] : [])],
+      mode: cookingMode,
+    });
 
     setAnalyzingWithAI(true);
     try {
@@ -317,6 +380,11 @@ export function PresellSuperPage() {
     const questionToAsk = (customQ || nutriQuestion).trim();
     if (!questionToAsk) return;
 
+    trackLead("nutri_message", "nutri_chat", {
+      question: questionToAsk,
+      goal: nutriGoal,
+    });
+
     setNutriLoading(true);
     try {
       const res = await presellNutriChat({
@@ -411,7 +479,8 @@ export function PresellSuperPage() {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
             href={checkoutUrl}
-            className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black text-xs px-4 py-2 transition-all shadow-md shadow-emerald-500/20"
+            onClick={() => trackLead("checkout_click", "top_header", { cta: "top_header" })}
+            className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black text-xs px-4 py-2 transition-all shadow-md shadow-emerald-500/20 cursor-pointer"
           >
             Garantir por R$ 8,90
           </motion.a>
@@ -481,6 +550,7 @@ export function PresellSuperPage() {
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 14 }}
             href={checkoutUrl}
+            onClick={() => trackLead("checkout_click", "hero_cta", { cta: "hero" })}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 px-8 py-4 text-base font-black text-neutral-950 shadow-xl shadow-emerald-500/25 cursor-pointer"
           >
             <span>INICIAR TEST DRIVE DE 7 DIAS POR R$ 8,90</span>
@@ -731,6 +801,7 @@ export function PresellSuperPage() {
                             </span>
                             <a
                               href={checkoutUrl}
+                              onClick={() => trackLead("checkout_click", "recipe_card", { cta: "recipe_card", recipe: opt.name })}
                               className="font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-2 flex items-center gap-1 text-xs"
                             >
                               Fazer no App por R$ 8,90 →
@@ -805,7 +876,11 @@ export function PresellSuperPage() {
                   </p>
                   <div className="pt-2 flex items-center justify-between border-t border-white/10 text-[11px]">
                     <span className="text-emerald-400 font-bold">💰 Economizou R$ 64,00 de iFood hoje</span>
-                    <a href={checkoutUrl} className="font-bold text-red-400 hover:text-red-300 underline">
+                    <a
+                      href={checkoutUrl}
+                      onClick={() => trackLead("checkout_click", "panic_mode", { cta: "panic_mode" })}
+                      className="font-bold text-red-400 hover:text-red-300 underline"
+                    >
                       Desbloquear Modo Pânico no App →
                     </a>
                   </div>
@@ -990,6 +1065,7 @@ export function PresellSuperPage() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               href={checkoutUrl}
+              onClick={() => trackLead("checkout_click", "guarantee_box", { cta: "guarantee_box" })}
               className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold text-xs px-5 py-2.5 transition-all shadow-md shrink-0 cursor-pointer"
             >
               Começar Test Drive Agora →
@@ -1356,6 +1432,7 @@ export function PresellSuperPage() {
                       </div>
                       <a
                         href={checkoutUrl}
+                        onClick={() => trackLead("checkout_click", "nutri_result", { cta: "nutri_result" })}
                         className="text-xs font-bold text-pink-400 hover:text-pink-300 underline underline-offset-2 flex items-center gap-1"
                       >
                         Desbloquear Conversas Ilimitadas por R$ 8,90 →
@@ -1387,6 +1464,7 @@ export function PresellSuperPage() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               href={checkoutUrl}
+              onClick={() => trackLead("checkout_click", "nutri_card_cta", { cta: "nutri_card_cta" })}
               className="rounded-xl bg-pink-500 hover:bg-pink-400 text-white font-black text-xs px-4 py-2 transition-all shadow-md shadow-pink-500/20 shrink-0 cursor-pointer"
             >
               Garantir Nutri 24h por R$ 8,90
@@ -1578,6 +1656,7 @@ export function PresellSuperPage() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               href={checkoutUrl}
+              onClick={() => trackLead("checkout_click", "pricing_bottom_cta", { cta: "pricing_bottom_cta" })}
               className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-neutral-950 py-3.5 text-sm sm:text-base font-black shadow-lg shadow-emerald-500/25 transition-transform cursor-pointer"
             >
               <span>GARANTIR MEU ACESSO COM ESTORNO GARANTIDO</span>
@@ -1659,9 +1738,28 @@ export function PresellSuperPage() {
       </motion.section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/5 py-8 text-center text-xs text-neutral-500">
+      <footer className="border-t border-white/5 py-8 pb-24 sm:pb-8 text-center text-xs text-neutral-500">
         © 2026 NXA Chef. Todos os direitos reservados.
       </footer>
+
+      {/* Barra Fixa Flutuante no Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 bg-neutral-950/95 border-t border-white/10 backdrop-blur-xl sm:hidden flex items-center justify-between gap-3 shadow-2xl">
+        <div className="flex flex-col">
+          <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Test Drive 7 Dias</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-base font-black text-emerald-400">R$ 8,90</span>
+            <span className="text-[10px] text-neutral-400 line-through">R$ 29,90</span>
+          </div>
+        </div>
+        <a
+          href={checkoutUrl}
+          onClick={() => trackLead("checkout_click", "mobile_floating_bar", { cta: "mobile_floating_bar" })}
+          className="rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-neutral-950 font-black text-xs px-4 py-2.5 shadow-md shadow-emerald-500/30 flex items-center gap-1.5"
+        >
+          <span>Garantir Acesso</span>
+          <ArrowRight size={14} />
+        </a>
+      </div>
     </div>
   );
 }
