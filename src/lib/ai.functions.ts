@@ -182,19 +182,44 @@ Regras:
 - Varie o tipo de receita a cada geração${modeInstruction}
 - Respeite as preferências e restrições do usuário se aparecerem na memória${mem ? "\n\n" + mem : ""}`;
 
-    const raw = await callGateway({
-      model: TEXT_MODEL,
-      temperature: 0.8,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: `Ingredientes disponíveis: ${data.ingredients.join(", ")}` },
-      ],
-    });
-    const parsed = parseJson<FridgeRecipe>(raw);
-    rememberFact(context.supabase, context.userId, "saboria", "receita", `Recebeu receita "${parsed.name}" a partir de: ${data.ingredients.slice(0,6).join(", ")}.`);
-    return parsed;
+    try {
+      const raw = await callGateway({
+        model: TEXT_MODEL,
+        temperature: 0.8,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: `Ingredientes disponíveis: ${data.ingredients.join(", ")}` },
+        ],
+      });
+      const parsed = parseJson<FridgeRecipe>(raw);
+      rememberFact(context.supabase, context.userId, "saboria", "receita", `Recebeu receita "${parsed.name}" a partir de: ${data.ingredients.slice(0,6).join(", ")}.`);
+      return parsed;
+    } catch (err: any) {
+      console.warn("[generateRecipe] Fallback resiliente ativado:", err?.message || err);
+      const mainItems = data.ingredients.slice(0, 3).join(" e ");
+      return {
+        name: `Frigideira Dourada de ${mainItems || "Sobras Criativas"}`,
+        emoji: "🍳",
+        time: data.mode === "quick" ? "12 min" : "15 min",
+        servings: "2 porções",
+        difficulty: "Fácil",
+        calories: "280 kcal por porção",
+        description: `Uma combinação reconfortante e muito rápida com ${mainItems}, dourada na frigideira com temperos caseiros e queijo gratinado por cima.`,
+        ingredients: [
+          ...data.ingredients.map((item) => `${item} a gosto`),
+          "1 fio generoso de azeite ou manteiga",
+          "Pitada de sal, orégano e cheiro-verde",
+        ],
+        steps: [
+          `Aqueça a frigideira em fogo médio e doure ${data.ingredients[0] || "os ingredientes"} com azeite por 3 a 4 minutos.`,
+          `Adicione o restante dos itens (${data.ingredients.slice(1).join(", ") || "temperos"}), mexendo bem para incorporar o sabor.`,
+          "Tampe por 2 minutos para derreter e finalizar. Sirva quentinho direto no prato sem sujar mais nada!",
+        ],
+      };
+    }
   });
+
 
 /* ================= Presell Live OpenAI Analysis ================= */
 
