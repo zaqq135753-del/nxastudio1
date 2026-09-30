@@ -109,7 +109,7 @@ function SubscribePage() {
     }
 
     if (!url && app.slug === "saboria") {
-      url = "https://checkout.infinitepay.io/isaque-elias-4d5/Ioa160lD6X"; // R$ 8,90 InfinitePay
+      url = "https://checkout.infinitepay.io/isaque-elias-4d5/Ioal60lD6X"; // R$ 8,90 InfinitePay
     }
 
     if (url) {
