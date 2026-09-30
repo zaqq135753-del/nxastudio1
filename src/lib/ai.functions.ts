@@ -276,7 +276,7 @@ export const presellAnalyzeRecipe = createServerFn({ method: "POST" })
     }
 
     const system = `Você é o Chef Inteligente do NXA Chef.
-O usuário está na nossa página de apresentação testando a inteligência antes de adquirir o acesso promocional por R$ 14,90.
+O usuário está na nossa página de apresentação testando a inteligência antes de adquirir o acesso promocional por R$ 8,90.
 Ele informou os seguintes ingredientes ou ideia: "${combined}".
 
 Crie DUAS (2) ou TRÊS (3) opções de receitas práticas, saborosas e surpreendentes da culinária brasileira real com o que ele informou, valorizando rapidez e praticidade (sem sujar muita louça).

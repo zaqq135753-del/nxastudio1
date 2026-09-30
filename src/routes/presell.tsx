@@ -58,7 +58,7 @@ export const Route = createFileRoute("/presell")({
       {
         name: "description",
         content:
-          "Teste o NXA Chef por 7 dias. Se não economizar pelo menos R$ 100 em delivery e comida reaproveitada, devolvemos 100% do seu dinheiro e cancelamos seu acesso. Acesso completo por R$ 14,90.",
+          "Teste o NXA Chef por 7 dias. Se não economizar pelo menos R$ 100 em delivery e comida reaproveitada, devolvemos 100% do seu dinheiro e cancelamos seu acesso. Acesso completo por R$ 8,90.",
       },
     ],
   }),
@@ -99,7 +99,7 @@ const LIVE_ACTIVITIES = [
     badge: "🟢 Compra Confirmada",
     name: "Lucas P.",
     city: "Campinas, SP",
-    action: "garantiu a condição de R$ 14,90 vitalício",
+    action: "garantiu a condição de R$ 8,90 vitalício",
     time: "há 4 minutos",
     detail: "Vaga do 1º lote reservada",
   },
@@ -381,7 +381,7 @@ export function PresellSuperPage() {
           <span className="bg-black/50 px-2 py-0.5 rounded font-mono text-amber-300 font-bold">
             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </span>
-          <span className="font-bold text-white">• De R$ 97 por apenas R$ 14,90</span>
+          <span className="font-bold text-white">• De R$ 97 por apenas R$ 8,90</span>
         </div>
       </div>
 
@@ -413,7 +413,7 @@ export function PresellSuperPage() {
             href={checkoutUrl}
             className="rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black text-xs px-4 py-2 transition-all shadow-md shadow-emerald-500/20"
           >
-            Garantir por R$ 14,90
+            Garantir por R$ 8,90
           </motion.a>
         </div>
       </header>
@@ -471,7 +471,7 @@ export function PresellSuperPage() {
 
         <p className="mt-5 text-base sm:text-lg text-neutral-300 leading-relaxed max-w-2xl mx-auto">
           Chega de gastar R$ 60 no iFood por cansaço ou deixar comida estragar na gaveta. 
-          Você ativa seu <strong>Período de Teste de 7 Dias por R$ 14,90</strong>. Se não economizar pelo menos R$ 100 na primeira semana, <strong>devolvemos todo o seu dinheiro e cancelamos seu usuário</strong>.
+          Você ativa seu <strong>Período de Teste de 7 Dias por R$ 8,90</strong>. Se não economizar pelo menos R$ 100 na primeira semana, <strong>devolvemos todo o seu dinheiro e cancelamos seu usuário</strong>.
         </p>
 
         {/* CTA HERO COM EFEITO SALTITANTE */}
@@ -483,7 +483,7 @@ export function PresellSuperPage() {
             href={checkoutUrl}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 px-8 py-4 text-base font-black text-neutral-950 shadow-xl shadow-emerald-500/25 cursor-pointer"
           >
-            <span>INICIAR TEST DRIVE DE 7 DIAS POR R$ 14,90</span>
+            <span>INICIAR TEST DRIVE DE 7 DIAS POR R$ 8,90</span>
             <ArrowRight size={18} />
           </motion.a>
           <div className="flex items-center gap-2 text-xs text-neutral-400">
@@ -733,7 +733,7 @@ export function PresellSuperPage() {
                               href={checkoutUrl}
                               className="font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-2 flex items-center gap-1 text-xs"
                             >
-                              Fazer no App por R$ 14,90 →
+                              Fazer no App por R$ 8,90 →
                             </a>
                           </div>
                         </motion.div>
@@ -933,7 +933,7 @@ export function PresellSuperPage() {
               </div>
               <h3 className="text-base font-bold text-white mb-2">Você ativa seu Test Drive</h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Pague apenas R$ 14,90 pelo lote promocional. Seu login é liberado no mesmo segundo com acesso ilimitado a todos os 7 recursos do app.
+                Pague apenas R$ 8,90 pelo lote promocional. Seu login é liberado no mesmo segundo com acesso ilimitado a todos os 7 recursos do app.
               </p>
             </motion.div>
 
@@ -1358,7 +1358,7 @@ export function PresellSuperPage() {
                         href={checkoutUrl}
                         className="text-xs font-bold text-pink-400 hover:text-pink-300 underline underline-offset-2 flex items-center gap-1"
                       >
-                        Desbloquear Conversas Ilimitadas por R$ 14,90 →
+                        Desbloquear Conversas Ilimitadas por R$ 8,90 →
                       </a>
                     </div>
                   )}
@@ -1389,7 +1389,7 @@ export function PresellSuperPage() {
               href={checkoutUrl}
               className="rounded-xl bg-pink-500 hover:bg-pink-400 text-white font-black text-xs px-4 py-2 transition-all shadow-md shadow-pink-500/20 shrink-0 cursor-pointer"
             >
-              Garantir Nutri 24h por R$ 14,90
+              Garantir Nutri 24h por R$ 8,90
             </motion.a>
           </div>
         </motion.div>
@@ -1409,7 +1409,7 @@ export function PresellSuperPage() {
             Ecossistema Completo
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-            Tudo o que você leva no pacote de R$ 14,90:
+            Tudo o que você leva no pacote de R$ 8,90:
           </h2>
           <p className="text-sm text-neutral-400 mt-1">
             Sete ferramentas inteligentes reunidas em um único acesso vitalício:
@@ -1523,7 +1523,7 @@ export function PresellSuperPage() {
             className="rounded-2xl border-2 border-emerald-400 bg-emerald-950/20 p-5 text-center shadow-lg shadow-emerald-500/10 cursor-pointer"
           >
             <span className="text-xs font-bold text-emerald-400 uppercase tracking-wide">Test Drive NXA Chef</span>
-            <div className="text-3xl font-black text-emerald-400 mt-2">R$ 14,90</div>
+            <div className="text-3xl font-black text-emerald-400 mt-2">R$ 8,90</div>
             <p className="text-xs text-neutral-200 mt-2 font-medium">
               Jantares prontos em 12 minutos com comida que já está paga. Se não gostar, você recupera 100% do valor.
             </p>
@@ -1568,10 +1568,10 @@ export function PresellSuperPage() {
           <div className="border-t border-white/10 pt-5">
             <div className="text-xs text-neutral-500 line-through">De R$ 97,00 por apenas</div>
             <div className="text-4xl sm:text-5xl font-black text-white mt-1">
-              R$ 14<span className="text-2xl text-emerald-400">,90</span>
+              R$ 8<span className="text-2xl text-emerald-400">,90</span>
             </div>
             <div className="text-xs text-emerald-400 font-semibold mt-1">
-              Menos de R$ 0,50 por dia • Liberação Imediata
+              Menos de R$ 0,30 por dia • Liberação Imediata
             </div>
 
             <motion.a
@@ -1609,8 +1609,8 @@ export function PresellSuperPage() {
               a: "É 100% descomplicado: você tem 7 dias completos para testar o NXA Chef. Se achar que não economizou em delivery ou não gostou de qualquer detalhe, basta mandar 1 mensagem para o nosso suporte. Nós fazemos o estorno integral de 100% do seu valor e desativamos o seu usuário no sistema. O risco do teste é todo nosso.",
             },
             {
-              q: "O acesso de R$ 14,90 é pagamento único ou tem mensalidade?",
-              a: "Nesta oferta especial de lançamento, é um pagamento único de R$ 14,90 para liberar todos os 7 recursos sem cobranças mensais.",
+              q: "O acesso de R$ 8,90 é pagamento único ou tem mensalidade?",
+              a: "Nesta oferta especial de lançamento, é um pagamento único de R$ 8,90 para liberar todos os 7 recursos sem cobranças mensais.",
             },
             {
               q: "A Nutricionista IA realmente responde qualquer dúvida e calcula macros?",
